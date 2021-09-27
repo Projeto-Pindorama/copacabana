@@ -8,11 +8,11 @@ which i'm also contributing with code and fixes for. :^)
 It follows the same building model that "vanilla" LFS and Musl-LFS/CMLFS does,
 so our build is divided into cross-tools, tools and the final system.  
 
-You can already download the cross-tools stage for Copacabana from Pindorama's
-FTP server, just enter in pindorama.twilightparadox.com (port 2121), it's inside
-the copacabana/ directory.  
+You can already download the cross-tools stage for Copacabana 1.0 (Sunrise) from 
+Pindorama's FTP server. Just enter in pindorama.twilightparadox.com (port 2121), 
+it's inside the copacabana/ directory.  
 
-For testing, i'm using Pindorama's Mitzune, a tool that i've developed
-specifically for this task.  
+For testing, i'm using [Pindorama's Mitzune](https://github.com/Projeto-Pindorama/mitzune), 
+a tool that i've developed specifically for this task.  
 
 I'll describe the entire process of in fact building the system in the docs.
