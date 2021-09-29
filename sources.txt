@@ -73,7 +73,7 @@ http://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
 http://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz 
 http://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
 
-# pkgs/gnu/autohell/
+#> pkgs/gnu/autohell/
 http://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
 http://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.xz
 http://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
