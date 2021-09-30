@@ -1,4 +1,4 @@
-# The Copacabana Linux distribution
+# The Copacabana Linux(R) distribution
 This repository contains most of the resources that you'd need to build
 Copacabana, in case documentation and scripts.
 
