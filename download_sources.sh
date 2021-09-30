@@ -18,7 +18,8 @@ SRCDIR=${SRCDIR:-$COPA/usr/src}
 # Workaround to the # macro in arrays
 # which doesn't work properly in bash 4.3 for some reason.
 n() {
-  wc -w < "${@}"
+  # ambiguous redirect? pipe it.
+  echo "${@}" | wc -w
 }
 
 main() {
@@ -29,25 +30,26 @@ main() {
 
   for ((i = 0; i < n_categories; i++)) {
     # foo/var => foo\/var
-    category_id=`echo ${categories[${i}]} | sed 's/\//\\\//g'` # SED SUCKS
+    category_id=`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`  # SED SUCKS
+    echo $category_id
     # Matches #> $category_id | counts until the next and
     # last match | matches #< $category_id | it ends here "Translate" \n for spaces
     urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${PARENTDIR}/${1}`)
     n_urls=`n ${urls[*]}`
 
-    SRCDIR+="/${categories[${i}]}"
-    mkdir -p "$SRCDIR"
-    cd "$SRCDIR" || exit
+    category_dir="$SRCDIR/${categories[${i}]}"
+    mkdir -p "$category_dir"
+    cd "$category_dir" || exit
 
     for ((j = 0; j < n_urls; j++)) {
       printf '%s\n' "Downloading $(basename ${urls[${j}]})"
       curl -LO ${urls[${j}]}
     }
-    SRCDIR=`echo $SRCDIR | sed "/\/${categories[${i}]}/d"`
   }
-  if [ ${MD5CHECK} == 'YES' ]; then
-    md5sum -c ${PARENTDIR}/${2}
-  fi
+# idk how to implement MD5 yet
+#  if [ ${MD5CHECK} == 'YES' ]; then
+#    md5sum -c ${PARENTDIR}/${2}
+#  fi
 }
 
 main "${1}" "${2}"
