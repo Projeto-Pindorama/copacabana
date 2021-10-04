@@ -1,7 +1,7 @@
 | Tools supplied by GNU coreutils                      | Tools supplied by the Heirloom Project                            | Tools supplied by OpenBSD                  | posix-alt.shi-derived        |
 |------------------------------------------------------|-------------------------------------------------------------------|--------------------------------------------|------------------------------|
 | chcon                                                | SELinux-specific                                                  | SELinux-specific                           | -                            |
-| chgrp                                                | -                                                                 | chgrp (it's in the same folder than chmod) | -                            |
+| chgrp                                                | -                                                                 | chgrp (it's in the same folder than chgrp) | -                            |
 | chown                                                | chown; chown_ucb                                                  | -                                          | -                            |
 | chmod                                                | chmod; chmod_sus                                                  | -                                          | -                            |
 | cp                                                   | cp; cp_s42; cp_sus                                                | -                                          | -                            |
