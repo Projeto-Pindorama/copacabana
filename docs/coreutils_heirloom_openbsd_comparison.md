@@ -100,4 +100,4 @@
 | who                                                  | who; who_sus                                                      | -                                          | -                            |
 | whoami                                               | whoami                                                            | -                                          | -                            |
 | yes                                                  | yes                                                               | -                                          | -                            |
-| [                                                    | -                                                                 | test (it possibly links to [)              | -                            |
+| [                                                    | test (possibly links to [)                                                                 | -              | -                            |
