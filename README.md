@@ -14,5 +14,9 @@ it's inside the copacabana/ directory.
 
 For testing, i'm using [Pindorama's Mitzune](https://github.com/Projeto-Pindorama/mitzune), 
 a tool that i've developed specifically for this task.  
+The virtual disk image is being mounted using [Pindorama's lemount](http://github.com/Projeto-Pindorama/lemount), 
+that's why any mentions to the Copacabana mounted disk partition are prefixed
+/dsk/Xp --- where X is a number, usually 0 in the documentation since this is
+the only and first image that i have mounted in my host.  
 
 I'll describe the entire process of in fact building the system in the docs.
