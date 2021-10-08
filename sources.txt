@@ -18,6 +18,8 @@ http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.1.tar.gz
 http://phoenixnap.dl.sourceforge.net/project/heirloom/heirloom/070715/heirloom-070715.tar.bz2
 http://github.com/Projeto-Pindorama/stripped-lobase/archive/refs/tags/20211006-tools.tar.gz
 http://ftp.funet.fi/pub/unix/shells/zsh/zsh-5.8.tar.xz
+https://github.com/gavinhoward/bc/releases/download/5.1.1/bc-5.1.1.tar.xz
+https://github.com/onetrueawk/awk/archive/refs/tags/20180827.tar.gz
 http://ufpr.dl.sourceforge.net/project/ex-vi/ex-vi/050325/ex-050325.tar.bz2
 http://curl.se/download/curl-7.74.0.tar.xz
 http://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.08.tar.xz
