@@ -1,10 +1,10 @@
 #!/bin/bash
 # Simple shell hack to download and MD5 check source tarballs.
 # Copyright 2021: Luiz Antônio (takusuman).
-# This particular script is dual-licensed between BSD 2-Clause
-# or GPL3, at your preference.
 # n() function by Caio Novais (chexier).
-# Forked from CMLFS.
+# This script is licensed under UUIC/NCSA (as Copacabana work itself).
+# Forked from CMLFS, which was originally dual-licensed between
+# BSD 2-Clause or GPL3, at your preference.
 
 # USAGE: ./download_sources.sh sources.list sources.md5
 
