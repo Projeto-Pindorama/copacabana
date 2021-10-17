@@ -1,3 +1,22 @@
 site_name: The Copacabana Wiki
+site_author: Pindorama
+copyright: Copyright &copy; 2019-2021 Pindorama<br />"Vinicius" and the Copacabana logo are copyrighted by Pindorama et Kayo Henrique (Tamboru). Ask us for permission before using.
+
+repo_name: Projeto-Pindorama/copacabana
+repo_url: https://github.com/Projeto-Pindorama/copacabana
+
 theme:
   name: material
+  palette:
+    - scheme: default
+      primary: yellow
+      accent: yellow 
+      toggle:
+        name: Obscurum
+        icon: material/lightbulb-outline
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        name: Illuminatio
+        icon: material/lightbulb
