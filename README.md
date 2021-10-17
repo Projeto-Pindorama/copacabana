@@ -1,5 +1,6 @@
 # The Copacabana Linux(R) distribution
 ![Pindorama Copacabana Linux](docs/img/Pindorama_Copacabana_Banner_Principal.png)   
+
 This repository contains most of the resources that you'd need to build
 Copacabana, in case documentation and scripts.
 
@@ -22,10 +23,9 @@ the only and first image that i have mounted in my host.
 I'll describe the entire process of in fact building the system in the docs.
 
 ## credits and acknowledgements
-Luiz Antônio Rangel (`takusuman`), for `cmd/download_sources.sh` and most part of the work, including making 
-Heirloom and lobase work;  
-Caio Novais (`chexier`), for fixes and hacks with Shell script (for example, he
-did the first attempt to fix `cmd/download_sources.sh`);  
+Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
+Caio Novais (`chexier`), for fixes and hacks with Shell script --- for example, he
+did the first attempt to fix `cmd/download_sources.sh`;  
 Kayo Henrique (`Tamboru`) for all the graphics-related work. Seriously, the distribution
 and the project itself wouldn't even have a logo if it wasn't him.  
 
