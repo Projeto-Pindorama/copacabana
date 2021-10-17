@@ -1,5 +1,5 @@
 # The Copacabana Linux(R) distribution
-![Pindorama Copacabana Linux](docs/img/Pindorama_Copacabana_Banner_Principal.png)   
+![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama_Copacabana_Banner_Principal.png)   
 
 This repository contains most of the resources that you'd need to build
 Copacabana, in case documentation and scripts.

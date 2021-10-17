@@ -5,7 +5,6 @@ Copyright (c) 2019-2021 Pindorama. All rights reserved.
 Developed by: Pindorama
 	      Caio Novais (chexier)
               Luiz Antônio Rangel (takusuman)
-	      Kayo Henrique (Tamboru)
               http://pindorama.apocalip.se/
 
 Permission is hereby granted, free of charge, to any person
