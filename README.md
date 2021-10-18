@@ -19,7 +19,7 @@ The virtual disk image is being mounted using [Pindorama's lemount](http://githu
 that's why any mentions to the Copacabana mounted disk partition are prefixed
 `/dsk/Xp` --- where `X` is a number, usually `0` in the documentation since this is
 the only and first image that i have mounted in my host --- , and `p` is
-a prefix -- ` ` when its a real disk and `v` when its a virtual one, which will be our case.  
+a prefix -- ` ` when it's a real disk and `v` when it's a virtual one, which will be our case in the documentation.  
 
 I'll describe the entire process of in fact building the system in the docs.
 
