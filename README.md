@@ -18,7 +18,8 @@ a tool that i've developed specifically for this task.
 The virtual disk image is being mounted using [Pindorama's lemount](http://github.com/Projeto-Pindorama/lemount), 
 that's why any mentions to the Copacabana mounted disk partition are prefixed
 `/dsk/Xp` --- where `X` is a number, usually `0` in the documentation since this is
-the only and first image that i have mounted in my host.  
+the only and first image that i have mounted in my host --- , and `p` is
+a prefix -- ` ` when its a real disk and `v` when its a virtual one, which will be our case.  
 
 I'll describe the entire process of in fact building the system in the docs.
 
