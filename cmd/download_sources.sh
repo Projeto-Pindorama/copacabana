@@ -32,8 +32,7 @@ main() {
     # foo/var => foo\/var
     category_id=`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`  # SED SUCKS
     echo $category_id
-    # Matches #> $category_id | counts until the next and
-    # last match | matches #< $category_id | it ends here "Translate" \n for spaces
+    # Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
     urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${PARENTDIR}/${1}`)
     n_urls=`n ${urls[*]}`
 
@@ -42,7 +41,7 @@ main() {
     cd "$category_dir" || exit
 
     for ((j = 0; j < n_urls; j++)) {
-      printf '%s\n' "Downloading $(basename ${urls[${j}]})"
+      printf 'Downloading %s\n' "$(basename ${urls[${j}]})"
       curl -LO ${urls[${j}]}
     }
   }
