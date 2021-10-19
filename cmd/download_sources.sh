@@ -41,7 +41,7 @@ main() {
     cd "$category_dir" || exit
 
     for ((j = 0; j < n_urls; j++)) {
-      printf 'Downloading %s\n' "$(basename ${urls[${j}]})"
+      printf 'Downloading %s\n' "`basename ${urls[${j}]}`"
       curl -LO ${urls[${j}]}
     }
   }
