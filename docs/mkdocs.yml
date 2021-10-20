@@ -20,3 +20,16 @@ theme:
       toggle:
         name: Illuminatio
         icon: material/lightbulb
+  logo: img/logo.svg
+  favicon: img/vinicius.ico
+
+nav:
+  - Home: index.md  
+  - Introduction:
+    - When and why it started?: intro/when_and_why.md
+      #    - Why should i care?: intro/care.md
+      #    - Who's the target audience?: intro/audience.md 
+      #    - Where does it run?: intro/run.md
+      #    - How is it divided?: intro/stages.md
+  - Installing
+  - From the toolchain to the 付け根 from Scratch!
