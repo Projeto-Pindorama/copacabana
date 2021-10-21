@@ -33,4 +33,4 @@ and the project itself wouldn't even have a logo if it wasn't him.
 And obviously, Copacabana wouldn't even exist if it wasn't the work of Linus
 Torvalds and thousands of millions of contributors in the [Linux
 kernel](http://kernel.org), neither without Gerard Beekmans' [Linux from
-Scracth](https://www.linuxfromscratch.org/) manual.  
+Scratch](https://www.linuxfromscratch.org/) manual.  
