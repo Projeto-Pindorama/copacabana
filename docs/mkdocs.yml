@@ -23,6 +23,9 @@ theme:
   logo: img/logo.svg
   favicon: img/vinicius.ico
 
+markdown_extensions:
+  - attr_list
+
 nav:
   - Home: index.md  
   - Introduction:
