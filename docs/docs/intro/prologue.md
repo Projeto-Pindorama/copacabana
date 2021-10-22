@@ -49,6 +49,9 @@ political activism against the USA/"The West", liberalism/capitalism and corpora
 (in special Red Hat *et caterva*) rather than making an usable Linux live distribution.  
 I don't want to be an elitist bastard here, the main idea is really good, but it was 
 unfortunately poorly executed and blind by political ideals.  
+By the way, the last time I've booted antiX was in somewhere between March and
+June 2019, so it may have changed a lot since then. I also hope I haven't offended the
+creators as individuals, because they seem like really nice people.  
 
 So, after suffering for a while, I've called `chexier` and talked about creating a
 Devuan remix (in brazilian software communities, it's called a "refisefuquis") for 
@@ -135,7 +138,7 @@ in some place.
 </figure>
 Right after we """compiled""" (in fact just generated an `.iso` with SystemBack) 
 and uploaded the 0.0.2 version to `chexier`'s GDrive account, I went straight to
-Viva o Linux, a brazilian \*NIX-dedicated forum, and made a post about our new
+Viva ao Linux, a brazilian \*NIX-dedicated forum, and made a post about our new
 *refisefuquis*. The reactions were mixed, some said "This project is born dead."
 and others said "Go ahead! A dream you guys dream together will be reality.";
 and, in fact, both were right: Pindorama could be just another refisefuquis
