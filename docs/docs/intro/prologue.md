@@ -20,7 +20,7 @@ which at the first moment wasn't *exactly* my friend --- in fact, we just used t
 about computing  (more specifically, about Linux) in a forum, with no further intent besides 
 trolling each other -- but, later on, we became friends and started thinking about starting an 
 open-source project or something (although having almost no knowledge about programming). So
-we, two 13 year old brats, created a GitHub profile and start doing some really amateur scripts. 
+we, two 13 year old brats, created a GitHub profile and start doing some really amateur scripts.  
 The name of our """project""" was INU, an obvious pun on the name GNU.  
 I think it was a good start, because although our code being, at the time, really amateur, we
 learnt a lot --- not nearly as much as we would be still learning until today, but it was a start.  
@@ -68,7 +68,7 @@ And ==it's here where Pindorama starts==, with a Devuan *refisefuquis* called
 [![São Jorge 0.0.3](../img/sao_jorge_gnulinux.dithered.png){ align="right" width="340" }](../img/sao_jorge_gnulinux.png)
 It was the night of June 27, 2019, and there was me, `chexier` and Kayo Henrique
 (`tamboru`), a cool m8 who I've met some weeks before and which offered 
-himself to help with artworks.  
+to help with artworks.  
 Although being something made just for our (more specifically my) personal use,
 we were sure to release it to the public --- not because of ego or something, but
 because we were really inspired.  
@@ -184,18 +184,19 @@ going to use W and Z" ***sends screenshot of some 4chan thread saying that X and
 are crap, probably made by a millennial who didn't ever coded something relevant
 or useful in his life or by a 30 year old man that lives in his mother's house,
 has autism, is unemployed, reads and repeats Nietzche and only do shitty theorical
-C programs to prove himself as an "intellectual"*** --- after all, it's really easy
+C programs to prove himself as an "intellectual"*** --- ==after all, it's really easy
 to belittle an entire team's work of weeks, months or even years (like what was 
-done with BSD communities) when you don't do anything by yourself, not even saying
-exactly what's wrong with who you're criticizing or just making fun of. 
+done with BSD communities on 4chan in 2020) when you don't do anything by yourself,
+not even saying exactly what's wrong with who you're criticizing or just making
+fun of==. 
  
-"Well, competition and discussions are always good in the end", people usually say.  
+"Well, in the end, competition and discussions are always good", people usually say.  
 Well, they'd be completely right... if at least one of we two were at commmitted
 to learn at least the basic differences between X, Y, W and Z and how to in fact 
 use them before switching; which didn't happened, mostly because of the effects 
-caused by the COVID-19 social isolation, that include ==depression==; obviously,
+caused by the COVID-19 social isolation, that include ==depression==. Obviously,
 it wasn't only the pandemic that made us sick, ==it was also immaturity from both
-sides== and the World, in general, was mentally sick, suffering from an "Internet
+sides== and the World, in general, was mentally sick --- suffering from an "Internet
 overdose", a post-Enlightenment, where everything is a "shitpost" or "meme",
 fueled by a shitty nihilism (maybe this is pleonasm, but anyway).   
 Has humanity got worse? No, it just took the wrong path, we can and will fix it.  
@@ -221,5 +222,13 @@ actually have seen people working so that the project won't be weakened, such as
 entirely made by him, so if we don't look like stuck in 1999 anymore, all kudos to 
 him --- so the only thing that I can't, under any circumstances, affirm is that the
 project "almost died because anyone was giving it attention".  
+
+As history is cyclical, my only fear is that we could fall into this darkness again 
+and don't even notice.  
+
+In short: pseudo-intelectualism and futile "technical" discussions are considered
+harmful.  
+
+### give me light!
 
 ## Why is Copacabana being created now?
