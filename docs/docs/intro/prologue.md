@@ -162,8 +162,9 @@ its assets to create the "404 handling" page when you try to access our old
 Neocities website, with a new codebase made entirely by me, as a tribute to the
 past.  
 Some weeks later, Salatiel (`SalatielSauer`), a friend from another server,
-remade `gabe`'s website using JavaScript, and implemented features such as menus
-and topics.  
+remade `gabe`'s website using JavaScript, implemented features such as menus
+and topics and a completely new layout, different from the plain-text-like made
+by `gabe`.  
 
 ### The Dark Ages of Pindorama
 2019 ended pretty well, both for our private lives and for Pindorama. We had plans and
@@ -188,15 +189,15 @@ to belittle an entire team's work of weeks, months or even years (like what was
 done with BSD communities) when you don't do anything by yourself, not even saying
 exactly what's wrong with who you're criticizing or just making fun of. 
  
-"Well, competition and discussions are always good in the end", people usually say. 
+"Well, competition and discussions are always good in the end", people usually say.  
 Well, they'd be completely right... if at least one of we two were at commmitted
 to learn at least the basic differences between X, Y, W and Z and how to in fact 
 use them before switching; which didn't happened, mostly because of the effects 
 caused by the COVID-19 social isolation, that include ==depression==; obviously,
-it wasn't only the pandemic that made us sick, ==it was also immaturity== and the
-World, in general, was mentally sick, suffering from an "Internet overdose", a
-post-Enlightenment, where everything is a "shitpost" or "meme", fueled by
-a shitty nihilism (maybe this is pleonasm, but anyway).   
+it wasn't only the pandemic that made us sick, ==it was also immaturity from both
+sides== and the World, in general, was mentally sick, suffering from an "Internet
+overdose", a post-Enlightenment, where everything is a "shitpost" or "meme",
+fueled by a shitty nihilism (maybe this is pleonasm, but anyway).   
 Has humanity got worse? No, it just took the wrong path, we can and will fix it.  
 
 Another really annoying problem that happened in 2020 was being besieged by 
@@ -217,7 +218,7 @@ In contrast to futile discussions fueled by cheap pseudo-intelectualism, I
 actually have seen people working so that the project won't be weakened, such as
 `tamboru` elaborating new artworks and even a new contributor, Vitor Almeida
 (`vit0rr`) offering to help in the website --- by the way, the current website was
-entirely made by him, so if we don't look like stuck in 1999 anymore, all kudos for 
+entirely made by him, so if we don't look like stuck in 1999 anymore, all kudos to 
 him --- so the only thing that I can't, under any circumstances, affirm is that the
 project "almost died because anyone was giving it attention".  
 
