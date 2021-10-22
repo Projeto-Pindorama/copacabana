@@ -1,4 +1,4 @@
-site_name: The Copacabana Wiki
+site_name: Silicon Tabula 
 site_author: Pindorama
 copyright: Copyright &copy; 2019-2021 Pindorama<br />"Vinicius" and the Copacabana logo are copyrighted by Pindorama et Kayo Henrique (Tamboru). Ask us for permission before using.
 
@@ -26,11 +26,16 @@ theme:
 markdown_extensions:
   - attr_list
   - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - md_in_html
 
 nav:
   - Home: index.md  
   - Introduction:
-    - When and why it started?: intro/when_and_why.md
+    - I. Prologue: intro/prologue.md
+    - II. Technical introdution to Copacabana: intro/intro.1.md 
       #    - Why should i care?: intro/care.md
       #    - Who's the target audience?: intro/audience.md 
       #    - Where does it run?: intro/run.md
