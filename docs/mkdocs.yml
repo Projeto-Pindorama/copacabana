@@ -25,6 +25,7 @@ theme:
 
 markdown_extensions:
   - attr_list
+  - pymdownx.critic
 
 nav:
   - Home: index.md  
