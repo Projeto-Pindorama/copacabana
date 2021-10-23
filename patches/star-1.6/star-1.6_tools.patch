@@ -1,0 +1,8 @@
+--- orig/DEFAULTS/Defaults	Sat Oct 23 19:17:02 2021
++++ star-1.6/DEFAULTS/Defaults	Sat Oct 23 04:37:19 2021
+@@ -6,3 +6,5 @@
+ ###########################################################################
+ 
+ include		$(DEFLTSROOT)/$(DEFLTSDIR)/Defaults.$(O_ARCH)
++INS_BASE=/tools
++DEFLINKMODE= static
