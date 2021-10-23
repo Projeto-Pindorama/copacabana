@@ -171,12 +171,12 @@ by `gabe`.
 new ideas, but then it came 2020...  
 Things started to get darker and darker every month passed; me and `chexier` were
 having multiple unnecessary face-offs because of futiles things (for example, 
-"GNU/bash vs. POSIX/sh" --- everyone knows that Korn Shell or a compiled
-language such as Go is better anyway, but we were discussing about this), and 
-this, in some way, wore out the project and the quality of our work --- Otto is,
-unfortunately, victim of all this darkness. Instead of studying how to do a
-decent package manager (and figuring out that it would be better to made it with
-Go, Nim or even C instead of Shell), we were discussing.  
+"GNU/bash vs. POSIX/sh" --- everyone knows that AT&T/ksh93, Bell Labs/rc or
+a compiled language such as Go is better anyway, but we were discussing about 
+this), and, in some way, this wore out the project and the quality of our work
+--- Otto is, unfortunately, victim of all this darkness. Instead of studying how
+to do a decent package manager (and figuring out that it would be better to made
+it with Go, Nim or even C instead of Shell), we were discussing just discussing.  
 The worst thing: all of these discussions
 were fueled by so-called "memes" from 4chan --- for example: `chexier`
 saw someone saying that W and Z rocks, so he came and said "screw X and Y, we're
