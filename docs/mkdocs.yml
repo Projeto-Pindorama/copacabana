@@ -26,6 +26,7 @@ theme:
 markdown_extensions:
   - tables
   - attr_list
+  - footnotes
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.mark
