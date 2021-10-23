@@ -24,6 +24,7 @@ theme:
   favicon: img/vinicius.ico
 
 markdown_extensions:
+  - tables
   - attr_list
   - pymdownx.critic
   - pymdownx.caret
