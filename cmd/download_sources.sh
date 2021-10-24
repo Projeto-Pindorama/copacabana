@@ -1,17 +1,17 @@
 #!/bin/bash
-# Simple shell hack to download and MD5 check source tarballs.
+# Simple shell hack to download and SHA256 check source tarballs.
 # Copyright 2021: Luiz Antônio (takusuman).
 # n() function by Caio Novais (chexier).
 # This script is licensed under UUIC/NCSA (as Copacabana work itself).
 # Forked from CMLFS, which was originally dual-licensed between
 # BSD 2-Clause or GPL3, at your preference.
 
-# USAGE: ./download_sources.sh sources.list sources.md5
+# USAGE: ./download_sources.sh sources.list sources.sha256
 
 # Word splitting is required.
-# shellcheck disable=SC2006,SC2086,SC2207
+# shellcheck disable=SC2001,SC2006,SC2086,SC2207
 
-MD5CHECK=${MD5CHECK:-YES}
+SHA256CHECK=${SHA256CHECK:-YES}
 COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
 
@@ -30,7 +30,7 @@ main() {
 
   for ((i = 0; i < n_categories; i++)) {
     # foo/var => foo\/var
-    category_id=`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`  # SED SUCKS
+    category_id=`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`
     echo $category_id
     # Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
     urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${PARENTDIR}/${1}`)
@@ -45,10 +45,9 @@ main() {
       curl -LO ${urls[${j}]}
     }
   }
-# idk how to implement MD5 yet
-#  if [ ${MD5CHECK} == 'YES' ]; then
-#    md5sum -c ${PARENTDIR}/${2}
-#  fi
+  if [[ ${SHA256CHECK} == YES ]]; then
+    sha256sum -c ${PARENTDIR}/${2}
+  fi
 }
 
-main "${1}" "${2}"
+main "$@"
