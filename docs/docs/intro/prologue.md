@@ -139,7 +139,23 @@ in some place.
 Right after we """compiled""" (in fact just generated an `.iso` with SystemBack) 
 and uploaded the 0.0.2 version to `chexier`'s GDrive account, I went straight to
 Viva ao Linux, a brazilian \*NIX-dedicated forum, and made a post about our new
-*refisefuquis*. The reactions were mixed, some said "This project is born dead."
+*refisefuquis*.  
+
+*The original post, in portuguese:*
+> *1. PINDORAMA LINUX, A NOSSA TENTATIVA DE REVIVER O ESPÍRITO KURUMIN DE UMA
+> DISTRIBUIÇÃO BRASILEIRA!  
+> Enviado em 24/06/2019 - 19:06h  
+> Olá internautas, tudo bem?  
+> Eu gostaria de pedir reforços para a criação do Pindorama Linux, distribuição
+> essa que visa ressuscitar o nosso velho Kurumin.  
+> Precisamos de programadores Shell Script, C, C++, Java e Python.  
+> Não pretendemos pagar ninguém, isso é apenas um projeto colaborativo, assim
+> como era o Kurumin.  
+> Se quiserem mais informações, nos chamem pelo email do projeto: pindoramalinux@420blaze.it  
+> Muito obrigado pela atenção.  
+> Sou novo aqui, então não sei se postei corretamente.*  
+
+The reactions were mixed, some said "This project is born dead."
 and others said "Go ahead! A dream you guys dream together will be reality.";
 and, in fact, both were right: Pindorama could be just another refisefuquis
 which would be dead some weeks after the first release, but it also could evolve
@@ -169,6 +185,21 @@ by `gabe`.
 ### The Dark Ages of Pindorama
 2019 ended pretty well, both for our private lives and for Pindorama. We had plans and
 new ideas, but then it came 2020...  
+Me and `chexier` started having plans to built a Linux From Scratch-based
+distribution, only using OpenBSD tools and Musl libc, it'd be called "Kurumin"
+after Morimoto's Kurumin Linux --- what would eventually be changed later 
+after I thought more about it and saw it was a pretty bad idea --- but,
+unfortunately (or fortunately, since we didn't in fact knew yet what we'd
+do), [`chexier` was distro-hopping a lot](../img/chexier_distro-hopping.png), so we didn't had a fixed and stable
+host to compile everything from the start to the finish, and we ended up doing
+nothing related in fact to the distribution binary compilation in 2020.  
+I even remember he trying to compile Linux From Scratch using OpenBSD as host.
+Obviously, it went wrong because neither me nor him knew what in fact was and
+how to do a cross-compilation in the right way.  
+
+I'll skip to April 2020, when the Coronavirus pandemic started in Brazil,
+along with what I'll be calling "The Dark Ages of Pindorama".  
+
 Things started to get darker and darker every month passed; me and `chexier` were
 having multiple unnecessary face-offs because of futiles things (for example, 
 "GNU/bash vs. POSIX/sh" --- everyone knows that AT&T/ksh93, Bell Labs/rc or
@@ -176,7 +207,8 @@ a compiled language such as Go is better anyway, but we were discussing about
 this), and, in some way, this wore out the project and the quality of our work
 --- Otto is, unfortunately, victim of all this darkness. Instead of studying how
 to do a decent package manager (and figuring out that it would be better to made
-it with Go, Nim or even C instead of Shell), we were discussing just discussing.  
+it with Go, Nim or even C instead of Shell), we were just discussing.  
+
 The worst thing: all of these discussions
 were fueled by so-called "memes" from 4chan --- for example: `chexier`
 saw someone saying that W and Z rocks, so he came and said "screw X and Y, we're
@@ -206,28 +238,34 @@ thirsty opportunists wanting someone to be their servants:
 > *"Hey, why don't you learn C effectively and come help me in my Discord server?  
 > I'm starting a project that is promising, but for this I need a programmer that
 > isn't tied to any other project and R$ 20,00 in Bitcoin  
-> So drop this Pindorama away and send me R$ 20,00, this will be great"*  
+> So drop this Pindorama away and deposit R$ 20,00, this will be great. You're a
+> genius and I need more people like you!"*  
 
 Usually they tried to (unsuccessfully) convey an image of intellectualism --- like
-doing a matrix multiplier program using C in your front, por example --- but at the
-same time they commited stupid portuguese mistakes that an "intellectual", as
-they claimed to be, couldn't commit.  
+doing a matrix multiplier program using C in the front of your eyes, por example
+--- but at the same time they commited stupid portuguese mistakes that an
+"intellectual", as they claimed to be, couldn't commit.  
 
 I didn't fell for that, obviously, but it annoyed me a lot anyway.  
 
+In fact, pseudo-intelectualism and pseudo-science are the worst things ever,
+because unlike plain hoaxes, they look and have bases to claim being real
+until you find the in fact real information; it's like half-truths.  
+
 In contrast to futile discussions fueled by cheap pseudo-intelectualism, I
 actually have seen people working so that the project won't be weakened, such as
-`tamboru` elaborating new artworks and even a new contributor, Vitor Almeida
-(`vit0rr`) offering to help in the website --- by the way, the current website was
-entirely made by him, so if we don't look like stuck in 1999 anymore, all kudos to 
-him --- so the only thing that I can't, under any circumstances, affirm is that the
-project "almost died because anyone was giving it attention".  
+`tamboru` elaborating new artworks and even a new contributor, a cool m8 from
+São Paulo called Vitor Almeida (`vit0rr`) offering to help in the website ---
+by the way, the current website was entirely made by him, so if we don't look
+like stuck in 1999 anymore, all kudos goes to him --- so the only thing that 
+I can't, under any circumstances, affirm is that the project "almost died
+because anyone was giving it attention".  
 
-As history is cyclical, my only fear is that we could fall into this darkness again 
-and don't even notice.  
+As history is cyclical, my only fear is that we could fall into this
+darkness again and don't even notice.  
 
-In short: pseudo-intelectualism and futile "technical" discussions are considered
-harmful.  
+In short: pseudo-intelectualism/pseudo-science and futile "technical"
+discussions are considered harmful.  
 
 ### give me light!
 
