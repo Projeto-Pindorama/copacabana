@@ -156,14 +156,14 @@ any replies.
 > Muito obrigado pela atenção.  
 > Sou novo aqui, então não sei se postei corretamente.*  
 
-It had, and it was a lot.  
-The reactions were mixed, some said "This project is born dead."
-and others said "Go ahead! A dream you guys dream together will be reality.";
+It had, and it were a lot.  
+The reactions were mixed, some said *"This project is born dead."*
+and others said *"Go ahead! A dream you guys dream together will be reality."*;
 and, in fact, both were right: Pindorama could be just another refisefuquis
 which would be dead some weeks after the first release, but it also could evolve
 into something relevant, it was in our hands.  
 So we decided together: we would try to improve our knowledge in programming for,
-in the future, do something interesting by ourselves before calling any new
+in the future, do something interesting by ourselves without begging for new 
 members or contributors.  
 `chexier` chose Python, I chose Shell and `tamboru` chose Linux administration
 via CLI --- which wasn't programming, but it would eventually be useful when
@@ -186,34 +186,40 @@ and topics and a completely new layout, different from the plain-text-like made
 by `gabe`.  
 
 ### The Dark Ages of Pindorama
-2019 ended pretty well, both for our private lives and for Pindorama. We had plans and
-new ideas, but then it came 2020...  
+2019 ended pretty well, both for our private lives and for Pindorama.
+We had plans and new ideas, but then it came 2020...  
+
+#### The first attempt ever to do a distribution "from Scratch!"  
 Me and `chexier` started having plans to built a Linux From Scratch-based
 distribution, only using OpenBSD tools and Musl libc, it'd be called "Kurumin"
 after Morimoto's Kurumin Linux --- what would eventually be changed later 
 after I thought more about it and saw it was a pretty bad idea --- but,
 unfortunately (or fortunately, since we didn't in fact knew yet what we'd
-do), [`chexier` was distro-hopping a lot](../img/chexier_distro-hopping.png), so we didn't had a fixed and stable
-host to compile everything from the start to the finish, and we ended up doing
-nothing related in fact to the distribution binary compilation in 2020.  
-I even remember he trying to compile Linux From Scratch using OpenBSD as host.
+do), [`chexier` was distro-hopping a lot](../img/chexier_distro-hopping.png),
+so we didn't had a fixed and stable host to compile everything from the start
+to the finish, and we ended up doing nothing related in fact to the
+distribution binary compilation in 2020.  
+I even remember he trying to compile Linux From Scratch using OpenBSD as host.  
 Obviously, it went wrong because neither me nor him knew what in fact was and
 how to do a cross-compilation in the right way.  
 
 I'll skip to April 2020, when the Coronavirus pandemic started in Brazil,
 along with what I'll be calling "The Dark Ages of Pindorama".  
 
+#### Darkness: pseudo-science/pseudo-intelectualism  
+
 Things started to get darker and darker every month passed; me and `chexier` were
 having multiple unnecessary face-offs because of futiles things (for example, 
 "GNU/bash vs. POSIX/sh" --- everyone knows that AT&T/ksh93, Bell Labs/rc or
 a compiled language such as Go is better anyway, but we were discussing about 
 this), and, in some way, this wore out the project and the quality of our work
---- Otto is, unfortunately, victim of all this darkness. Instead of studying how
-to do a decent package manager (and figuring out that it would be better to made
-it with Go, Nim or even C instead of Shell), we were just discussing.  
+--- Otto is, unfortunately, victim of all this darkness. Instead of actually
+studying how to do a decent package manager (and figuring out that it would
+be better to made it with Go, Nim or even C instead of Shell), we were just
+discussing.  
 
-The worst thing: all of these discussions
-were fueled by so-called "memes" from 4chan --- for example: `chexier`
+The worst thing: all of these discussions were fueled by some Luke Smith's video
+thumbnail/title or so-called "memes" from 4chan --- for example: `chexier`
 saw someone saying that W and Z rocks, so he came and said "screw X and Y, we're
 going to use W and Z" ***sends screenshot of some 4chan thread saying that X and Y
 are crap, probably made by a millennial who didn't ever coded something relevant
@@ -222,8 +228,12 @@ has autism, is unemployed, reads and repeats Nietzche and only do shitty theoric
 C programs to prove himself as an "intellectual"*** --- ==after all, it's really easy
 to belittle an entire team's work of weeks, months or even years (like what was 
 done with BSD communities on 4chan in 2020) when you don't do anything by yourself,
-not even saying exactly what's wrong with who you're criticizing or just making
-fun of==. 
+not even saying exactly what's **in fact** wrong with who you're criticizing or just
+making fun of==; like, for example, this lad who's saying "it's literally trash"
+about OpenBSD years work, although he probably didn't made nothing relevant in 
+his life:  
+[![](../img/4chan_g.dithered.png)](https://warosu.org/g/thread/S83822508#p83822737)  
+Lord, I hate /g/.  
  
 "Well, in the end, competition and discussions are always good", people usually say.  
 Well, they'd be completely right... if at least one of we two were at commmitted
@@ -255,15 +265,17 @@ In fact, pseudo-intelectualism and pseudo-science are the worst things ever,
 because unlike plain hoaxes, they look and have bases to claim being real
 until you find the in fact real information; it's like half-truths.  
 
+#### The light versus darkness  
 In contrast to futile discussions fueled by cheap pseudo-intelectualism, I
 actually have seen people working so that the project won't be weakened, such as
 `tamboru` elaborating new artworks and even a new contributor, a cool m8 from
-São Paulo called Vitor Almeida (`vit0rr`) offering to help in the website ---
+São Paulo called Vitor Almeida (`vit0rr`), offering to help in the website ---
 by the way, the current website was entirely made by him, so if we don't look
 like stuck in 1999 anymore, all kudos goes to him --- so the only thing that 
 I can't, under any circumstances, affirm is that the project "almost died
 because anyone was giving it attention".  
 
+#### What I'd say: my conclusion about this  
 As history is cyclical, my only fear is that we could fall into this
 darkness again and don't even notice.  
 
