@@ -95,8 +95,8 @@ mine doesn't have VMX instructions).
 [![GIMP](../img/vinicius_gimp.dithered.png){ align="left" width="200" }](../img/vinicius.png)
 In meanwhile, `tamboru` was designing the logo and the mascot; our old logo was
 inspired on Slackware's one, and the mascot was (and still being) Tux dressed as 
-[Zé Pilintra](https://en.wikipedia.org/wiki/Z%C3%A9_Pilintra) and smoking a brown pipe; 
-we named him "Vinícius" after the poet Vinícius de Moraes.  
+[Zé Pilintra](https://en.wikipedia.org/wiki/Z%C3%A9_Pilintra) and smoking a brown
+pipe; we named him "Vinícius" after the poet Vinícius de Moraes.  
 
 At the time, we didn't coded anything for it, both because we didn't had so much
 knowledge and experience with programming and because we hadn't the need.  
@@ -128,8 +128,8 @@ Unfortunately, it's lost in time. No one in the project still have the disk
 images saved.  
 I remember giving a CD-ROM containing São Jorge 0.0.3 to an italian friend --- 
 which was at the time studying as an exchange student --- at the beginning of my
-1st year of High School (somewhere between March 2020) so it *may* still exists
-in some place. 
+1st year of High School (somewhere between February March 2020) so it *may* still
+exists in some place.  
 
 #### Morimoto Said Release It Out! 
 <figure markdown>
@@ -137,11 +137,12 @@ in some place.
 <figcaption>São Jorge 0.0.3 (?) booted on chexier's laptop at 22th September 2019</figcaption>
 </figure>
 Right after we """compiled""" (in fact just generated an `.iso` with SystemBack) 
-and uploaded the 0.0.2 version to `chexier`'s GDrive account, I went straight to
-Viva ao Linux, a brazilian \*NIX-dedicated forum, and made a post about our new
-*refisefuquis*.  
+and uploaded the 0.0.2 version to `chexier`'s GDrive account, for internal
+testing, I went straight to Viva o Linux, a brazilian \*NIX-dedicated forum,
+to check if our post about our new *refisefuquis*, made some days before, had
+any replies.  
 
-*The original post, in portuguese:*
+*The original post, made some days before, in portuguese:*
 > *1. PINDORAMA LINUX, A NOSSA TENTATIVA DE REVIVER O ESPÍRITO KURUMIN DE UMA
 > DISTRIBUIÇÃO BRASILEIRA!  
 > Enviado em 24/06/2019 - 19:06h  
@@ -155,13 +156,15 @@ Viva ao Linux, a brazilian \*NIX-dedicated forum, and made a post about our new
 > Muito obrigado pela atenção.  
 > Sou novo aqui, então não sei se postei corretamente.*  
 
+It had, and it was a lot.  
 The reactions were mixed, some said "This project is born dead."
 and others said "Go ahead! A dream you guys dream together will be reality.";
 and, in fact, both were right: Pindorama could be just another refisefuquis
 which would be dead some weeks after the first release, but it also could evolve
-into something relevant, it is in our hands.  
-So we decided together: we will try to improve our knowledge in programming for,
-in the future, do something interesting.  
+into something relevant, it was in our hands.  
+So we decided together: we would try to improve our knowledge in programming for,
+in the future, do something interesting by ourselves before calling any new
+members or contributors.  
 `chexier` chose Python, I chose Shell and `tamboru` chose Linux administration
 via CLI --- which wasn't programming, but it would eventually be useful when
 helping us to test new \*NIX-related projects.  
