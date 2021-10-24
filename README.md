@@ -23,6 +23,10 @@ a prefix -- ` ` when it's a real disk and `v` when it's a virtual one, which wil
 
 I'll describe the entire process of in fact building the system in the docs.
 
+The documentation is actually deployed at Silicon Tabula using MkDocs + GitHub
+Pages:  
+http://projeto-pindorama.github.io/silicon_tabula/
+
 ## credits and acknowledgements
 Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
 Caio Novais (`chexier`), for fixes and hacks with Shell script --- for example, he
@@ -33,4 +37,4 @@ and the project itself wouldn't even have a logo if it wasn't him.
 And obviously, Copacabana wouldn't even exist if it wasn't the work of Linus
 Torvalds and thousands of millions of contributors in the [Linux
 kernel](http://kernel.org), neither without Gerard Beekmans' [Linux from
-Scratch](https://www.linuxfromscratch.org/) manual.  
+Scratch](http://www.linuxfromscratch.org/) manual.  
