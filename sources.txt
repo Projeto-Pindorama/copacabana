@@ -25,7 +25,7 @@ http://github.com/gavinhoward/bc/releases/download/5.1.1/bc-5.1.1.tar.xz
 http://www.mktemp.org/dist/mktemp-1.7.tar.gz
 http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.11.tar.gz
 http://github.com/att/ast/releases/download/2020.0.0/ksh-2020.0.0.tar.xz
-http://ufpr.dl.sourceforge.net/project/ex-vi/ex-vi/050325/ex-050325.tar.bz2
+http://github.com/n-t-roff/heirloom-ex-vi/archive/refs/tags/4.1.3.tar.gz
 http://curl.se/download/curl-7.74.0.tar.xz
 http://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.08.tar.xz
 http://mandoc.bsd.lv/snapshots/mandoc.tar.gz
