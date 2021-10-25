@@ -29,6 +29,7 @@ its purposes.
 | /var/log       | Symbolic link to /var/adm                                                                                   |
 | /var/adm       | Active data collection files (replaced `/usr/adm`, so that `/usr` could be mounted read-only if needed)[^2] |
 | /etc           | System-wide configuration files                                                                             |
+| /etc/skel      | Symbolic link to /usr/skel                                                                                  |
 | /sbin          | Essential binaries for use by the administrator                                                             |
 | /sys           | Kernel and system information virtual filesystem                                                            |
 | /tmp           | Small and non-reboot-persistent temporary files                                                             |
@@ -56,6 +57,7 @@ its purposes.
 | /usr/src        | Source code for additional programs, owned by `wsrc` group[^4]                 |
 | /usr/tmp        | Big or persistent temporary files (eg. <1MB temporary file)                    |
 | /usr/spool      | Application spool data                                                         |
+| /usr/skel       | default dotfiles for new users                                                 |
 
 Obviously, this isn't the best way of making a hierarchy --- ==for instance,
 Apple(R) Rhapsody (and posteriorly macOS==[^5]==) used to do this in a better way,
