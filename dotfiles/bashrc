@@ -8,7 +8,7 @@ PS1='[\u@\h \W]\$ '
 LANG=POSIX
 LC_ALL="${LANG}"
 
-# Directories
+# directories
 COPA='/dsk/0v'
 XTOOLS=/cross-tools
 TOOLS=/tools
@@ -16,6 +16,9 @@ LFS="${COPA}"
 
 # PATH
 PATH="${XTOOLS}/bin:${TOOLS}/bin:/bin:/usr/bin"
+
+# autoconf/configure doesn't like Heirloom that much...
+ACCEPT_INFERIOR_RM_PROGRAM='yes'
 
 # target
 COPA_TARGET="`uname -m`-pindoramaCOPACABANA-linux-musl"
