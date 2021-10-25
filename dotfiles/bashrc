@@ -1,0 +1,47 @@
+# development .bashrc
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls -lah --color=auto'
+PS1='[\u@\h \W]\$ '
+LANG=POSIX
+LC_ALL="${LANG}"
+
+# Directories
+COPA='/dsk/0v'
+XTOOLS=/cross-tools
+TOOLS=/tools
+LFS="${COPA}"
+
+# PATH
+PATH="${XTOOLS}/bin:${TOOLS}/bin:/bin:/usr/bin"
+
+# target
+COPA_TARGET="`uname -m`-pindoramaCOPACABANA-linux-musl"
+LFS_TARGET="${COPA_TARGET}"
+CMLFS_TARGET="${COPA_TARGET}"
+
+# host
+COPA_HOST="$(echo ${MACHTYPE} | sed "s/$(echo $MACHTYPE | cut -d- -f2)/crossCOPACABANA/")"
+LFS_HOST="${COPA_HOST}"
+
+# CPU information
+ARCH='x86'
+CPU='x86-64'
+## optimized CFLAGS for  Intel(R) Core(TM)2 Duo CPU T6600
+#CFLAGS='-Os -march=core2 -mtune=native -pipe -mmmx -msse -msse2 -msse3'
+
+# compiler tools
+CC="${COPA_TARGET}-gcc"
+CXX="${COPA_TARGET}-g++"
+AR="${COPA_TARGET}-ar"
+AS="${COPA_TARGET}-as"
+RANLIB="${COPA_TARGET}-ranlib"
+LD="${COPA_TARGET}-ld"
+STRIP="${COPA_TARGET}-strip"
+export COPA GNUC_TOOLS LLVM_TOOLS LFS CMLFS PATH COPA_TARGET LFS_TARGET CMLFS_TARGET TARGET_TRUPLE COPA_HOST LFS_HOST ARCH CPU 
+
+# export compiler tools 
+export CC CXX AR AS RANLIB LD STRIP
+#unset CC CXX AR AS RANLIB LD STRIP
