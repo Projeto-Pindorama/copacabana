@@ -19,7 +19,8 @@ The virtual disk image is being mounted using [Pindorama's lemount](http://githu
 that's why any mentions to the Copacabana mounted disk partition are prefixed
 `/dsk/Xp` --- where `X` is a number, usually `0` in the documentation since this is
 the only and first image that i have mounted in my host --- , and `p` is
-a prefix -- ` ` when it's a real disk and `v` when it's a virtual one, which will be our case in the documentation.  
+a prefix -- ` ` (NULL) when it's a real disk and `v` when it's a virtual one, which will be our case in
+the documentation.  
 
 I'll describe the entire process of in fact building the system in the docs.
 
@@ -29,8 +30,7 @@ http://projeto-pindorama.github.io/silicon_tabula/
 
 ## credits and acknowledgements
 Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
-Caio Novais (`chexier`), for fixes and hacks with Shell script --- for example, he
-did the first attempt to fix `cmd/download_sources.sh`;  
+Caio Novais (`chexier`), for fixes and hacks with Shell script and dotfiles;  
 Kayo Henrique (`Tamboru`) for all the graphics-related work. Seriously, the distribution
 and the project itself wouldn't even have a logo if it wasn't him.  
 
