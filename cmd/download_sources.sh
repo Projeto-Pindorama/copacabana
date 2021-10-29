@@ -14,6 +14,7 @@
 SHA256CHECK=${SHA256CHECK:-YES}
 COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
+umask 0022
 
 # Workaround to the # macro in arrays
 # which doesn't work properly in bash 4.3 for some reason.
@@ -22,31 +23,43 @@ n() {
   echo "${@}" | wc -w
 }
 
+realpath(){
+  file_basename=`basename $1`
+  file_dirname=`dirname $1`
+	# get the absolute directory name
+	# example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
+  echo "`cd "${file_dirname}"; pwd`/${file_basename}"
+}
+
 main() {
+  sources_file="`realpath ${1}`"
+  test -n "${2}" && hashsum_file="`realpath ${2}`"
   mkdir -p "$SRCDIR"
-  PARENTDIR="$PWD"
-  categories=(`grep '#>' ${1} | tr -d '#> '`)
-  n_categories=`n ${categories[*]}`
+  categories=(`grep '#>' ${sources_file} | tr -d '#> '`)
+  n_categories="`n ${categories[*]}`"
 
   for ((i = 0; i < n_categories; i++)) {
+
     # foo/var => foo\/var
-    category_id=`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`
-    echo $category_id
+    category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
+    printf '==> %s\n' "${categories[${i}]}"
     # Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
-    urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${PARENTDIR}/${1}`)
-    n_urls=`n ${urls[*]}`
+    urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${sources_file}`)
+    n_urls="`n ${urls[*]}`"
 
     category_dir="$SRCDIR/${categories[${i}]}"
-    mkdir -p "$category_dir"
-    cd "$category_dir" || exit
+    mkdir -p "${category_dir}"
+    cd "${category_dir}" || exit 2
 
     for ((j = 0; j < n_urls; j++)) {
       printf 'Downloading %s\n' "`basename ${urls[${j}]}`"
-      curl -LO ${urls[${j}]}
+      curl -LO "${urls[${j}]}"
     }
   }
-  if [[ ${SHA256CHECK} == YES ]]; then
-    sha256sum -c ${PARENTDIR}/${2}
+  if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null`; then
+      cd "${SRCDIR}/pkgs"
+      sha256sum -c "${hashsum_file}" \
+	      && cd "${OLDPWD}"
   fi
 }
 
