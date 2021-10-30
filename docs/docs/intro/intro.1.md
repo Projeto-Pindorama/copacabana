@@ -73,14 +73,98 @@ sacrifice convenience for people that are already used to Linux (including
 us).  
 We intend to evolve this in the future, but it will be this for now.  
 
+## Distribution (literally)
+==Unlike the most part of common/mainstream Linux distributions and even
+proprietary UNIXes== such as Sun Microsystems' Solaris --- I don't know about AIX,
+HP-UX or other UNIXes, but I'll go by the logic of the domino effect and assume
+that this type of distribution is an industry pattern --- ==we don't distribute
+the **entire** distribution just as packages. Our model is inspired on OpenBSD's
+one, where the system is distributed as stages.==[^7]
+> *- What do you mean m8? I will have a 60MB tarball containing KDE?*  
+
+No. ==This will just apply in fact for the base system (and some other **basic** 
+tools)==. 
+In other words, things that normally would be packaged individually (and
+installed by a normal package manager) will be packaged as a plain tarball for
+its proper stage.  
+For example, in a normal system, you'd have these packages for the base system:  
+
+- Linux.5.4.89.SPARC.32bit.Copacabana.1.0.pkg
+- musl.1.2.1.SPARC.32bit.Copacabana.1.0.pkg
+- libressl.3.3.1.SPARC.32bit.Copacabana.1.0.pkg
+- star.1.6.SPARC.32bit.Copacabana.1.0.pkg
+- GNUawk.5.1.0.SPARC.32bit.Copacabana.1.0.pkg
+- GHbc.5.1.1.SPARC.32bit.Copacabana.1.0.pkg
+- heirloom-toolchest.070715.SPARC.32bit.Copacabana.1.0.pkg
+- stripped-lobase.20211017.SPARC.32bit.Copacabana.1.0.pkg
+- *and so on*
+
+But, in Copacabana, all of this will be distributed as a single tarball that
+you'd just extract in your root disk:  
+
+- `tsukene.1.0.txz`   
+	* For the kernel, we plan to let it in a separate tarball:  
+		- `linux.1.0.txz`
+
+This makes the distribution, the maintaining and even the coding of an
+installer **a lot** easier to do, since we don't have to beware having
+the entire system broken by a library that updated or something like.  
+
+### But I'm an UNIX professional, I can fix my system if this happens!
+> *Mom, cancel my meetings, slackpkg f\*cked up glibc again!*
+  
+... yeah, OK, but do you have time to do it?  
+
+I don't want to be a "practicality is always better than simplicity" here ---
+it I was intending to it, I wouldn't even be writing this, I'd be using Manjaro 
+with KDE and VSCode in a high-end laptop --- but I have to say that it's not
+because you can that you will have enough time to do it.  
+
+First of all: packages are not simpler than our stages, although they being
+plain-tarballs in most of the time, they require a set of tools to manage them.  
+I'm not saying package managers are bad in anyway, my point is that, in the
+first place, the argument of "an entire tarball for the base system isn't
+simple" doesn't apply here, Mmkay?  
+
+For my experience with Linux, I think it's better to just have the base system
+divided in stages and update them in one sitting, just when it has some
+important update, instead of updating package-per-package and taking the risk
+of breaking the entire system down to the wire.
+
+### The stages itself
+The format is `stage.X.Y`, where `X.Y` is the Copacabana version and `stage` is
+the stage name itself; they're coming compacted with xz, since it have the best
+compression ratio out there.[^8]  
+
+- linux.X.Y
+: The Linux kernel and related files.
+
+- tsukene.X.Y
+: The base system, it contains everything that you'd need to use the system.  
+	**Fun fact**: =="tsukene" (付け根) is the japanese word for "root"==, we
+	decided to do it as a pun on the UNIX FHS.  
+	We thought about using [Tupí-Guaraní](https://en.wikipedia.org/wiki/Tupi%E2%80%93Guarani_languages) instead --- since is the Brazilian native
+	language ---, but we didn't found so much information about it
+	nor an exact translator.
+
+- doc.X.Y
+: Documentation and manual pages.
+
+- devt.X.Y
+: Developer Tools, such as GNU Compiler Collection, m4, GNU make etc.
+
+Any other packages will be packaged just as usual.  
+
 ## Programming  
 Everything here is, for now, made with Shell script (more specifically,
 `ksh93`).
-We know there are better alternatives for it out there, but it's what
-we have more familiarity and experience with.  
+I know there are better alternatives for it out there, but it's what
+I have more familiarity and experience with.  
+In the future, I plan to start writing everything with Go.
 
 ## Footnotes and references
-[^0]:	refspecs.linuxfoundation.org: Filesystem Hierarchy Standard:  
+[^0]:
+	refspecs.linuxfoundation.org: Filesystem Hierarchy Standard:  
 	[https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html)
 
 [^1]:
@@ -104,3 +188,11 @@ we have more familiarity and experience with.
 [^6]:
 	rhapsodyos.org: Shaw's Rhapsody Resource Page:  
 	[http://www.rhapsodyos.org/system/directories/directories.html](http://www.rhapsodyos.org/system/directories/directories.html)  
+
+[^7]:
+	ftp.openbsd.org: INSTALLATION NOTES for OpenBSD/amd64 6.6:  
+	[https://ftp.openbsd.org/pub/OpenBSD/6.6/amd64/INSTALL.amd64](https://ftp.openbsd.org/pub/OpenBSD/6.6/amd64/INSTALL.amd64)
+
+[^8]:
+	tukaani.org: A Quick Benchmark: Gzip vs. Bzip2 vs. LZMA:   
+	[https://tukaani.org/lzma/benchmarks.html](https://tukaani.org/lzma/benchmarks.html)
