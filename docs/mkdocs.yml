@@ -27,14 +27,17 @@ markdown_extensions:
   - tables
   - attr_list
   - footnotes
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.mark
   - pymdownx.tilde
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - md_in_html
-  - def_list
-  - pymdownx.tasklist:
-      custom_checkbox: true
 
 nav:
   - Home: index.md  
