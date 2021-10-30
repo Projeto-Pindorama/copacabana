@@ -28,6 +28,29 @@ The documentation is actually deployed at Silicon Tabula using MkDocs + GitHub
 Pages:  
 http://projeto-pindorama.github.io/silicon_tabula/
 
+## platforms
+For now, it's only being compiled for x86_64, but we intend to have it running
+at least in x86_64, i586 and ARM; but, if Copacabana becames popular and we got
+more resources for the distribution, we can port it for other architectures as
+well.
+
+## spread the word!
+Kayo Henrique made some cool badges for Copacabana, they're avaible at our
+[artworks repository](https://github.com/Projeto-Pindorama/artworks).  
+We strongly encourage that you use these badges freely over the Net and the real
+life.  
+Put them in your website, stick them on your Workstation or Laptop, use it
+freely --- within the bounds of good taste and common sense, of course.  
+
+Badge for x64:  
+![](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Adesivo%20Pindorama%20Copacabana/Adesivo%20Pindorama%20x64.png)  
+
+Badge for x86:  
+![](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Adesivo%20Pindorama%20Copacabana/Adesivo%20Pindorama%20x86.png)  
+
+Badge for ARM:  
+![](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Adesivo%20Pindorama%20Copacabana/Adesivo%20Pindorama%20ARM.png)  
+
 ## credits and acknowledgements
 Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
 Caio Novais (`chexier`), for fixes and hacks with Shell script and dotfiles;  
