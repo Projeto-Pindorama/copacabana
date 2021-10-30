@@ -36,10 +36,14 @@ In mid May 2019, my computer's power supply just blew up (it was what we call "f
 here in Brazil, literally "bomb power supply", so i was, in some way, expecting it to happen);
 so, while I haven't enough money to fix it, I had to use an old Lenovo G450 --- 
 which ran Windows 7, and for some reason, although being "designed to run Windows
-7", it was terribly slow; so I was going to need to run Linux on bare metal again.  
+7", it was terribly slow; so I was going to need to run Linux on bare metal again --- I also
+remember well that its builtin keyboard just stopped working for no apparent reason (what
+else could we expect from Lenovo, right?), so I had to use an old and crusty PowerMac G4 USB
+keyboard over the laptop. I don't have a photo from it, but it was pretty nasty.[^0]  
 Cool, eh? No, it wasn't.  
 Since the laptop wasn't *really* mine, I couldn't just overwrite 
 the Windows partition with Linux, so I was going to need to use a Live environment.  
+
 The one that I (negatively) remember the most is [antiX Linux](http://antixlinux.com/).
 I can describe it simply as being a Debian rebrand with some hacks made using
 Python (plus PyQt) and Shell that made the distribution even worse (in the sense of
@@ -48,10 +52,10 @@ In short, it seemed that the author was more concerned with doing some kind of
 political activism against the USA/"The West", liberalism/capitalism and corporations 
 (in special Red Hat *et caterva*) rather than making an usable Linux live distribution.  
 I don't want to be an elitist bastard here, the main idea is really good, but it was 
-unfortunately poorly executed and blind by political ideals.  
-By the way, the last time I've booted antiX was in somewhere between March and
-June 2019, so it may have changed a lot since then. I also hope I haven't offended the
-creators as individuals, because they seem like really nice people.  
+unfortunately poorly executed and blind by political ideals --- by the way, the last
+time I've booted antiX was in somewhere between March and June 2019, so it may have
+changed a lot since then. I also hope I haven't offended the creators as individuals,
+because they seem like really nice people.  
 
 So, after suffering for a while, I've called `chexier` and talked about creating a
 Devuan remix (in brazilian software communities, it's called a "refisefuquis") for 
@@ -246,18 +250,18 @@ overdose", a post-Enlightenment, where everything is a "shitpost" or "meme",
 fueled by a shitty nihilism (maybe this is pleonasm, but anyway).   
 Has humanity got worse? No, it just took the wrong path, we can and will fix it.  
 
-Another really annoying problem that happened in 2020 was being besieged by 
-thirsty opportunists wanting someone to be their servants:
+Another really annoying problem that happened in 2020 was being besieged during
+4 months by a thirsty opportunist wanting someone to be his servant:
 > *"Hey, why don't you learn C effectively and come help me in my Discord server?  
 > I'm starting a project that is promising, but for this I need a programmer that
 > isn't tied to any other project and R$ 20,00 in Bitcoin  
 > So drop this Pindorama away and deposit R$ 20,00, this will be great. You're a
 > genius and I need more people like you!"*  
 
-Usually they tried to (unsuccessfully) convey an image of intellectualism --- like
+Usually he tried to (unsuccessfully) convey an image of intellectualism --- like
 doing a matrix multiplier program using C in the front of your eyes, por example
---- but at the same time they commited stupid portuguese mistakes that an
-"intellectual", as they claimed to be, couldn't commit.  
+--- but at the same time he commited stupid portuguese mistakes that an
+"intellectual", as he claimed to be, couldn't commit.  
 
 I didn't fell for that, obviously, but it annoyed me a lot anyway.  
 
@@ -268,12 +272,13 @@ until you find the in fact real information; it's like half-truths.
 #### The light versus darkness  
 In contrast to futile discussions fueled by cheap pseudo-intelectualism, I
 actually have seen people working so that the project won't be weakened, such as
-`tamboru` elaborating new artworks and even a new contributor, a cool m8 from
-São Paulo called Vitor Almeida (`vit0rr`), offering to help in the website ---
-by the way, the current website was entirely made by him, so if we don't look
-like stuck in 1999 anymore, all kudos goes to him --- so the only thing that 
-I can't, under any circumstances, affirm is that the project "almost died
-because anyone was giving it attention".  
+`tamboru` elaborating new artworks and even a new contributor, a cool m8 (and,
+honestly, one of the best web developers I've ever seen) from São Paulo called 
+Vitor Almeida (`vit0rr`), offering to help in the website --- by the way, the
+current website was entirely made by him, so if we don't look like stuck in 1999
+anymore, all kudos goes to him --- so the only thing that I can't, under any
+circumstances, affirm is that the project "almost died because anyone was giving
+it attention".  
 
 #### What I'd say: my conclusion about this  
 As history is cyclical, my only fear is that we could fall into this
@@ -284,4 +289,12 @@ discussions are considered harmful.
 
 ### give me light!
 
+
+
 ## Why is Copacabana being created now?
+
+
+
+## Footnotes and references
+[^0]:
+	The lesson about this is that you shall never trust a laptop manufactured by a mainland-China based company, just boycott and buy from a decent company (Apple also doesn't count).  
