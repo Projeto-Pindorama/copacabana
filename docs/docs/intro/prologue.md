@@ -8,6 +8,10 @@
 > We seek to maintain sanity and competence as a proudly Brazilian open-source project.
 
 ## What is Copacabana Linux?
+Copacabana Linux is an independent Linux(R) distribution focused on simplicity,
+sanity, modularity and liberty (as in Enlightenment).  
+A more technical and detailed introduction can be seen in the [`intro`](../intro.1) section 
+if you don't want to read about the history of the project.
 
 ## How did Pindorama started?
 
@@ -47,7 +51,7 @@ the Windows partition with Linux, so I was going to need to use a Live environme
 The one that I (negatively) remember the most is [antiX Linux](http://antixlinux.com/).
 I can describe it simply as being a Debian rebrand with some hacks made using
 Python (plus PyQt) and Shell that made the distribution even worse (in the sense of
-being rigid) to use.
+being rigid) to use.  
 In short, it seemed that the author was more concerned with doing some kind of 
 political activism against the USA/"The West", liberalism/capitalism and corporations 
 (in special Red Hat *et caterva*) rather than making an usable Linux live distribution.  
@@ -132,8 +136,8 @@ Unfortunately, it's lost in time. No one in the project still have the disk
 images saved.  
 I remember giving a CD-ROM containing São Jorge 0.0.3 to an italian friend --- 
 which was at the time studying as an exchange student --- at the beginning of my
-1st year of High School (somewhere between February March 2020) so it *may* still
-exists in some place.  
+1st year of High School (somewhere between February or March of 2020) so it
+*may* still exists in some place.  
 
 #### Morimoto Said Release It Out! 
 <figure markdown>

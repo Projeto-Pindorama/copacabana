@@ -4,7 +4,8 @@
 Copacabana Linux --- some times referred just as "Pindorama Linux" or 
 "Pindorama", which is wrong since "Pindorama" is the name of the 
 project, not of the distribution --- , is an independent Linux(R)
-distribution focused on simplicity, sanity, modularity and liberty.  
+distribution focused on simplicity, sanity, modularity and liberty (as in
+Enlightenment).  
 
 ## The file system hierarchy  
 Our file system hierarchy[^0] is loosely inspired on SunOS and classical BSD's[^1]
@@ -17,19 +18,19 @@ its purposes.
 | Systemland     | Its purpose                                                                                                 |
 |----------------|-------------------------------------------------------------------------------------------------------------|
 | /var           | Variable data files                                                                                         |
-| /var/tmp       | Symbolic link to /usr/tmp (for compatibility with newer programs)                                           |
-| /var/spool     | Symbolic link to /usr/spool (for compatibility with newer programs)                                         |
-| /var/lock      | Symbolic link to /var/run/lock                                                                              |
-| /var/mail      | Symbolic link to /var/../usr/spool/mail                                                                     |
+| /var/tmp       | Symbolic link to `/usr/tmp` (for compatibility with newer programs)                                           |
+| /var/spool     | Symbolic link to `/usr/spool` (for compatibility with newer programs)                                         |
+| /var/lock      | Symbolic link to `/var/run/lock`                                                                              |
+| /var/mail      | Symbolic link to `/var/../usr/spool/mail`                                                                     |
 | /var/run       | Run-time variable data                                                                                      |
 | /var/lib       | Variable state information                                                                                  |
 | /var/lib/color | Color management information (optional)                                                                     |
 | /var/lib/misc  | Miscellaneous variable data                                                                                 |
 | /var/cache     | Application cache data                                                                                      |
-| /var/log       | Symbolic link to /var/adm                                                                                   |
+| /var/log       | Symbolic link to `/var/adm`                                                                                   |
 | /var/adm       | Active data collection files (replaced `/usr/adm`, so that `/usr` could be mounted read-only if needed)[^2] |
 | /etc           | System-wide configuration files                                                                             |
-| /etc/skel      | Symbolic link to /usr/skel                                                                                  |
+| /etc/skel      | Symbolic link to `/usr/skel`                                                                                  |
 | /sbin          | Essential binaries for use by the administrator                                                             |
 | /sys           | Kernel and system information virtual filesystem                                                            |
 | /tmp           | Small and non-reboot-persistent temporary files                                                             |
@@ -45,7 +46,7 @@ its purposes.
 | /usr/etc        | Userland-related program configuration                                         |
 | /usr/include    | Directory for include files                                                    |
 | /usr/lib        | Userland-related program libraries                                             |
-| /usr/lib64      | Symbolic link to /usr/lib (in case of non-multilib systems)                    |
+| /usr/lib64      | Symbolic link to `/usr/lib` (in case of non-multilib systems)                    |
 | /usr/bin        | Userland-related non-root-exclusive program executables                        |
 | /usr/sbin       | Userland-related root-exclusive program executables                            |
 | /usr/ccs        | Development tools (`cc`(1), `ld`(1), `ar`(1) etc)[^3]                          |
@@ -80,7 +81,7 @@ HP-UX or other UNIXes, but I'll go by the logic of the domino effect and assume
 that this type of distribution is an industry pattern --- ==we don't distribute
 the **entire** distribution just as packages. Our model is inspired on OpenBSD's
 one, where the system is distributed as stages.==[^7]
-> *- What do you mean m8? I will have a 60MB tarball containing KDE?*  
+> *- What do you mean m8? I will have a 60MB tarball containing just KDE?*  
 
 No. ==This will just apply in fact for the base system (and some other **basic** 
 tools)==. 
@@ -126,7 +127,7 @@ I'm not saying package managers are bad in anyway, my point is that, in the
 first place, the argument of "an entire tarball for the base system isn't
 simple" doesn't apply here, Mmkay?  
 
-For my experience with Linux, I think it's better to just have the base system
+By my experience with Linux, I think it's better to just have the base system
 divided in stages and update them in one sitting, just when it has some
 important update, instead of updating package-per-package and taking the risk
 of breaking the entire system down to the wire.

@@ -41,6 +41,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md  
+  - Frequently Asked Questions: faq.md
   - Introduction:
     - I. Prologue: intro/prologue.md
     - II. Technical introdution to Pindorama/Copacabana: intro/intro.1.md 

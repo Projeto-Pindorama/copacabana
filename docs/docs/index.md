@@ -8,4 +8,8 @@ better.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8kAI9bI2f4E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  
 
 If you have identified any errors, whether historical/factual, technical
-or a typo, please create an [Issue at our GitHub repository](https://github.com/Projeto-Pindorama/Silicon-Tabula/issues).  
+or just a little typo, please create an [Issue at our GitHub repository](https://github.com/Projeto-Pindorama/Silicon-Tabula/issues).  
+
+If you want to talk with the developers and/or other users, you can use
+[Pindorama maillists](https://www.freelists.org/list/pindorama) hosted
+@ FreeLists.org.
