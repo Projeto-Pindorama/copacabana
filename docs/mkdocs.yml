@@ -50,4 +50,11 @@ nav:
       #    - Where does it run?: intro/run.md
       #    - How is it divided?: intro/stages.md
   - Installing
-  - From the toolchain to the 付け根 from Scratch!
+  - From the toolchain to the 付け根 from Scratch!:
+    - What I'll need?: build/what-ill-need.md
+      #    - cross-tools:
+      #      - List of packages:
+      #    - tools:
+      #      - List of packages:
+      #    - tsukene:
+      #      - List of packages:
