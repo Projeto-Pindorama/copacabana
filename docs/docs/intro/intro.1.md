@@ -81,7 +81,7 @@ HP-UX or other UNIXes, but I'll go by the logic of the domino effect and assume
 that this type of distribution is an industry pattern --- ==we don't distribute
 the **entire** distribution just as packages. Our model is inspired on OpenBSD's
 one, where the system is distributed as stages.==[^7]
-> *- What do you mean m8? I will have a 60MB tarball containing just KDE?*  
+> *- "What do you mean m8? I will have a 60MB tarball containing just KDE?"*  
 
 No. ==This will just apply in fact for the base system (and some other **basic** 
 tools)==. 
@@ -112,14 +112,14 @@ installer **a lot** easier to do, since we don't have to beware having
 the entire system broken by a library that updated or something like.  
 
 ### But I'm an UNIX professional, I can fix my system if this happens!
-> *Mom, cancel my meetings, slackpkg f\*cked up glibc again!*
+> *- "Mom, cancel my meetings, slackpkg f\*cked up glibc again!"*
   
 ... yeah, OK, but do you have time to do it?  
 
 I don't want to be a "practicality is always better than simplicity" here ---
 it I was intending to it, I wouldn't even be writing this, I'd be using Manjaro 
-with KDE and VSCode in a high-end laptop --- but I have to say that it's not
-because you can that you will have enough time to do it.  
+with KDE Plasma and VSCode in a high-end laptop --- but I have to say that it's
+not because you can that you will have enough time to do it.  
 
 First of all: packages are not simpler than our stages, although they being
 plain-tarballs in most of the time, they require a set of tools to manage them.  
@@ -128,9 +128,9 @@ first place, the argument of "an entire tarball for the base system isn't
 simple" doesn't apply here, Mmkay?  
 
 By my experience with Linux, I think it's better to just have the base system
-divided in stages and update them in one sitting, just when it has some
-important update, instead of updating package-per-package and taking the risk
-of breaking the entire system down to the wire.
+divided in stages and update them in one sitting with binary patches, just
+when it has some important update, instead of updating package-per-package
+and taking the risk of breaking the entire system down to the wire.  
 
 ### The stages itself
 The format is `stage.X.Y`, where `X.Y` is the Copacabana version and `stage` is
@@ -144,7 +144,7 @@ compression ratio out there.[^8]
 : The base system, it contains everything that you'd need to use the system.  
 	**Fun fact**: =="tsukene" (付け根) is the japanese word for "root"==, we
 	decided to do it as a pun on the UNIX FHS.  
-	We thought about using [Tupí-Guaraní](https://en.wikipedia.org/wiki/Tupi%E2%80%93Guarani_languages) instead --- since is the Brazilian native
+	We thought about using [Tupí-Guaraní](https://en.wikipedia.org/wiki/Tupi%E2%80%93Guarani_languages) instead --- since it's the Brazilian native
 	language ---, but we didn't found so much information about it
 	nor an exact translator.
 
@@ -156,9 +156,24 @@ compression ratio out there.[^8]
 
 Any other packages will be packaged just as usual.  
 
+## Package manager
+Oh dear, package managers...  
+I'm managing to create one, made in Go and based on Sun Solaris' SVR4 package
+manager, since it's really simple to implement and still has some nice features,
+but I won't do it in fact for now, since I don't have time to spare.  
+So, for now, there's no official package manager for Copacabana, so you may have 
+to use some third-party one.
+May I package RPM for Copacabana, since it's one of my favorite package managers
+and it's part of LSB. Nix also seem to be a really good option, but I never
+tested it.  
+Moreover, talking about third-party package managers, [a guy at Liga dos
+Programadores said that he was using Copacabana with the Nix package manager](https://discord.com/channels/366404358440615951/366404358952189973/899428494226903090),
+which is impossible since at the time I was building the "Temporary Tools"
+stage.  
+
 ## Programming  
 Everything here is, for now, made with Shell script (more specifically,
-`ksh93`).
+AT&T's ksh93).
 I know there are better alternatives for it out there, but it's what
 I have more familiarity and experience with.  
 In the future, I plan to start writing everything with Go.

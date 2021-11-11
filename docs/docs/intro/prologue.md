@@ -256,7 +256,7 @@ Has humanity got worse? No, it just took the wrong path, we can and will fix it.
 
 Another really annoying problem that happened in 2020 was being besieged during
 4 months by a thirsty opportunist wanting someone to be his servant:
-> *"Hey, why don't you learn C effectively and come help me in my Discord server?  
+> *- "Hey, why don't you learn C effectively and come help me in my Discord server?  
 > I'm starting a project that is promising, but for this I need a programmer that
 > isn't tied to any other project and R$ 20,00 in Bitcoin  
 > So drop this Pindorama away and deposit R$ 20,00, this will be great. You're a
@@ -285,11 +285,11 @@ circumstances, affirm is that the project "almost died because anyone was giving
 it attention".  
 
 #### What I'd say: my conclusion about this  
-As history is cyclical, my only fear is that we could fall into this
-darkness again and don't even notice.  
-
 In short: pseudo-intelectualism/pseudo-science and futile "technical"
 discussions are considered harmful.  
+
+As history is cyclical, my only fear is that we could fall into this
+darkness again and don't even notice.  
 
 ### give me light!
 

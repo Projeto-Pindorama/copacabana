@@ -25,7 +25,7 @@ Here I'll tell what do you need to build Copacabana.
 	- GNU make >=4.0;
 	- GNU patch >=2.5.4;
 	- GNU sed >=4.1.5;
-	- GNU tar >=1.22 (or star >=1.6);
+	- GNU tar >=1.22 *or* star >=1.6;
 	- Linux >=3.2;
 	- Python >=3.4;
 	- The complete GNU Compiler Collection >=6.2;
@@ -40,8 +40,10 @@ Here I'll tell what do you need to build Copacabana.
 distribution has all of these packages updated.  
 By the way, they're mixed since some of them, such as curl, are the last
 version avaliable on Arch Linux that I've just taken the version number and
-pasted here.  
+pasted here. 
 In short: don't worry.
 
 - A fair bit of UNIX (more specifically Linux), Shell script and a little of C knowledge;
-- Time to spare. 
+- Some coffee and water;
+- Some good music;
+- Time to spare; 
