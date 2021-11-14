@@ -142,14 +142,14 @@ compression ratio out there.[^8]
 
 - tsukene.X.Y
 : The base system, it contains everything that you'd need to use the system.  
-	**Fun fact**: =="tsukene" (付け根) is the japanese word for "root"==, we
-	decided to do it as a pun on the UNIX FHS.  
+	**Fun fact**: =="tsukene" (付け根) is the japanese word for "root"==,
+	we decided to do it as a pun on the UNIX FHS.  
 	We thought about using [Tupí-Guaraní](https://en.wikipedia.org/wiki/Tupi%E2%80%93Guarani_languages) instead --- since it's the Brazilian native
 	language ---, but we didn't found so much information about it
 	nor an exact translator.
 
 - doc.X.Y
-: Documentation and manual pages.
+: Documentation, manual pages and documentation tools (such as `nroff`).
 
 - devt.X.Y
 : Developer Tools, such as GNU Compiler Collection, m4, GNU make etc.
@@ -160,14 +160,15 @@ Any other packages will be packaged just as usual.
 Oh dear, package managers...  
 I'm managing to create one, made in Go and based on Sun Solaris' SVR4 package
 manager, since it's really simple to implement and still has some nice features,
-but I won't do it in fact for now, since I don't have time to spare.  
+but I won't do it in fact for now, mostly because I don't have time to spare.  
 So, for now, there's no official package manager for Copacabana, so you may have 
 to use some third-party one.
 May I package RPM for Copacabana, since it's one of my favorite package managers
 and it's part of LSB. Nix also seem to be a really good option, but I never
 tested it.  
 Moreover, talking about third-party package managers, [a guy at Liga dos
-Programadores said that he was using Copacabana with the Nix package manager](https://discord.com/channels/366404358440615951/366404358952189973/899428494226903090),
+Programadores' Discord server said that he was using Copacabana with the Nix
+package manager](https://discord.com/channels/366404358440615951/366404358952189973/899428494226903090),
 which is impossible since at the time I was building the "Temporary Tools"
 stage.  
 

@@ -292,12 +292,88 @@ As history is cyclical, my only fear is that we could fall into this
 darkness again and don't even notice.  
 
 ### give me light!
-
-
+Well, 2021 didn't finished yet, so I won't write this part for now. 😅  
 
 ## Why is Copacabana being created now?
+Independence.  
+[!["A Proclamação da Independência", F.R. Moreaux, 1844](../img/moreaux_brazil_independence.dithered.jpg){ width="500" }](../img/moreaux_brazil_independence.jpg)  
+We always felt that the most majority of brazilian Linux distributions weren't
+exactly independent, in fact, the most part of Linux distributions aren't
+independent nor original, so that's why we're creating Copacabana.  
+Except for the Linux kernel, musl libc and GNU development tools, all of it
+will be maintained and/or created by us.  
 
+> *- "It's some problem with the fact of the most part of popular Linux
+> distributions being based in the U.S? Or the CIA? Or the &lt;insert any popular
+> anti-american theory here&gt;"*  
 
+In absolutely no way --- by the way, the most part of open-source/free software
+projects (including FSF) are north-american, so anti-american and
+pseudo-nationalism are just pure nonsense.  
+
+The reason for this itself is freedom, freedom of choice.  
+As I said before, the most majority of brazilian Linux distributions are minting
+other Linux distros' work, more specifically Debian's and, consequently, the
+most part of them use the same repositories as Debian, without any modification,
+and this could potentially trample the freedom both of the maintainers both of
+the users.  
+Let's suppose, hypothetically speaking, that there's a Linux distribution called
+"Bruzundanga Linux" and there's another distribution "based" on it, that uses
+the same repositories and barely changes the base system, called "Botadão
+Linux"; everything was fine and great until the day that the creator of
+Bruzundanga saw a 4chan /g/ thread calling BSD/ISC license users "liberal
+cucks", watches a Luke Smith video and, then, [suddenly decide to relicense all
+Bruzundanga's scripts and components under {A,}GPLv3 just for a "little
+trolling"](https://github.com/ataraxialinux/ataraxia/commit/26effb055e6b2030553a7e3e7b34e4850aab5f14);
+so when Botadão users and developers update their systems, they will be under
+the clauses established by Bruzundanga's community and developers, since
+they're **also using Bruzundanga's repositories**, and they couldn't do
+absolutely nothing about it, since they're also just minting Bruzundanga's
+work.  
+This sucks, right?  
+
+Other thing that we actually don't like is the centralization of repositories.  
+In our point of view, official repositories actually "debazaarize" and
+centralize software in the distribution, since only software approved by a group
+can enter on it (and repositories are expensive --- in time and money --- to
+maintain).  
+Our actual model is a mixture of the "Cathedral"/BDFL and Bazaar.
+
+> *- "How?"*  
+
+It's simple: the [four tarballs](../intro.1##the-stages-itself) that compose
+the base system will be officially delivered and maintained only by us, but any
+other packages will be packaged by users or groups (like Sunfreeware was made
+by Solaris users, for example).  
+
+> *- "Does that mean that it wouldn't have an official package manager?"*  
+
+In no way! As I said before, in the `intro`, Copacabana will have a set of
+package managenment and creation tools; but third-party package creation,
+distribution and maintaining will be made by the so-called community.  
+
+We're being a independent distribution, not just in our name, but in name of
+Brazil and of our users, **in order to guarantee liberty for all** --- as our
+ancestors did when sent the Portuguese running out of Brazil, and as our
+fellow countrymen in North America did the same with the British.  
+
+That everyone, Brazilian or not, know that there is a Linux distribution
+where developers do nothing more than maintain a consistent base system and
+write documentation; where users can create, maintain and distribute their
+programs without interference from a small group; where its authoral programs
+are free as in freedom of speech --- so-called copycenter --- and where
+anyone can recompile it from the source code; it's called Copacabana Linux.  
+
+Independence or death.  
+
+[![Photo by Liu Heung Shing, 1989](../img/liberty1.dithered.jpeg){ width="500" }](../img/liberty1.jpeg)  
+[![Photo by Terril Yue Jones, 1989](../img/liberty2.dithered.jpeg){ width="500" }](../img/liberty2.jpeg)  
+
+### But what about Heirloom Toolchest and lobase?
+They're not maintained by their official creators anymore --- for instance,
+the Heirloom Toolchest itself isn't maintained by Gunnar Ritcher since
+2010 --- so any updates or patches for them are made and published by us
+anyway.  
 
 ## Footnotes and references
 [^0]:
