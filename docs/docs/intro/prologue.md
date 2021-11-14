@@ -298,8 +298,8 @@ Well, 2021 didn't finished yet, so I won't write this part for now. 😅
 Independence.  
 [!["A Proclamação da Independência", F.R. Moreaux, 1844](../img/moreaux_brazil_independence.dithered.jpg){ width="500" }](../img/moreaux_brazil_independence.jpg)  
 We always felt that the most majority of brazilian Linux distributions weren't
-exactly independent, in fact, the most part of Linux distributions aren't
-independent nor original, so that's why we're creating Copacabana.  
+exactly original and independent, in fact, the most part of Linux distributions
+aren't independent, so that's why we're creating Copacabana.  
 Except for the Linux kernel, musl libc and GNU development tools, all of it
 will be maintained and/or created by us.  
 
@@ -313,10 +313,10 @@ pseudo-nationalism are just pure nonsense.
 
 The reason for this itself is freedom, freedom of choice.  
 As I said before, the most majority of brazilian Linux distributions are minting
-other Linux distros' work, more specifically Debian's and, consequently, the
-most part of them use the same repositories as Debian, without any modification,
-and this could potentially trample the freedom both of the maintainers both of
-the users.  
+other Linux distros' work --- and, consequently, the most part of them use the
+same repositories as the minted distribution itself, without any modification,
+and this could potentially trample the freedom of choice both of the maintainers
+and of the users.  
 Let's suppose, hypothetically speaking, that there's a Linux distribution called
 "Bruzundanga Linux" and there's another distribution "based" on it, that uses
 the same repositories and barely changes the base system, called "Botadão
@@ -341,16 +341,18 @@ Our actual model is a mixture of the "Cathedral"/BDFL and Bazaar.
 
 > *- "How?"*  
 
-It's simple: the [four tarballs](../intro.1##the-stages-itself) that compose
-the base system will be officially delivered and maintained only by us, but any
-other packages will be packaged by users or groups (like Sunfreeware was made
-by Solaris users, for example).  
+It's simple: the [four stages (tarballs)](../intro.1##the-stages-itself) that
+compose the base system will be officially delivered and maintained only by us,
+but any other packages will be packaged by users or groups --- like, for example,
+Sunfreeware was made by Solaris users or Arch User Repository made by Arch Linux
+users, although AUR's proposal is different.  
 
 > *- "Does that mean that it wouldn't have an official package manager?"*  
 
-In no way! As I said before, in the `intro`, Copacabana will have a set of
-package managenment and creation tools; but third-party package creation,
-distribution and maintaining will be made by the so-called community.  
+In no way! [As I said before, in the `intro`](../intro.1/#package-manager),
+Copacabana will have a set of package managenment and creation tools; but
+third-party package creation, distribution and maintaining will be made by
+the so-called community.  
 
 We're being a independent distribution, not just in our name, but in name of
 Brazil and of our users, **in order to guarantee liberty for all** --- as our
