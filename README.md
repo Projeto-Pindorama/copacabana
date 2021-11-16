@@ -26,7 +26,7 @@ I'll describe the entire process of in fact building the system in the docs.
 
 The documentation is actually deployed at Silicon Tabula using MkDocs + GitHub
 Pages:  
-http://projeto-pindorama.github.io/silicon_tabula/
+http://projeto-pindorama.github.io/Silicon-Tabula/
 
 ## platforms
 For now, it's only being compiled for x86_64, but we intend to have it running
