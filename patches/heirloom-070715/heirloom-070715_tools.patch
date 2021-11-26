@@ -1,191 +1,367 @@
-diff -r orig/build/mk.config heirloom-070715/build/mk.config
-9c9
-< SHELL = /bin/sh
----
-> SHELL = sh
-22c22
-< ROOT =
----
-> ROOT = /dsk/0v/usr/src/cmp/heirloom-070715/tools
-28c28
-< DEFBIN = /usr/5bin
----
-> DEFBIN = /bin
-33c33,34
-< SV3BIN = /usr/5bin
----
-> #SV3BIN = /usr/5bin
-> SV3BIN = /bin
-38c39,40
-< S42BIN = /usr/5bin/s42
----
-> #S42BIN = /usr/5bin/s42
-> S42BIN = /bin
-43c45,46
-< SUSBIN = /usr/5bin/posix
----
-> #SUSBIN = /usr/5bin/posix
-> SUSBIN = /bin
-47c50,51
-< SU3BIN = /usr/5bin/posix2001
----
-> #SU3BIN = /usr/5bin/posix2001
-> SU3BIN = /bin
-54c58,59
-< UCBBIN = /usr/ucb
----
-> #UCBBIN = /usr/ucb/bin
-> UCBBIN = /bin
-62c67,68
-< CCSBIN = /usr/ccs/bin
----
-> #CCSBIN = /usr/ccs/bin
-> CCSBIN = /bin
-67c73,74
-< DEFLIB = /usr/5lib
----
-> #DEFLIB = /usr/5lib
-> DEFLIB = /lib
-73c80,81
-< DEFSBIN = /usr/5bin
----
-> #DEFSBIN = /sbin
-> DEFSBIN = /bin
-78c86
-< MANDIR = /usr/share/man/5man
----
-> MANDIR = /usr/man
-124c132
-< LCURS = -lcurses
----
-> LCURS = -L/tools/lib -lcurses
-147c155
-< USE_ZLIB = 1
----
-> USE_ZLIB = 0
-161c169
-< CC = cc
----
-> CC = gcc
-163c171
-< WARN=
----
-> #WARN=
-166c174
-< LDFLAGS =
----
-> LDFLAGS = -I/tools/lib
-177c185
-< CPPFLAGS = -D_GNU_SOURCE
----
-> CPPFLAGS = -I/tools/include
-198,201c206,209
-< CFLAGS = -O -fomit-frame-pointer $(WARN)
-< CFLAGS2 = -O2 -fomit-frame-pointer $(WARN)
-< CFLAGSS = -Os -fomit-frame-pointer $(WARN)
-< CFLAGSU = -O2 -fomit-frame-pointer -funroll-loops $(WARN)
----
-> CFLAGS = -O -fcommon -fomit-frame-pointer $(WARN) -static
-> CFLAGS2 = -O2 -fcommon -fomit-frame-pointer $(WARN) -static
-> CFLAGSS = -Os -fcommon -fomit-frame-pointer $(WARN) -static
-> CFLAGSU = -O2 -fcommon -fomit-frame-pointer -funroll-loops $(WARN) -static
-225c233
-< LNS = ln -s
----
-> #LNS = ln -s
-229c237
-< #LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
----
-> LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
-diff -r orig/cpio/cpio.c heirloom-070715/cpio/cpio.c
-99c99
-< #include <sys/mkdev.h>
----
-> #include <sys/sysmacros.h>
-diff -r orig/echo/defs.h heirloom-070715/echo/defs.h
-33a34
-> #include <sys/stat.h>
-diff -r orig/echo/echo.c heirloom-070715/echo/echo.c
-39a40
-> #include	<sys/stat.h>
-diff -r orig/file/file.c heirloom-070715/file/file.c
-70c70
-< #include <sys/mkdev.h>
----
-> #include <sys/sysmacros.h>
-diff -r orig/find/find.c heirloom-070715/find/find.c
-87c87
-< #include <sys/mkdev.h>
----
-> #include <sys/sysmacros.h>
-diff -r orig/libcommon/getdir.c heirloom-070715/libcommon/getdir.c
-37a38,39
-> #include	<dirent.h>
-> #include	<unistd.h>
-62c64
-< #include	<sys/dirent.h>
----
-> /*#include	<sys/dirent.h>*/
-diff -r orig/ls/ls.c heirloom-070715/ls/ls.c
-93a94
-> #include <sys/sysmacros.h>
-diff -r orig/makefile heirloom-070715/makefile
-4c4
-< 	banner basename bc bdiff bfs \
----
-> 	banner basename bdiff bfs \
-6,7c6,7
-< 	cksum cmp col comm copy cp cpio csplit cut \
-< 	date dc dd deroff diff diff3 dircmp dirname df du \
----
-> 	cksum cmp col comm copy cp csplit cut \
-> 	date dd deroff dircmp dirname df du \
-9c9
-< 	factor file find fmt fmtmsg fold \
----
-> 	find file factor fmt fmtmsg fold \
-11c11
-< 	kill line listusers ln logins logname ls \
----
-> 	kill line listusers ls ln logins logname \
-13c13
-< 	nawk news nice nl nohup oawk od \
----
-> 	news nice nl nohup oawk od \
-17,18c17,31
-< 	tabs tail tapecntl tar tcopy tee test time touch tr true tsort tty \
-< 	ul uname uniq units users wc what who whoami whodo xargs yes
----
-> 	tail tar tapecntl tcopy tee test time touch tr true tsort tty \
-> 	ul uname uniq units users wc what who whoami whodo xargs yes 
-> 
-> 
-> # Unknown type 'mode_t' or sys/mkdev.h
-> # cpio 
-> # Multiple definition of "idk_what"
-> # cpio diff diff3 tabs
-> # unknown type name intptr_t
-> # nawk
-> # Supplied by others:
-> # nawk, bc/dc, diff{,3} 
-> 
-> SKIPDIR = bc cpio dc diff diff3  \
-> 	  nawk tabs bc dc
-diff -r orig/mknod/mknod.c heirloom-070715/mknod/mknod.c
-49c49
-< #include	<sys/mkdev.h>
----
-> #include	<sys/sysmacros.h>
-diff -r orig/su/su.c heirloom-070715/su/su.c
-508c508
-< 		fprintf(stderr, "%s: Sorry\n", progname);
----
-> 		fprintf(stderr, "%s: gomenasai~\n", progname);
-diff -r orig/tar/tar.c heirloom-070715/tar/tar.c
-102c102
-< #include <sys/mkdev.h>
----
-> #include <sys/sysmacros.h>
-diff -r orig/test/defs.h heirloom-070715/test/defs.h
-33a34
-> #include <sys/stat.h>
+diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
+--- ../heirloomorig/heirloom-070715/build/mk.config	Sun Jul 15 10:36:59 2007
++++ ./build/mk.config	Wed Nov 24 21:47:20 2021
+@@ -6,7 +6,7 @@
+ # Bourne shell is recommended. It then must obviously be compiled and
+ # installed first.
+ #
+-SHELL = /bin/sh
++SHELL = sh
+ 
+ #
+ # Specify the path name for a POSIX-conforming shell here. For example,
+@@ -19,39 +19,45 @@
+ # Root directory. Mainly useful for package building; leave empty for
+ # normal installation.
+ #
+-ROOT =
++ROOT = /dsk/0v/usr/src/cmp/heirloom-070715/tools
+ 
+ #
+ # Location for binaries that have no special personality. This location
+ # may be identical to that of one of the first three personalities below.
+ #
+-DEFBIN = /usr/5bin
++#DEFBIN = /usr/5bin
++DEFBIN = /bin
+ 
+ #
+ # Location for SVID3/SVR4-style binaries.
+ #
+-SV3BIN = /usr/5bin
++#SV3BIN = /usr/5bin
++SV3BIN = /bin
+ 
+ #
+ # Location for SVID4/SVR4.2-style binaries.
+ #
+-S42BIN = /usr/5bin/s42
++#S42BIN = /usr/5bin/s42
++S42BIN = /bin
+ 
+ #
+ # Location for POSIX.2/SUS-style binaries.
+ #
+-SUSBIN = /usr/5bin/posix
++#SUSBIN = /usr/5bin/posix
++SUSBIN = /bin
+ 
+ #
+ # Location for POSIX.1-2001/SUSv3-style binaries.
+-SU3BIN = /usr/5bin/posix2001
++#SU3BIN = /usr/5bin/posix2001
++SU3BIN = /bin
+ 
+ #
+ # Location for SVR4 UCB-style binaries. These do not form a complete
+ # personality, and the binary path must not be identical to the default
+ # one.
+ #
+-UCBBIN = /usr/ucb
++#UCBBIN = /usr/ucb/bin
++UCBBIN = /bin
+ 
+ #
+ # Location for development binaries. The "tsort" utility is
+@@ -59,23 +65,27 @@
+ # "Heirloom Development Tools" package are expected to be
+ # installed in it.
+ #
+-CCSBIN = /usr/ccs/bin
++#CCSBIN = /usr/ccs/bin
++CCSBIN = /bin
+ 
+ #
+ # Location for library files.
+ #
+-DEFLIB = /usr/5lib
++#DEFLIB = /usr/5lib
++DEFLIB = /lib
+ 
+ #
+ # Location for superuser-only binaries. May be identical to the
+ # default binary directory.
+ #
+-DEFSBIN = /usr/5bin
++#DEFSBIN = /sbin
++DEFSBIN = /bin
+ 
+ #
+ # Location for manual pages (with man1, man1b ... man8 below).
+ #
+-MANDIR = /usr/share/man/5man
++#MANDIR = /usr/share/man/5man
++MANDIR = /usr/man
+ 
+ #
+ # Location for default files. Make sure that this directory is accessible
+@@ -108,7 +118,7 @@
+ #
+ # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
+ #
+-TTYGRP = -g utmp
++TTYGRP = -g adm 
+ 
+ #
+ # Curses library. Change to -lncurses if necessary. Caution: Some gcc
+@@ -121,7 +131,7 @@
+ # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
+ # to CPPFLAGS.
+ #
+-LCURS = -lcurses
++LCURS = -L/tools/lib -lcurses
+ 
+ #
+ # Socket library, necessary on Solaris and Open UNIX. If your system has
+@@ -144,7 +154,7 @@
+ # compression when creating zip files with cpio.
+ #
+ LIBZ = -Wl,-Bstatic -lz -Wl,-Bdynamic
+-USE_ZLIB = 1
++USE_ZLIB = 0
+ 
+ #
+ # The name of the bzip2 library, and whether to use it. The library is only
+@@ -158,13 +168,16 @@
+ #
+ 
+ #CC = $(HOME)/src/diet gcc
+-CC = cc
++CC = gcc
+ HOSTCC = $(CC)
+-WARN=
++#WARN=
+ 
+ LD = $(CC)
+-LDFLAGS =
+ 
++# See ya later on tsukene, -static!
++#LDFLAGS = -I/tools/lib -static
++LDFLAGS = -I/tools/lib
++
+ #
+ # Flags for the C preprocessor.
+ # On Linux with glibc or uClibc, add -D_GNU_SOURCE.
+@@ -174,7 +187,7 @@
+ # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
+ # On NetBSD, add -DUSE_TERMCAP.
+ #
+-CPPFLAGS = -D_GNU_SOURCE
++CPPFLAGS = -I/tools/include
+ 
+ #
+ # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
+@@ -195,10 +208,10 @@
+ # compiler mode (which is the default) until this issue is properly
+ # handled by the system vendor.
+ #
+-CFLAGS = -O -fomit-frame-pointer $(WARN)
+-CFLAGS2 = -O2 -fomit-frame-pointer $(WARN)
+-CFLAGSS = -Os -fomit-frame-pointer $(WARN)
+-CFLAGSU = -O2 -fomit-frame-pointer -funroll-loops $(WARN)
++CFLAGS = -O -fcommon -fomit-frame-pointer $(WARN)
++CFLAGS2 = -O2 -fcommon -fomit-frame-pointer $(WARN)
++CFLAGSS = -Os -fcommon -fomit-frame-pointer $(WARN)
++CFLAGSU = -O2 -fcommon -fomit-frame-pointer -funroll-loops $(WARN)
+ 
+ #
+ # Binaries are stripped with this command after installation.
+@@ -222,11 +235,11 @@
+ #
+ # Use this if you prefer symbolic links between installed files.
+ #
+-LNS = ln -s
++#LNS = ln -s
+ #
+ # Use this if you prefer hard links between installed files.
+ #
+-#LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
++LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
+ 
+ #
+ # Yacc implementations known to work with the Heirloom Toolchest are
+diff -Nru ../heirloomorig/heirloom-070715/cpio/cpio.c ./cpio/cpio.c
+--- ../heirloomorig/heirloom-070715/cpio/cpio.c	Sat Apr 14 10:40:43 2007
++++ ./cpio/cpio.c	Wed Nov 24 17:14:39 2021
+@@ -96,7 +96,7 @@
+ #endif	/* _AIX */
+ 
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #include "cpio.h"
+diff -Nru ../heirloomorig/heirloom-070715/echo/defs.h ./echo/defs.h
+--- ../heirloomorig/heirloom-070715/echo/defs.h	Sat Jul  2 09:36:39 2005
++++ ./echo/defs.h	Wed Nov 24 17:15:07 2021
+@@ -31,6 +31,7 @@
+ #include <string.h>
+ #include <wchar.h>
+ #include <unistd.h>
++#include <sys/stat.h>
+ 
+ #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
+ #undef	putchar
+diff -Nru ../heirloomorig/heirloom-070715/echo/echo.c ./echo/echo.c
+--- ../heirloomorig/heirloom-070715/echo/echo.c	Sat Jul  2 12:54:01 2005
++++ ./echo/echo.c	Wed Nov 24 17:15:44 2021
+@@ -37,6 +37,7 @@
+  *	UNIX shell
+  */
+ #include	"defs.h"
++#include	<sys/stat.h>
+ 
+ #ifndef	UCB
+ #define	_iBCS2
+diff -Nru ../heirloomorig/heirloom-070715/file/file.c ./file/file.c
+--- ../heirloomorig/heirloom-070715/file/file.c	Thu Apr 13 19:33:18 2006
++++ ./file/file.c	Wed Nov 24 17:16:08 2021
+@@ -67,7 +67,7 @@
+ #include <libgen.h>
+ #include <inttypes.h>
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif
+ #include "iblok.h"
+ #include "asciitype.h"
+diff -Nru ../heirloomorig/heirloom-070715/find/find.c ./find/find.c
+--- ../heirloomorig/heirloom-070715/find/find.c	Mon May  8 12:29:36 2006
++++ ./find/find.c	Wed Nov 24 17:16:22 2021
+@@ -84,7 +84,7 @@
+ #include <sys/sysmacros.h>
+ #endif
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif
+ #if __NetBSD_Version__>= 300000000
+ #include <sys/statvfs.h>
+diff -Nru ../heirloomorig/heirloom-070715/libcommon/getdir.c ./libcommon/getdir.c
+--- ../heirloomorig/heirloom-070715/libcommon/getdir.c	Sun May 14 10:24:39 2006
++++ ./libcommon/getdir.c	Wed Nov 24 18:02:20 2021
+@@ -35,6 +35,8 @@
+ #include	<stdlib.h>
+ #include	<errno.h>
+ #include	<string.h>
++#include	<dirent.h>
++#include	<unistd.h>
+ 
+ #if defined (__UCLIBC__)
+ #include <linux/types.h>
+@@ -59,7 +61,7 @@
+ #ifdef	__hpux
+ #define		_KERNEL
+ #endif	/* __hpux */
+-#include	<sys/dirent.h>
++/*#include	<sys/dirent.h>*/
+ #ifdef		__hpux
+ #ifndef	_INO64_T
+ typedef	unsigned long long	uint64_t;
+diff -Nru ../heirloomorig/heirloom-070715/ls/ls.c ./ls/ls.c
+--- ../heirloomorig/heirloom-070715/ls/ls.c	Tue Apr 17 16:56:32 2007
++++ ./ls/ls.c	Wed Nov 24 17:16:56 2021
+@@ -91,6 +91,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <stddef.h>
+diff -Nru ../heirloomorig/heirloom-070715/makefile ./makefile
+--- ../heirloomorig/heirloom-070715/makefile	Sun Jul 15 10:36:59 2007
++++ ./makefile	Wed Nov 24 18:14:30 2021
+@@ -1,21 +1,36 @@
+ SHELL = /bin/sh
+ 
+ SUBDIRS = build libwchar libcommon libuxre _install \
+-	banner basename bc bdiff bfs \
++	banner basename bdiff bfs \
+ 	cal calendar cat chmod chown \
+-	cksum cmp col comm copy cp cpio csplit cut \
+-	date dc dd deroff diff diff3 dircmp dirname df du \
++	cksum cmp col comm copy cp csplit cut \
++	date dd deroff dircmp dirname df du \
+ 	echo ed env expand expr \
+-	factor file find fmt fmtmsg fold \
++	find file factor fmt fmtmsg fold \
+ 	getconf getopt grep groups hd head hostname id join \
+-	kill line listusers ln logins logname ls \
++	kill line listusers ls ln logins logname \
+ 	mail man mesg mkdir mkfifo mknod more mvdir \
+-	nawk news nice nl nohup oawk od \
++	news nice nl nohup oawk od \
+ 	paste pathchk pg pgrep pr printenv printf priocntl ps psrinfo pwd \
+ 	random renice rm rmdir \
+ 	sdiff sed setpgrp shl sleep sort spell split stty su sum sync \
+-	tabs tail tapecntl tar tcopy tee test time touch tr true tsort tty \
+-	ul uname uniq units users wc what who whoami whodo xargs yes
++	tail tar tapecntl tcopy tee test time touch tr true tsort tty \
++	ul uname uniq units users wc what who whoami whodo xargs yes 
++
++
++# Unknown type 'mode_t' or sys/mkdev.h
++# cpio 
++# Multiple definition of "idk_what"
++# cpio diff diff3 tabs
++# unknown type name intptr_t
++# nawk
++# Supplied by others:
++# nawk, bc/dc, diff{,3}, tar
++# Note: we could also remove tar, since star will replace it;
++# but we will compile it and then replace with star anyway.
++
++SKIPDIR = bc cpio dc diff diff3  \
++	  nawk tabs bc dc
+ 
+ dummy: makefiles all
+ 
+diff -Nru ../heirloomorig/heirloom-070715/mknod/mknod.c ./mknod/mknod.c
+--- ../heirloomorig/heirloom-070715/mknod/mknod.c	Sun May 29 09:55:42 2005
++++ ./mknod/mknod.c	Wed Nov 24 17:17:58 2021
+@@ -46,7 +46,7 @@
+ #include	<limits.h>
+ #include	<unistd.h>
+ #ifndef	major
+-#include	<sys/mkdev.h>
++#include	<sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #ifndef	S_IFNAM
+diff -Nru ../heirloomorig/heirloom-070715/su/su.c ./su/su.c
+--- ../heirloomorig/heirloom-070715/su/su.c	Tue Feb 21 11:59:23 2006
++++ ./su/su.c	Wed Nov 24 17:18:15 2021
+@@ -505,7 +505,7 @@
+ 		dolog('-');
+ 		if (sleeptime)
+ 			sleep(sleeptime);
+-		fprintf(stderr, "%s: Sorry\n", progname);
++		fprintf(stderr, "%s: gomenasai~\n", progname);
+ 		status = 1;
+ 	}
+ #ifdef	PAM
+diff -Nru ../heirloomorig/heirloom-070715/tar/tar.c ./tar/tar.c
+--- ../heirloomorig/heirloom-070715/tar/tar.c	Sat Apr 14 10:48:55 2007
++++ ./tar/tar.c	Wed Nov 24 17:18:29 2021
+@@ -99,7 +99,7 @@
+ #endif
+ 
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #include <getdir.h>
+diff -Nru ../heirloomorig/heirloom-070715/test/defs.h ./test/defs.h
+--- ../heirloomorig/heirloom-070715/test/defs.h	Sat Jul  2 09:36:39 2005
++++ ./test/defs.h	Wed Nov 24 17:18:42 2021
+@@ -31,6 +31,7 @@
+ #include <string.h>
+ #include <wchar.h>
+ #include <unistd.h>
++#include <sys/stat.h>
+ 
+ #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
+ #undef	putchar
