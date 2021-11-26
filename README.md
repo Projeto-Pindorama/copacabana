@@ -34,7 +34,24 @@ at least in x86_64, i586 and ARM; but, if Copacabana becames popular and we got
 more resources for the distribution, we can port it for other architectures as
 well.
 
-## spread the word!
+## how to contribute
+### "i want snapshots to be released more often"
+First of all, it's done when it's done; but we think that 4 hours compiling just
+the C compiler isn't productive as much as actually making the distribution.  
+If you want releases to be made more often, you can donate to me, Luiz, specifically ---
+since I'm the main maintainer and Copacabana is being cross-compiled from my machine.  
+It'd help us a lot, since with some funding I will can upgrade my current hardware and
+do things faster.  
+<a href="https://www.buymeacoffee.com/"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=takusuman&button_colour=333333&font_colour=ffffff&font_family=Arial&outline_colour=ffffff&coffee_colour=FFDD00"></a>  
+This will also help a lot projects that are currently maintained only by me, such as
+Mitzune, lemount, isainfo, the Silicon Tabula etc.  
+
+### be a "Bugbuster"
+Fixing bugs is important too. If there's something strange in some code, what you
+gonna do? Fix it and pull-request it!  
+You can just Issue it too if you don't have any particular skills with programming.  
+
+### spread the word!
 Kayo Henrique made some cool badges for Copacabana, they're avaible at our
 [artworks repository](https://github.com/Projeto-Pindorama/artworks).  
 We strongly encourage that you use these badges freely over the Net and the real
