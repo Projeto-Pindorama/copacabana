@@ -42,7 +42,7 @@ If you want releases to be made more often, you can donate to me, Luiz, specific
 since I'm the main maintainer and Copacabana is being cross-compiled from my machine.  
 It'd help us a lot, since with some funding I will can upgrade my current hardware and
 do things faster.  
-<a href="https://www.buymeacoffee.com/"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=takusuman&button_colour=333333&font_colour=ffffff&font_family=Arial&outline_colour=ffffff&coffee_colour=FFDD00"></a>  
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="takusuman" data-color="#FFDD00" data-emoji="" data-font="Arial" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>  
 This will also help a lot projects that are currently maintained only by me, such as
 Mitzune, lemount, isainfo, the Silicon Tabula etc.  
 
