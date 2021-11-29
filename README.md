@@ -1,5 +1,5 @@
 # The Copacabana Linux(R) distribution
-![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama_Copacabana_Banner_Principal.png)   
+![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama%20Copacabana%20Banner.png)   
 
 This repository contains most of the resources that you'd need to build
 Copacabana, in case documentation and scripts.
@@ -24,9 +24,8 @@ the documentation.
 
 I'll describe the entire process of in fact building the system in the docs.
 
-The documentation is actually deployed at Silicon Tabula using MkDocs + GitHub
-Pages:  
-http://projeto-pindorama.github.io/Silicon-Tabula/
+The documentation is actually deployed at Silicon Tabula using MkDocs:  
+http://silicon.copacabana.pindorama.dob.jp/
 
 ## platforms
 For now, it's only being compiled for x86_64, but we intend to have it running
