@@ -18,7 +18,7 @@ eb33f70bcc019b1d0e0a41f1d7552d45c57a16272e4e1c48634ec3e44496a30f  ./pkgs/heirloo
 d7dc03e7d80592bcd4535fb7b7f092075d8efab9204d4a61e2a784d9cbec5af8  ./pkgs/20211017-tools.tar.gz
 1c5f90ca29985d2c2f2274beacfd1253042ea0f0db13ecef43d2249f0d5035ac  ./pkgs/pindorama_isainfo-1.0.NOARCH.Copacabana.tar.xz
 f36cdb0e6876e80c9477a7d9530472979fbc4507a8d190a5e52a1f10855c7a35  ./pkgs/pindorama_nproc-1.0.NOARCH.Copacabana.tar.xz
-3fbd854601159cf054763ab6809541efaf0bd24236c3f0ee52d58ae27720a556  ./pkgs/lemount-0.1-b.NOARCH.Copacabana.tar.xz
+82130ae08916d1c632b3bb1c7b129f87abad7af90a7c1b48790fa6e1c3693674  ./pkgs/lemount-0.1.NOARCH.Copacabana.tar.xz
 c9232d23410c715234d0c26131a43ae6087462e999a61f038f1790598ce4807f  ./pkgs/20180827.tar.gz
 cfec5571216693537f9565073334be691717bfb762610cf1a06050e0f25aa94d  ./pkgs/bc-5.1.1.tar.xz
 8e94b9e1edf866b2609545da65b627996ac5d158fda071e492bddb2f4a482675  ./pkgs/mktemp-1.7.tar.gz
