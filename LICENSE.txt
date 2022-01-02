@@ -3,7 +3,7 @@ University of Illinois/NCSA Open Source License
 Copyright (c) 2019-2021 Pindorama. All rights reserved.
 
 Developed by: Pindorama
-	      Caio Novais (chexier)
+	      Caio Novais (caionova)
               Luiz Antônio Rangel (takusuman)
               http://pindorama.apocalip.se/
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Simple shell hack to download and SHA256 check source tarballs.
 # Copyright 2021: Luiz Antônio (takusuman).
-# n() function by Caio Novais (chexier).
+# n() function by Caio Novais (caionova).
 # This script is licensed under UUIC/NCSA (as Copacabana work itself).
 # Forked from CMLFS, which was originally dual-licensed between
 # BSD 2-Clause or GPL3, at your preference.
