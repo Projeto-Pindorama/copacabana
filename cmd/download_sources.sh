@@ -33,8 +33,9 @@ realpath(){
 
 main() {
   sources_file="`realpath ${1}`"
+  sources_directory="`realpath ${SRCDIR}`"
   test -n "${2}" && hashsum_file="`realpath ${2}`"
-  mkdir -p "$SRCDIR"
+  mkdir -p "$sources_directory"
   categories=(`grep '#>' ${sources_file} | tr -d '#> '`)
   n_categories="`n ${categories[*]}`"
 
@@ -47,7 +48,7 @@ main() {
     urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${sources_file}`)
     n_urls="`n ${urls[*]}`"
 
-    category_dir="$SRCDIR/${categories[${i}]}"
+    category_dir="$sources_directory/${categories[${i}]}"
     mkdir -p "${category_dir}"
     cd "${category_dir}" || exit 2
 
@@ -57,7 +58,7 @@ main() {
     }
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null`; then
-      cd "${SRCDIR}/pkgs"
+      cd "${sources_directory}/pkgs"
       sha256sum -c "${hashsum_file}" \
 	      && cd "${OLDPWD}"
   fi
