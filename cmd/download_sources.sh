@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Simple shell hack to download and SHA256 check source tarballs.
 # Copyright 2021: Luiz Antônio (takusuman).
 # n() function by Caio Novais (caionova).
