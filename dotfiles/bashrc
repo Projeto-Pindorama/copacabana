@@ -31,11 +31,8 @@ LFS_HOST="${COPA_HOST}"
 # CPU information
 ARCH='x86'
 CPU='x86-64'
-## optimized CFLAGS for Intel(R) Core(TM)2 Duo CPU T6600
-#CFLAGS='-Os -march=core2 -mtune=native -pipe -mmmx -msse -msse2 -msse3'
-
 ## generic x86_64 CFLAGS
-CFLAGS='-Os -pipe'
+CFLAGS="-Os -march=nocona -mtune=$CPU -pipe"
 
 # compiler tools
 CC="${COPA_TARGET}-gcc"
