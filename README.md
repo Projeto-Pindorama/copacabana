@@ -69,7 +69,7 @@ Badge for ARM:
 
 ## credits and acknowledgements
 Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
-Caio Novais (`caionova`), for fixes and hacks with Shell script and dotfiles;  
+Caio Novais (`caioyoshimura`), for fixes and hacks with Shell script and dotfiles;  
 Kayo Henrique (`Tamboru`) for all the graphics-related work. Seriously, the distribution
 and the project itself wouldn't even have a logo if it wasn't him.  
 
