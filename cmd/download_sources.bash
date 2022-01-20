@@ -58,7 +58,7 @@ main() {
     }
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null`; then
-      cd "${sources_directory}/pkgs"
+      cd "${sources_directory}"
       sha256sum -c "${hashsum_file}" \
 	      && cd "${OLDPWD}"
   fi
