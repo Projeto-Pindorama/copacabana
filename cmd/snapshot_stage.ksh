@@ -34,7 +34,10 @@ function snapshot {
 	# elsewhere
        	# Of course, you can change this with some Shell hacking	
 	case $stage in
-		tsukene) stage_dir="$(realpath "$COPA")" ;;
+		tsukene) stage_dir="." ;; # This is kind of a shoot in the dark,
+					  # since we're considering "." is
+					  # $COPA's root just because we cd'd on
+					  # it.
 		*) stage_dir=$stage ;;
 	esac
 
@@ -42,7 +45,7 @@ function snapshot {
 		$stage $filename "$directory"
 	sleep 2 \
 		&& cd $COPA \
-	       && tar -cvf - "$stage_dir" | xz -${XZ_COMPRESSION_LEVEL:-9}e \
+	       && tar -cvf - "$stage_dir" | xz -${XZ_COMPRESSION_LEVEL:-7}e \
 	       > "$directory/$filename.tar.xz"	
 	return 0
 }
