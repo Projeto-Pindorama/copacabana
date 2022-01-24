@@ -57,7 +57,8 @@ main() {
       curl -LO "${urls[${j}]}"
     }
   }
-  if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null`; then
+  if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
+	  && `test -n "${hashsum_file}"`; then
       cd "${sources_directory}"
       sha256sum -c "${hashsum_file}" \
 	      && cd "${OLDPWD}"
