@@ -84,7 +84,7 @@ http://download.savannah.gnu.org/releases/sysvinit/sysvinit-2.97.tar.xz
 http://ftp.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
 http://greenwoodsoftware.com/less/less-563.tar.gz
 http://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
-http://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz 
+http://ftp.gnu.org/gnu/diffutils/diffutils-2.8.1.tar.gz
 http://ftp.gnu.org/gnu/findutils/findutils-4.2.31.tar.gz
 #< pkgs/gnu
 
