@@ -87,6 +87,7 @@ http://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
 http://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz
 http://ftp.gnu.org/gnu/patch/patch-2.5.9.tar.gz
 http://ftp.gnu.org/gnu/findutils/findutils-4.2.31.tar.gz
+http://ftp.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
 #< pkgs/gnu
 
 #> pkgs/gnu/autohell
