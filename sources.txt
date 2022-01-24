@@ -38,7 +38,7 @@ http://download.savannah.nongnu.org/releases/attr/attr-2.4.48.tar.gz
 http://versaweb.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
 http://github.com/slicer69/doas/archive/refs/tags/6.3p6.tar.gz
 http://ufpr.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
-http://zlib.net/pigz/pigz-2.4.tar.gz
+http://zlib.net/pigz/pigz-2.7.tar.gz
 http://sortix.org/libz/release/libz-1.2.8.2015.12.26.tar.gz
 http://sourceware.org/pub/bzip2/bzip2-latest.tar.gz
 http://tukaani.org/xz/xz-5.2.5.tar.xz
