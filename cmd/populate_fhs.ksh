@@ -6,7 +6,7 @@
 # if you don't have AT&T's ksh93 installed.  
 
 COPA=${COPA:-/dsk/0v}
-directory_tree=({bin,boot,dev,etc,lib,proc,sbin,sys,tmp,usr/{,bin,ccs,etc,include,lib,sbin,share/{,doc,man,misc},skel,spool/{,mail},src,tmp},var/{,adm,cache,lib/{,color,misc},run/{,lock}}})
+directory_tree=({bin,boot,dev,etc/{,skel},lib,lib64,proc,run,sbin,sys,tmp,usr/{,bin,ccs,etc,include,lib,sbin,share/{,doc,man,misc},skel,spool,src,tmp},var/{,adm,cache,lib/{,color,misc},log,tmp,run/{,lock},spool/{,mail}}})
 
 function main {
 	n_directory_tree=`n ${directory_tree[@]}`
@@ -16,28 +16,6 @@ function main {
 	       	printerr 'Creating directory number %s: %s\n' $i "${directory_tree[$i]}"
 		mkdir "${directory_tree[$i]}" 2>/dev/null
 	}
-
-	# This part is a dumpster fire
-	# Symbolic links already sucks, and this quick-fix makes it worse
-	# Possibly there's a way to make this better, but I'm won't be
-	# overthinking it for now.
-	printerr 'Linking directories\n'
-	# /var
-	cd /var
-	ln -sv ../usr/tmp/ ./tmp
-	ln -sv ../usr/spool/ ./spool
-	ln -sv ../usr/spool/mail/ ./mail
-	ln -sv ./run/lock/ ./lock
-	ln -sv ./adm/ ./log/
-	cd $COPA
-	# /etc
-	cd /etc
-	ln -sv ../usr/skel/ ./skel
-	cd $COPA
-	# /usr (64-bit)
-	ln -sv ./lib ./lib64
-	cd $COPA
-	
 	exit $?
 }
 
