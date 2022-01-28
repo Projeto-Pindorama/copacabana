@@ -6,7 +6,7 @@
 # if you don't have AT&T's ksh93 installed.  
 
 COPA=${COPA:-/dsk/0v}
-directory_tree=({bin,boot,dev,etc/{,skel},lib,lib64,proc,run,sbin,sys,tmp,usr/{,bin,ccs,etc,include,lib,sbin,share/{,doc,man,misc},skel,spool,src,tmp},var/{,adm,cache,lib/{,color,misc},log,tmp,run/{,lock},spool/{,mail}}})
+directory_tree=({bin,boot,dev,etc/{,skel},lib,lib64,proc,run,sbin,sys,tmp,usr/{,bin,ccs,etc,include,lib,lib64,sbin,share/{,doc,man,misc},skel,spool,src,tmp},var/{,adm,cache,lib/{,color,misc},log,mail,tmp,run/{,lock},spool/{,mail}}})
 
 function main {
 	n_directory_tree=`n ${directory_tree[@]}`
