@@ -13,7 +13,8 @@ http://www.musl-libc.org/releases/musl-1.2.1.tar.gz
 http://skarnet.org/software/skalibs/skalibs-2.11.1.0.tar.gz
 http://skarnet.org/software/utmps/utmps-0.1.1.0.tar.gz
 http://github.com/Mic92/iana-etc/releases/download/20200821/iana-etc-20200821.tar.gz
-http://data.iana.org/time-zones/releases/tzdb-2021e.tar.lz
+http://data.iana.org/time-zones/releases/tzcode2021e.tar.gz
+http://data.iana.org/time-zones/releases/tzdata2021e.tar.gz
 http://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.8.0.tar.xz
 http://roy.marples.name/downloads/dhcpcd/dhcpcd-9.4.0.tar.xz
 http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.1.tar.gz
