@@ -1,9 +1,9 @@
 University of Illinois/NCSA Open Source License
 
-Copyright (c) 2019-2021 Pindorama. All rights reserved.
+Copyright (c) 2019-2022 Pindorama. All rights reserved.
 
 Developed by: Pindorama
-	      Caio Novais (caionova)
+	      Caio Novais (caioyoshimura)
               Luiz Antônio Rangel (takusuman)
               http://pindorama.dob.jp/
 
