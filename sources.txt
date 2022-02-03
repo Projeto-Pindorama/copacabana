@@ -11,6 +11,7 @@ http://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.16.tar.
 http://github.com/shadow-maint/shadow/releases/download/4.8.1/shadow-4.8.1.tar.xz
 http://www.musl-libc.org/releases/musl-1.2.1.tar.gz
 http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
+http://libisl.sourceforge.io/isl-0.24.tar.xz
 http://skarnet.org/software/skalibs/skalibs-2.11.1.0.tar.gz
 http://skarnet.org/software/utmps/utmps-0.1.1.0.tar.gz
 http://github.com/Mic92/iana-etc/releases/download/20200821/iana-etc-20200821.tar.gz
