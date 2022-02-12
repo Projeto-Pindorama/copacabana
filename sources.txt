@@ -16,6 +16,7 @@ http://github.com/void-linux/musl-fts/archive/refs/tags/v1.2.7.tar.gz
 http://github.com/void-linux/musl-obstack/archive/refs/tags/v1.2.2.tar.gz
 http://skarnet.org/software/nsss/nsss-0.2.0.1.tar.gz
 http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
+http://sourceware.org/ftp/elfutils/0.185/elfutils-0.185.tar.bz2
 http://libisl.sourceforge.io/isl-0.24.tar.xz
 http://skarnet.org/software/skalibs/skalibs-2.11.1.0.tar.gz
 http://skarnet.org/software/utmps/utmps-0.1.1.0.tar.gz
