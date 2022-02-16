@@ -42,7 +42,7 @@ http://anduin.linuxfromscratch.org/LFS/vim-8.2.2890.tar.gz
 http://curl.se/download/curl-7.74.0.tar.xz
 http://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.08.tar.xz
 http://mandoc.bsd.lv/snapshots/mandoc-1.14.6.tar.gz
-http://sourceforge.net/projects/heirloom/files/heirloom-doctools/070524/heirloom-doctools-070524.tar.bz2
+http://github.com/n-t-roff/heirloom-doctools/releases/download/191015/heirloom-doctools-191015.tar.bz2
 ftp://ftp.astron.com/pub/file/file-5.39.tar.gz
 ftp://sourceware.org/pub/libffi/libffi-3.3.tar.gz
 http://www.linuxfromscratch.org/lfs/downloads/10.0/lfs-bootscripts-20200818.tar.xz

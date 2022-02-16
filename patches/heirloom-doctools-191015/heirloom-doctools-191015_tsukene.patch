@@ -1,0 +1,48 @@
+9c9
+< PREFIX=/usr/local
+---
+> PREFIX=/usr
+14c14
+< BINDIR=$(PREFIX)/ucb
+---
+> BINDIR=$(PREFIX)/ucb/bin
+19c19
+< LIBDIR=$(PREFIX)/ucblib
+---
+> LIBDIR=$(PREFIX)/ucb/lib
+24c24,27
+< PUBDIR=$(PREFIX)/pub
+---
+> # /usr/pub is pretty useless and makes our filesystem 
+> # even more bloated.
+> #PUBDIR=$(PREFIX)/pub
+> PUBDIR=$(PREFIX)/share/misc
+29c32
+< MANDIR=$(PREFIX)/share/heirloom-doctools/man
+---
+> MANDIR=$(PREFIX)/share/man
+76c79
+< #CC=
+---
+> CC=gcc
+81c84
+< #CXX=
+---
+> CXX=g++
+86c89
+< _CFLAGS=$(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
+---
+> _CFLAGS= -O -Wl,-static -fcommon $(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
+94c97,98
+< _CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
+---
+> # Since we're not using the GNU libc, just comment it out. 
+> #_CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
+99c103
+< _LDFLAGS=$(LDFLAGS) $(__CLDBG)
+---
+> _LDFLAGS=-static $(LDFLAGS) $(__CLDBG)
+104c108
+< #LIBS=
+---
+> LIBS=-L/lib -L/usr/lib -L/usr/ccs/lib
