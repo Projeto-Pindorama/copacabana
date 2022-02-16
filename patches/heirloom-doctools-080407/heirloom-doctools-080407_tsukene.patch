@@ -31,7 +31,7 @@
 86c91
 < CFLAGS=-O
 ---
-> CFLAGS=-O -Wl,-static
+> CFLAGS=-O -Wl,-static -fcommon
 104c109
 < LDFLAGS=
 ---
