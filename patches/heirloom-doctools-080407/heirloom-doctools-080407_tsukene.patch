@@ -1,0 +1,38 @@
+1a2,6
+> # DESTDIR, ROOT, call it what you like
+> #
+> ROOT=/usr/src/cmp_pkgs/heirloom-doctools-080407
+> 
+> #
+4c9
+< INSTALL=/usr/ucb/install
+---
+> INSTALL=/usr/ucb/bin/install
+14c19
+< BINDIR=$(PREFIX)/ucb
+---
+> BINDIR=$(PREFIX)/ucb/bin
+19c24
+< LIBDIR=$(PREFIX)/ucblib
+---
+> LIBDIR=$(PREFIX)/ucb/lib
+29c34
+< MANDIR=$(PREFIX)/share/man/5man
+---
+> MANDIR=$(PREFIX)/share/man
+76c81
+< CC=cc
+---
+> CC=gcc
+81c86
+< CCC=c++
+---
+> CCC=g++
+86c91
+< CFLAGS=-O
+---
+> CFLAGS=-O -Wl,-static
+104c109
+< LDFLAGS=
+---
+> LDFLAGS=-static
