@@ -1,6 +1,6 @@
 diff -Naru iproute2-5.8.0/Makefile iproute2-5.8.0.new/Makefile
 --- iproute2-5.8.0/Makefile	Mon Aug  3 17:02:47 2020
-+++ iproute2-5.8.0.new/Makefile	Thu Feb 17 20:27:01 2022
++++ iproute2-5.8.0.new/Makefile	Thu Feb 17 20:38:35 2022
 @@ -22,7 +22,6 @@
  HDRDIR?=$(PREFIX)/include/iproute2
  DOCDIR?=$(DATADIR)/doc/iproute2
@@ -9,21 +9,7 @@ diff -Naru iproute2-5.8.0/Makefile iproute2-5.8.0.new/Makefile
  KERNEL_INCLUDE?=/usr/include
  BASH_COMPDIR?=$(DATADIR)/bash-completion/completions
  
-@@ -48,11 +47,12 @@
- DEFINES += -D_GNU_SOURCE
- # Turn on transparent support for LFS
- DEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
--CCOPTS = -O2 -pipe
-+CCOPTS = -O2 -pipe -Wl,-static
- WFLAGS := -Wall -Wstrict-prototypes  -Wmissing-prototypes
- WFLAGS += -Wmissing-declarations -Wold-style-definition -Wformat=2
- 
- CFLAGS := $(WFLAGS) $(CCOPTS) -I../include -I../include/uapi $(DEFINES) $(CFLAGS)
-+LDFLAGS = -static
- YACCFLAGS = -d -t -v
- 
- SUBDIRS=lib ip tc bridge misc netem genl tipc devlink rdma man
-@@ -86,7 +86,6 @@
+@@ -86,7 +85,6 @@
  install: all
  	install -m 0755 -d $(DESTDIR)$(SBINDIR)
  	install -m 0755 -d $(DESTDIR)$(CONFDIR)
