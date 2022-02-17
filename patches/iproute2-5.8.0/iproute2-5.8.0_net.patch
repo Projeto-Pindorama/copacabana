@@ -104,3 +104,33 @@ diff -Naru iproute2-5.8.0/man/man8/arpd.8 iproute2-5.8.0.new/man/man8/arpd.8
 -Completely replace kernel resolution on interfaces eth0 and eth1. In this case the kernel still does unicast probing to validate entries, but all the broadcast activity is suppressed and made under authority of arpd.
 -.PP
 -This is the mode in which arpd normally is supposed to work. It is not the default to prevent occasional enabling of too aggressive a mode.
+diff -Naru iproute2-5.8.0/tc/Makefile iproute2-5.8.0.new/tc/Makefile
+--- iproute2-5.8.0/tc/Makefile	Mon Aug  3 17:02:47 2020
++++ iproute2-5.8.0.new/tc/Makefile	Thu Feb 17 20:30:28 2022
+@@ -91,7 +91,7 @@
+ ifneq ($(TC_CONFIG_NO_XT),y)
+   ifeq ($(TC_CONFIG_XT),y)
+     TCSO += m_xt.so
+-    TCMODULES += em_ipt.o
++    TCMODULES += 
+     ifeq ($(TC_CONFIG_IPSET),y)
+       TCMODULES += em_ipset.o
+     endif
+@@ -103,7 +103,7 @@
+         CFLAGS += -DTC_CONFIG_XT_H
+         TCSO += m_xt_old.so
+       else
+-        TCMODULES += m_ipt.o
++        TCMODULES +=
+       endif
+     endif
+   endif
+@@ -174,7 +174,7 @@
+ 
+ em_ipset.o: CFLAGS += $$($(PKG_CONFIG) xtables --cflags)
+ 
+-em_ipt.o: CFLAGS += $$($(PKG_CONFIG) xtables --cflags)
++: CFLAGS += $$($(PKG_CONFIG) xtables --cflags)
+ 
+ ifeq ($(TC_CONFIG_XT),y)
+   LDLIBS += $$($(PKG_CONFIG) xtables --libs)
