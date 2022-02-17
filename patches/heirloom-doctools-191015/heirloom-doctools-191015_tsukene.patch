@@ -1,48 +1,88 @@
-9c9
-< PREFIX=/usr/local
----
-> PREFIX=/usr
-14c14
-< BINDIR=$(PREFIX)/ucb
----
-> BINDIR=$(PREFIX)/ucb/bin
-19c19
-< LIBDIR=$(PREFIX)/ucblib
----
-> LIBDIR=$(PREFIX)/ucb/lib
-24c24,27
-< PUBDIR=$(PREFIX)/pub
----
-> # /usr/pub is pretty useless and makes our filesystem 
-> # even more bloated.
-> #PUBDIR=$(PREFIX)/pub
-> PUBDIR=$(PREFIX)/share/misc
-29c32
-< MANDIR=$(PREFIX)/share/heirloom-doctools/man
----
-> MANDIR=$(PREFIX)/share/man
-76c79
-< #CC=
----
-> CC=gcc
-81c84
-< #CXX=
----
-> CXX=g++
-86c89
-< _CFLAGS=$(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
----
-> _CFLAGS= -O -Wl,-static -fcommon $(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
-94c97,98
-< _CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
----
-> # Since we're not using the GNU libc, just comment it out. 
-> #_CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
-99c103
-< _LDFLAGS=$(LDFLAGS) $(__CLDBG)
----
-> _LDFLAGS=-static $(LDFLAGS) $(__CLDBG)
-104c108
-< #LIBS=
----
-> LIBS=-L/lib -L/usr/lib -L/usr/ccs/lib
+diff -Naru heirloom-doctools-191015/mk.config heirloom-doctools-191015.new/mk.config
+--- heirloom-doctools-191015/mk.config	Sat Oct 26 04:51:56 2019
++++ heirloom-doctools-191015.new/mk.config	Thu Feb 17 02:46:35 2022
+@@ -6,27 +6,30 @@
+ #
+ # Packaging prefix.
+ #
+-PREFIX=/usr/local
++PREFIX=/usr
+ 
+ #
+ # Where to place binaries.
+ #
+-BINDIR=$(PREFIX)/ucb
++BINDIR=$(PREFIX)/ucb/bin
+ 
+ #
+ # Where to place libraries.
+ #
+-LIBDIR=$(PREFIX)/ucblib
++LIBDIR=$(PREFIX)/ucb/lib
+ 
+ #
+ # Where to place ASCII charts and the like.
+ #
+-PUBDIR=$(PREFIX)/pub
++# /usr/pub is pretty useless and makes our filesystem 
++# even more bloated.
++#PUBDIR=$(PREFIX)/pub
++PUBDIR=$(PREFIX)/share/misc
+ 
+ #
+ # Where to place manual pages.
+ #
+-MANDIR=$(PREFIX)/share/heirloom-doctools/man
++MANDIR=$(PREFIX)/share/man
+ 
+ #
+ # Where to place the troff macro packages.
+@@ -83,7 +86,7 @@
+ #
+ # Compiler flags.
+ #
+-_CFLAGS=$(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
++_CFLAGS=-Wl,-static -fcommon $(CFLAGS) $(_CPPFLAGS) $(__CDBG) $(__CLDBG)
+ 
+ #
+ # C preprocessor flags.
+@@ -91,17 +94,20 @@
+ # Use -D_GNU_SOURCE for Linux with GNU libc.
+ # Use -D_INCLUDE__STDC_A1_SOURCE for HP-UX.
+ #
+-_CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
++# Since we're not using the GNU libc, we'll be 
++# just commenting this it out. 
++#
++#_CPPFLAGS=$(CPPFLAGS) -D_GNU_SOURCE
+ 
+ #
+ # Linker flags.
+ #
+-_LDFLAGS=$(LDFLAGS) $(__CLDBG)
++_LDFLAGS=-static $(LDFLAGS) $(__CLDBG)
+ 
+ #
+ # Additional libraries to link with.
+ #
+-#LIBS=
++LIBS=-L/lib -L/usr/lib
+ 
+ #
+ # A Bourne-compatible shell.
+diff -Naru heirloom-doctools-191015/troff/troff.d/dhtml/Makefile.mk heirloom-doctools-191015.new/troff/troff.d/dhtml/Makefile.mk
+--- heirloom-doctools-191015/troff/troff.d/dhtml/Makefile.mk	Sat Oct 26 04:51:56 2019
++++ heirloom-doctools-191015.new/troff/troff.d/dhtml/Makefile.mk	Thu Feb 17 02:43:41 2022
+@@ -17,10 +17,10 @@
+ mrproper:	clean
+ 
+ $(BIN):		$(OBJ)
+-		$(CC) $(_CFLAGS) $(_LDFLAGS) $(OBJ) -o $@
++		$(CC) $(_CFLAGS) $(CPPFLAGS) $(_LDFLAGS) $(OBJ) -o $@
+ 
+ .c.o:
+-		$(CC) $(_CFLAGS) -c $<
++		$(CC) $(_CFLAGS) $(CPPFLAGS) -c $<
+ 
+ char.o:		char.h main.h $(BST)/bst.h lib.h tr_out.h
+ dhtml.o:	dhtml.h tr_out.h char.h main.h
