@@ -1,0 +1,11 @@
+--- pigz-2.7/Makefile	Sun Jan 31 11:40:57 2021
++++ pigz-2.7.new/Makefile	Thu Feb 17 20:07:50 2022
+@@ -1,6 +1,6 @@
+ CC=gcc
+-CFLAGS=-O3 -Wall -Wextra -Wno-unknown-pragmas -Wcast-qual
+-LDFLAGS=
++CFLAGS=-O3 -Wl,-static -Wall -Wextra -Wno-unknown-pragmas -Wcast-qual
++LDFLAGS=-static
+ # CFLAGS=-O3 -Wall -Wextra -Wno-unknown-pragmas -Wcast-qual -g -fsanitize=thread
+ # LDFLAGS=-g -fsanitize=thread
+ # CFLAGS=-O3 -Wall -Wextra -Wno-unknown-pragmas -Wcast-qual -g -fsanitize=address
