@@ -1,0 +1,77 @@
+diff -Naru lobase.orig/bin/Makefile lobase/bin/Makefile
+--- lobase.orig/bin/Makefile	2018-04-06 15:17:25.000000000 -0300
++++ lobase/bin/Makefile	2022-02-07 05:06:42.000000000 -0300
+@@ -1,4 +1,7 @@
+ TOPDIR?=..
+-SUBDIR=	cat chmod cp date dd df domainname echo ed expr hostname kill ksh ln ls\
+-	md5 mkdir mv pax pwd rm rmdir sleep stty sync test
++SUBDIR= cat chmod cp date dd kill ln md5 \
++	mkdir mv pwd rm rmdir domainname
++
++SKIPDIR= echo ed expr pax ksh df ls sleep \
++	 stty sync test hostname
+ include ${.TOPDIR}/mk/bsd.subdir.mk
+diff -Naru lobase.orig/config.mk.in lobase/config.mk.in
+--- lobase.orig/config.mk.in	2018-04-06 15:17:25.000000000 -0300
++++ lobase/config.mk.in	2022-02-07 05:06:42.000000000 -0300
+@@ -24,7 +24,7 @@
+ 
+ CFLAGS+=@CFLAGS@
+ CPPFLAGS+=@CPPFLAGS@ @DEFS@ $(PATHS) -I$(TOPDIR)/include
+-LDFLAGS+=@LDFLAGS@
++LDFLAGS+=@LDFLAGS@ -L/lib -L/usr/lib -L/usr/ccs/lib -static
+ 
+ HAVE_STRLCAT=@HAVE_STRLCAT@
+ HAVE_STRLCPY=@HAVE_STRLCPY@
+diff -Naru lobase.orig/configure lobase/configure
+--- lobase.orig/configure	2018-04-06 15:17:25.000000000 -0300
++++ lobase/configure	2022-02-07 05:06:42.000000000 -0300
+@@ -568,7 +568,7 @@
+ #
+ # Initializations.
+ #
+-ac_default_prefix=/usr/local
++ac_default_prefix=/usr
+ ac_clean_files=
+ ac_config_libobj_dir=.
+ LIBOBJS=
+diff -Naru lobase.orig/mk/bsd.own.mk lobase/mk/bsd.own.mk
+--- lobase.orig/mk/bsd.own.mk	2018-04-06 15:17:25.000000000 -0300
++++ lobase/mk/bsd.own.mk	2022-02-07 05:06:42.000000000 -0300
+@@ -23,7 +23,7 @@
+ VPATH+=	${.CURDIR}
+ 
+ BINOWN?=	root
+-BINGRP?=	root
++BINGRP?=	wheel	
+ BINMODE?=	555
+ NONBINMODE?=	444
+ DIRMODE?=	755
+diff -Naru lobase.orig/usr.bin/Makefile lobase/usr.bin/Makefile
+--- lobase.orig/usr.bin/Makefile	2018-04-06 15:17:25.000000000 -0300
++++ lobase/usr.bin/Makefile	2022-02-07 05:06:42.000000000 -0300
+@@ -1,12 +1,14 @@
+ TOPDIR?=..
+-SUBDIR=	apply awk basename bc biff cal calendar cmp colrm col column comm \
+-	cut dc dirname du diff3 diff encrypt env expand false file find fmt fold \
+-	from ftp getconf getent getopt grep head hexdump id indent join jot lam leave \
+-	lndir logger logname look lorder mail mkdep mktemp nice nl nohup paste patch \
+-	pkg-config pr printenv printf rcs readlink renice rev rs sdiff sed shar signify \
+-	sort spell split stat tail tee telnet tftp time touch tr true tsort tty \
+-	ul units uname unexpand uniq unvis uudecode uuencode vacation vis wc what \
+-	which xinstall htpasswd cu newsyslog banner cap_mkdb unifdef whois xargs \
+-	csplit compress ctags deroff yes
+-SKIPDIR=file ftp cu
++SUBDIR= apply col colrm column diff diff3 false jot lam leave lndir \
++	logger look lorder mkdep readlink sdiff sed shar split stat true \
++	unifdef vis which xargs xinstall 
++
++SKIPDIR= awk basename bc biff cal calendar cmp compress comm \
++	cut dc dirname du encrypt env expand file find fmt fold \
++	from ftp getconf getent getopt head hexdump id indent join \
++	logname mail file ftp tail tee telnet tftp time touch tr tsort tty \
++	ul units uname unexpand uniq unvis uudecode uuencode vacation wc what mktemp \
++ 	htpasswd cu newsyslog banner cap_mkdb whois pkg-config pr printenv printf rcs  \
++	csplit ctags deroff yes
++
+ include ${.TOPDIR}/mk/bsd.subdir.mk

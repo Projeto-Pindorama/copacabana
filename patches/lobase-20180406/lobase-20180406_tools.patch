@@ -1,0 +1,37 @@
+diff -Naru lobase.orig/bin/Makefile lobase-tools/bin/Makefile
+--- lobase.orig/bin/Makefile	2018-04-06 15:17:25.000000000 -0300
++++ lobase-tools/bin/Makefile	2022-02-05 07:36:00.000000000 -0300
+@@ -1,4 +1,7 @@
+ TOPDIR?=..
+-SUBDIR=	cat chmod cp date dd df domainname echo ed expr hostname kill ksh ln ls\
+-	md5 mkdir mv pax pwd rm rmdir sleep stty sync test
++SUBDIR= cat chmod cp date dd kill ksh ln md5 \
++	mkdir mv pwd rm rmdir sleep stty sync \
++	test domainname hostname
++
++SKIPDIR= echo ed expr pax df ls
+ include ${.TOPDIR}/mk/bsd.subdir.mk
+diff -Naru lobase.orig/usr.bin/Makefile lobase-tools/usr.bin/Makefile
+--- lobase.orig/usr.bin/Makefile	2018-04-06 15:17:25.000000000 -0300
++++ lobase-tools/usr.bin/Makefile	2022-02-05 07:36:00.000000000 -0300
+@@ -1,12 +1,12 @@
+ TOPDIR?=..
+-SUBDIR=	apply awk basename bc biff cal calendar cmp colrm col column comm \
+-	cut dc dirname du diff3 diff encrypt env expand false file find fmt fold \
++SUBDIR= diff3 diff mktemp readlink sdiff shar split stat which xargs
++
++SKIPDIR= apply awk basename bc biff cal calendar cmp colrm col column compress comm \
++	cut dc dirname du encrypt env expand false file find fmt fold \
+ 	from ftp getconf getent getopt grep head hexdump id indent join jot lam leave \
+-	lndir logger logname look lorder mail mkdep mktemp nice nl nohup paste patch \
+-	pkg-config pr printenv printf rcs readlink renice rev rs sdiff sed shar signify \
+-	sort spell split stat tail tee telnet tftp time touch tr true tsort tty \
++	lndir logger logname look lorder mail mkdep file ftp cu tail tee telnet tftp time touch tr true tsort tty \
+ 	ul units uname unexpand uniq unvis uudecode uuencode vacation vis wc what \
+-	which xinstall htpasswd cu newsyslog banner cap_mkdb unifdef whois xargs \
+-	csplit compress ctags deroff yes
+-SKIPDIR=file ftp cu
++ 	xinstall htpasswd cu newsyslog banner cap_mkdb unifdef whois pkg-config pr printenv printf rcs  \
++	csplit ctags deroff yes
++
+ include ${.TOPDIR}/mk/bsd.subdir.mk
