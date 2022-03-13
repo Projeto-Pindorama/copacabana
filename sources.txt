@@ -1,5 +1,5 @@
 #> pkgs
-http://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.89.tar.xz
+http://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.105.tar.xz
 http://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-27.tar.xz
 http://www.kernel.org/pub/linux/utils/kbd/kbd-2.3.0.tar.xz
 http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.42.tar.xz
