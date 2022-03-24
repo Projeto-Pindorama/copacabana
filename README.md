@@ -14,7 +14,7 @@ http://silicon.pindorama.dob.jp/copacabana
 
 If you are willing to contribute in documenting the distribution, the
 documentation is open at our git repository, inside the `contents/` directory:
-http://github.com/Projeto-Pindorma/Silicon-Tabula
+http://github.com/Projeto-Pindorama/Silicon-Tabula
 
 Any other contributions are entirely accepted, for more information read the
 "Chip in" session at Copacabana's website.
