@@ -44,8 +44,9 @@ main() {
     # foo/var => foo\/var
     category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
     printf '==> %s\n' "${categories[${i}]}"
-    # Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
-    urls=(`awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag" ${sources_file}`)
+    # sed: Remove comments (lines starting with %%)
+    # (N)awk: Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
+    urls=(`sed '/%%/d' ${sources_file} | awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag"`)
     n_urls="`n ${urls[*]}`"
 
     category_dir="$sources_directory/${categories[${i}]}"
