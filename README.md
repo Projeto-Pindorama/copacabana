@@ -25,7 +25,8 @@ Any other contributions are entirely accepted, for more information read the
 - [Mitzune](https://github.com/Projeto-Pindorama/mitzune);
 - [L.E.`mount`](https://github.com/Projeto-Pindorama/lemount);
 - [`isainfo`](https://github.com/Projeto-Pindorama/isainfo);
-- [The Teiú installation wizard](https://github.com/Projeto-Pindorama/teiu).
+- [The Teiú installation wizard](https://github.com/Projeto-Pindorama/teiu)
+  (**W.I.P**).
 
 ## Some credits and acknowledgements
 Luiz Antônio Rangel (`takusuman`), for the most part of the work --- including making Heirloom and lobase work;  
