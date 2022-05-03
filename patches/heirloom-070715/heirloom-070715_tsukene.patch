@@ -1,0 +1,394 @@
+diff --git a/build/mk.config b/build/mk.config
+index a05983e..f88d70d 100644
+--- a/build/mk.config
++++ b/build/mk.config
+@@ -6,7 +6,7 @@
+ # Bourne shell is recommended. It then must obviously be compiled and
+ # installed first.
+ #
+-SHELL = /bin/sh
++SHELL = sh
+ 
+ #
+ # Specify the path name for a POSIX-conforming shell here. For example,
+@@ -19,39 +19,46 @@ POSIX_SHELL = /bin/sh
+ # Root directory. Mainly useful for package building; leave empty for
+ # normal installation.
+ #
+-ROOT =
++ROOT = /usr/src/cmp_pkgs/heirloom-070715
+ 
+ #
+ # Location for binaries that have no special personality. This location
+ # may be identical to that of one of the first three personalities below.
+ #
+-DEFBIN = /usr/5bin
++# Note: don't worry with the /usr/bin, we'll be reorganizing them later.
++#DEFBIN = /usr/5bin
++DEFBIN = /usr/bin
+ 
+ #
+ # Location for SVID3/SVR4-style binaries.
+ #
+-SV3BIN = /usr/5bin
++#SV3BIN = /usr/5bin
++SV3BIN = /usr/bin
+ 
+ #
+ # Location for SVID4/SVR4.2-style binaries.
+ #
+-S42BIN = /usr/5bin/s42
++#S42BIN = /usr/5bin/s42
++S42BIN = /usr/bin/s42
+ 
+ #
+ # Location for POSIX.2/SUS-style binaries.
+ #
+-SUSBIN = /usr/5bin/posix
++#SUSBIN = /usr/5bin/posix
++SUSBIN = /usr/bin/posix
+ 
+ #
+ # Location for POSIX.1-2001/SUSv3-style binaries.
+-SU3BIN = /usr/5bin/posix2001
++#SU3BIN = /usr/5bin/posix2001
++SU3BIN = /usr/bin/posix2001
+ 
+ #
+ # Location for SVR4 UCB-style binaries. These do not form a complete
+ # personality, and the binary path must not be identical to the default
+ # one.
+ #
+-UCBBIN = /usr/ucb
++#UCBBIN = /usr/ucb/bin
++UCBBIN = /usr/ucb/bin
+ 
+ #
+ # Location for development binaries. The "tsort" utility is
+@@ -64,18 +71,20 @@ CCSBIN = /usr/ccs/bin
+ #
+ # Location for library files.
+ #
+-DEFLIB = /usr/5lib
++#DEFLIB = /usr/5lib
++DEFLIB = /usr/lib
+ 
+ #
+ # Location for superuser-only binaries. May be identical to the
+ # default binary directory.
+ #
+-DEFSBIN = /usr/5bin
++DEFSBIN = /sbin
+ 
+ #
+ # Location for manual pages (with man1, man1b ... man8 below).
+ #
+-MANDIR = /usr/share/man/5man
++#MANDIR = /usr/share/man/5man
++MANDIR = /usr/share/man
+ 
+ #
+ # Location for default files. Make sure that this directory is accessible
+@@ -92,13 +101,13 @@ SPELLHIST = /var/adm/spellhist
+ #
+ # Location for the su logfile.
+ #
+-SULOG = /var/log/sulog
++#SULOG = /var/log/sulog
+ 
+ #
+ # Where to store the file command's magic. Note that the existing
+ # file at this location is replaced unconditionally at installation.
+ #
+-MAGIC = $(DEFLIB)/magic
++#MAGIC = $(DEFLIB)/magic
+ 
+ #
+ # The group whose members may write utmp or utmpx entries. Appropriate values
+@@ -108,7 +117,7 @@ MAGIC = $(DEFLIB)/magic
+ #
+ # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
+ #
+-TTYGRP = -g utmp
++TTYGRP = -g adm
+ 
+ #
+ # Curses library. Change to -lncurses if necessary. Caution: Some gcc
+@@ -121,7 +130,7 @@ TTYGRP = -g utmp
+ # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
+ # to CPPFLAGS.
+ #
+-LCURS = -lcurses
++LCURS = -L/usr/lib -l:libncursesw.a
+ 
+ #
+ # Socket library, necessary on Solaris and Open UNIX. If your system has
+@@ -144,7 +153,7 @@ LCURS = -lcurses
+ # compression when creating zip files with cpio.
+ #
+ LIBZ = -Wl,-Bstatic -lz -Wl,-Bdynamic
+-USE_ZLIB = 1
++USE_ZLIB = 0
+ 
+ #
+ # The name of the bzip2 library, and whether to use it. The library is only
+@@ -158,12 +167,14 @@ USE_BZLIB = 0
+ #
+ 
+ #CC = $(HOME)/src/diet gcc
+-CC = cc
++CC = gcc
+ HOSTCC = $(CC)
+-WARN=
++#WARN=
+ 
+ LD = $(CC)
+-LDFLAGS =
++
++# And yet here we are, -static
++LDFLAGS = -static -L/lib -L/usr/lib -L/usr/ccs/lib -lutmps -lskarnet
+ 
+ #
+ # Flags for the C preprocessor.
+@@ -174,7 +185,7 @@ LDFLAGS =
+ # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
+ # On NetBSD, add -DUSE_TERMCAP.
+ #
+-CPPFLAGS = -D_GNU_SOURCE
++CPPFLAGS = -I/usr/include -I/usr/include/utmps -I/usr/ccs/include
+ 
+ #
+ # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
+@@ -195,10 +206,10 @@ CPPFLAGS = -D_GNU_SOURCE
+ # compiler mode (which is the default) until this issue is properly
+ # handled by the system vendor.
+ #
+-CFLAGS = -O -fomit-frame-pointer $(WARN)
+-CFLAGS2 = -O2 -fomit-frame-pointer $(WARN)
+-CFLAGSS = -Os -fomit-frame-pointer $(WARN)
+-CFLAGSU = -O2 -fomit-frame-pointer -funroll-loops $(WARN)
++CFLAGS = -O -fcommon -fomit-frame-pointer $(WARN)
++CFLAGS2 = -O2 -fcommon -fomit-frame-pointer $(WARN)
++CFLAGSS = -Os -fcommon -fomit-frame-pointer $(WARN)
++CFLAGSU = -O2 -fcommon -fomit-frame-pointer -funroll-loops $(WARN)
+ 
+ #
+ # Binaries are stripped with this command after installation.
+@@ -222,11 +233,11 @@ LARGEF = -D_FILE_OFFSET_BITS=64L
+ #
+ # Use this if you prefer symbolic links between installed files.
+ #
+-LNS = ln -s
++#LNS = ln -s
+ #
+ # Use this if you prefer hard links between installed files.
+ #
+-#LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
++LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
+ 
+ #
+ # Yacc implementations known to work with the Heirloom Toolchest are
+diff --git a/cpio/cpio.c b/cpio/cpio.c
+index 89c5cbc..32e2719 100644
+--- a/cpio/cpio.c
++++ b/cpio/cpio.c
+@@ -96,7 +96,7 @@
+ #endif	/* _AIX */
+ 
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #include "cpio.h"
+diff --git a/echo/defs.h b/echo/defs.h
+index e97bccc..be4b9e6 100644
+--- a/echo/defs.h
++++ b/echo/defs.h
+@@ -31,6 +31,7 @@
+ #include <string.h>
+ #include <wchar.h>
+ #include <unistd.h>
++#include <sys/stat.h>
+ 
+ #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
+ #undef	putchar
+diff --git a/echo/echo.c b/echo/echo.c
+index 7eb89ec..59aca30 100644
+--- a/echo/echo.c
++++ b/echo/echo.c
+@@ -37,6 +37,7 @@
+  *	UNIX shell
+  */
+ #include	"defs.h"
++#include	<sys/stat.h>
+ 
+ #ifndef	UCB
+ #define	_iBCS2
+diff --git a/file/file.c b/file/file.c
+index 6609734..2e60cb0 100644
+--- a/file/file.c
++++ b/file/file.c
+@@ -67,7 +67,7 @@ static const char sccsid[] USED = "@(#)file.sl	1.33 (gritter) 4/14/06";
+ #include <libgen.h>
+ #include <inttypes.h>
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif
+ #include "iblok.h"
+ #include "asciitype.h"
+diff --git a/find/find.c b/find/find.c
+index fac70f0..f4d4568 100644
+--- a/find/find.c
++++ b/find/find.c
+@@ -84,7 +84,7 @@ static const char sccsid[] USED = "@(#)find.sl	1.45 (gritter) 5/8/06";
+ #include <sys/sysmacros.h>
+ #endif
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif
+ #if __NetBSD_Version__>= 300000000
+ #include <sys/statvfs.h>
+diff --git a/libcommon/getdir.c b/libcommon/getdir.c
+index 245b764..c9ef2e5 100644
+--- a/libcommon/getdir.c
++++ b/libcommon/getdir.c
+@@ -35,6 +35,8 @@
+ #include	<stdlib.h>
+ #include	<errno.h>
+ #include	<string.h>
++#include	<dirent.h>
++#include	<unistd.h>
+ 
+ #if defined (__UCLIBC__)
+ #include <linux/types.h>
+@@ -59,7 +61,7 @@ extern int	getdents(int, struct dirent *, size_t);
+ #ifdef	__hpux
+ #define		_KERNEL
+ #endif	/* __hpux */
+-#include	<sys/dirent.h>
++/*#include	<sys/dirent.h>*/
+ #ifdef		__hpux
+ #ifndef	_INO64_T
+ typedef	unsigned long long	uint64_t;
+diff --git a/ls/ls.c b/ls/ls.c
+index e4480d0..70e448c 100644
+--- a/ls/ls.c
++++ b/ls/ls.c
+@@ -91,6 +91,7 @@ static char ifmt_c[] = "-pc-d-b--nl-SD--";
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <stddef.h>
+diff --git a/makefile b/makefile
+index 04a0655..1927377 100644
+--- a/makefile
++++ b/makefile
+@@ -1,21 +1,40 @@
+ SHELL = /bin/sh
+ 
+ SUBDIRS = build libwchar libcommon libuxre _install \
+-	banner basename bc bdiff bfs \
++	banner basename bdiff bfs \
+ 	cal calendar cat chmod chown \
+-	cksum cmp col comm copy cp cpio csplit cut \
+-	date dc dd deroff diff diff3 dircmp dirname df du \
++	cksum cmp comm copy csplit cut \
++	date deroff dircmp dirname df du \
+ 	echo ed env expand expr \
+-	factor file find fmt fmtmsg fold \
++	find factor fmt fmtmsg fold \
+ 	getconf getopt grep groups hd head hostname id join \
+-	kill line listusers ln logins logname ls \
+-	mail man mesg mkdir mkfifo mknod more mvdir \
+-	nawk news nice nl nohup oawk od \
++	kill line listusers ls logins logname \
++	mail mesg mkdir more mvdir \
++	news nice nl nohup oawk od \
+ 	paste pathchk pg pgrep pr printenv printf priocntl ps psrinfo pwd \
+-	random renice rm rmdir \
+-	sdiff sed setpgrp shl sleep sort spell split stty su sum sync \
+-	tabs tail tapecntl tar tcopy tee test time touch tr true tsort tty \
+-	ul uname uniq units users wc what who whoami whodo xargs yes
++	random renice rmdir \
++	setpgrp shl sleep sort spell split stty sum sync \
++	tail tapecntl tcopy tee test time touch tr tsort tty \
++	ul uname uniq units users wc what who whoami whodo yes 
++
++# Unknown type 'mode_t' or sys/mkdev.h
++# cpio 
++# 
++# Multiple definition of "idk_what"
++# cpio diff{,3} tabs
++# 
++# unknown type name intptr_t
++# nawk
++# 
++# Lacks basic POSIX specification for nowadays:
++# rm, ln
++#
++# Supplied by others (lobase, star, mandoc, independent packages et cetera):
++# bc/dc, col, colrm, cp, dd, {s,}diff{,3}, file, find, ln, man, mk{fifo,nod},
++# nawk, rm, sed, su, tabs, tar, true, xargs
++
++SKIPDIR = bc col cp cpio dc diff diff3 file find ln man mkfifo mknod \
++	  nawk rm sdiff sed su tabs tar true xargs 
+ 
+ dummy: makefiles all
+ 
+diff --git a/mknod/mknod.c b/mknod/mknod.c
+index b772b88..503003e 100644
+--- a/mknod/mknod.c
++++ b/mknod/mknod.c
+@@ -46,7 +46,7 @@ static const char sccsid[] USED = "@(#)mknod.sl	1.8 (gritter) 5/29/05";
+ #include	<limits.h>
+ #include	<unistd.h>
+ #ifndef	major
+-#include	<sys/mkdev.h>
++#include	<sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #ifndef	S_IFNAM
+diff --git a/su/su.c b/su/su.c
+index 8d11925..4a9ef51 100644
+--- a/su/su.c
++++ b/su/su.c
+@@ -505,7 +505,7 @@ main(int argc, char **argv)
+ 		dolog('-');
+ 		if (sleeptime)
+ 			sleep(sleeptime);
+-		fprintf(stderr, "%s: Sorry\n", progname);
++		fprintf(stderr, "%s: gomenasai~\n", progname);
+ 		status = 1;
+ 	}
+ #ifdef	PAM
+diff --git a/tar/tar.c b/tar/tar.c
+index 2d3dada..1cf3a45 100644
+--- a/tar/tar.c
++++ b/tar/tar.c
+@@ -99,7 +99,7 @@ static const char sccsid[] USED = "@(#)tar.sl	1.177 (gritter) 4/14/07";
+ #endif
+ 
+ #ifndef	major
+-#include <sys/mkdev.h>
++#include <sys/sysmacros.h>
+ #endif	/* !major */
+ 
+ #include <getdir.h>
+diff --git a/test/defs.h b/test/defs.h
+index e97bccc..be4b9e6 100644
+--- a/test/defs.h
++++ b/test/defs.h
+@@ -31,6 +31,7 @@
+ #include <string.h>
+ #include <wchar.h>
+ #include <unistd.h>
++#include <sys/stat.h>
+ 
+ #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
+ #undef	putchar
