@@ -1,6 +1,7 @@
-diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
---- ../heirloomorig/heirloom-070715/build/mk.config	Sun Jul 15 10:36:59 2007
-+++ ./build/mk.config	Wed Nov 24 21:47:20 2021
+diff --git a/build/mk.config b/build/mk.config
+index a05983e..6b2c51f 100644
+--- a/build/mk.config
++++ b/build/mk.config
 @@ -6,7 +6,7 @@
  # Bourne shell is recommended. It then must obviously be compiled and
  # installed first.
@@ -10,7 +11,7 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # Specify the path name for a POSIX-conforming shell here. For example,
-@@ -19,39 +19,45 @@
+@@ -19,39 +19,45 @@ POSIX_SHELL = /bin/sh
  # Root directory. Mainly useful for package building; leave empty for
  # normal installation.
  #
@@ -23,34 +24,34 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  #
 -DEFBIN = /usr/5bin
 +#DEFBIN = /usr/5bin
-+DEFBIN = /bin
++DEFBIN = /5bin
  
  #
  # Location for SVID3/SVR4-style binaries.
  #
 -SV3BIN = /usr/5bin
 +#SV3BIN = /usr/5bin
-+SV3BIN = /bin
++SV3BIN = /5bin
  
  #
  # Location for SVID4/SVR4.2-style binaries.
  #
 -S42BIN = /usr/5bin/s42
 +#S42BIN = /usr/5bin/s42
-+S42BIN = /bin
++S42BIN = /s42bin
  
  #
  # Location for POSIX.2/SUS-style binaries.
  #
 -SUSBIN = /usr/5bin/posix
 +#SUSBIN = /usr/5bin/posix
-+SUSBIN = /bin
++SUSBIN = /pbin
  
  #
  # Location for POSIX.1-2001/SUSv3-style binaries.
 -SU3BIN = /usr/5bin/posix2001
 +#SU3BIN = /usr/5bin/posix2001
-+SU3BIN = /bin
++SU3BIN = /p2k1bin
  
  #
  # Location for SVR4 UCB-style binaries. These do not form a complete
@@ -59,17 +60,17 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  #
 -UCBBIN = /usr/ucb
 +#UCBBIN = /usr/ucb/bin
-+UCBBIN = /bin
++UCBBIN = /ucb_bin
  
  #
  # Location for development binaries. The "tsort" utility is
-@@ -59,23 +65,27 @@
+@@ -59,23 +65,27 @@ UCBBIN = /usr/ucb
  # "Heirloom Development Tools" package are expected to be
  # installed in it.
  #
 -CCSBIN = /usr/ccs/bin
 +#CCSBIN = /usr/ccs/bin
-+CCSBIN = /bin
++#CCSBIN = /bin
  
  #
  # Location for library files.
@@ -84,7 +85,7 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  #
 -DEFSBIN = /usr/5bin
 +#DEFSBIN = /sbin
-+DEFSBIN = /bin
++DEFSBIN = /sbin
  
  #
  # Location for manual pages (with man1, man1b ... man8 below).
@@ -95,7 +96,7 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # Location for default files. Make sure that this directory is accessible
-@@ -108,7 +118,7 @@
+@@ -108,7 +118,7 @@ MAGIC = $(DEFLIB)/magic
  #
  # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
  #
@@ -104,16 +105,16 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # Curses library. Change to -lncurses if necessary. Caution: Some gcc
-@@ -121,7 +131,7 @@
+@@ -121,7 +131,7 @@ TTYGRP = -g utmp
  # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
  # to CPPFLAGS.
  #
 -LCURS = -lcurses
-+LCURS = -L/tools/lib -lcurses
++LCURS = -L/tools/lib -l:libncursesw.so
  
  #
  # Socket library, necessary on Solaris and Open UNIX. If your system has
-@@ -144,7 +154,7 @@
+@@ -144,7 +154,7 @@ LCURS = -lcurses
  # compression when creating zip files with cpio.
  #
  LIBZ = -Wl,-Bstatic -lz -Wl,-Bdynamic
@@ -122,7 +123,7 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # The name of the bzip2 library, and whether to use it. The library is only
-@@ -158,13 +168,16 @@
+@@ -158,12 +168,15 @@ USE_BZLIB = 0
  #
  
  #CC = $(HOME)/src/diet gcc
@@ -134,15 +135,14 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  LD = $(CC)
 -LDFLAGS =
- 
++
 +# See ya later on tsukene, -static!
 +#LDFLAGS = -I/tools/lib -static
 +LDFLAGS = -I/tools/lib
-+
+ 
  #
  # Flags for the C preprocessor.
- # On Linux with glibc or uClibc, add -D_GNU_SOURCE.
-@@ -174,7 +187,7 @@
+@@ -174,7 +187,7 @@ LDFLAGS =
  # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
  # On NetBSD, add -DUSE_TERMCAP.
  #
@@ -151,7 +151,7 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
-@@ -195,10 +208,10 @@
+@@ -195,10 +208,10 @@ CPPFLAGS = -D_GNU_SOURCE
  # compiler mode (which is the default) until this issue is properly
  # handled by the system vendor.
  #
@@ -166,23 +166,10 @@ diff -Nru ../heirloomorig/heirloom-070715/build/mk.config ./build/mk.config
  
  #
  # Binaries are stripped with this command after installation.
-@@ -222,11 +235,11 @@
- #
- # Use this if you prefer symbolic links between installed files.
- #
--LNS = ln -s
-+#LNS = ln -s
- #
- # Use this if you prefer hard links between installed files.
- #
--#LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
-+LNS = $(SHELL) -c "if cd \`dirname \$$2\`; then ln \$$1 \$$2; fi" dummy
- 
- #
- # Yacc implementations known to work with the Heirloom Toolchest are
-diff -Nru ../heirloomorig/heirloom-070715/cpio/cpio.c ./cpio/cpio.c
---- ../heirloomorig/heirloom-070715/cpio/cpio.c	Sat Apr 14 10:40:43 2007
-+++ ./cpio/cpio.c	Wed Nov 24 17:14:39 2021
+diff --git a/cpio/cpio.c b/cpio/cpio.c
+index 89c5cbc..32e2719 100644
+--- a/cpio/cpio.c
++++ b/cpio/cpio.c
 @@ -96,7 +96,7 @@
  #endif	/* _AIX */
  
@@ -192,9 +179,10 @@ diff -Nru ../heirloomorig/heirloom-070715/cpio/cpio.c ./cpio/cpio.c
  #endif	/* !major */
  
  #include "cpio.h"
-diff -Nru ../heirloomorig/heirloom-070715/echo/defs.h ./echo/defs.h
---- ../heirloomorig/heirloom-070715/echo/defs.h	Sat Jul  2 09:36:39 2005
-+++ ./echo/defs.h	Wed Nov 24 17:15:07 2021
+diff --git a/echo/defs.h b/echo/defs.h
+index e97bccc..be4b9e6 100644
+--- a/echo/defs.h
++++ b/echo/defs.h
 @@ -31,6 +31,7 @@
  #include <string.h>
  #include <wchar.h>
@@ -203,9 +191,10 @@ diff -Nru ../heirloomorig/heirloom-070715/echo/defs.h ./echo/defs.h
  
  #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
  #undef	putchar
-diff -Nru ../heirloomorig/heirloom-070715/echo/echo.c ./echo/echo.c
---- ../heirloomorig/heirloom-070715/echo/echo.c	Sat Jul  2 12:54:01 2005
-+++ ./echo/echo.c	Wed Nov 24 17:15:44 2021
+diff --git a/echo/echo.c b/echo/echo.c
+index 7eb89ec..59aca30 100644
+--- a/echo/echo.c
++++ b/echo/echo.c
 @@ -37,6 +37,7 @@
   *	UNIX shell
   */
@@ -214,10 +203,11 @@ diff -Nru ../heirloomorig/heirloom-070715/echo/echo.c ./echo/echo.c
  
  #ifndef	UCB
  #define	_iBCS2
-diff -Nru ../heirloomorig/heirloom-070715/file/file.c ./file/file.c
---- ../heirloomorig/heirloom-070715/file/file.c	Thu Apr 13 19:33:18 2006
-+++ ./file/file.c	Wed Nov 24 17:16:08 2021
-@@ -67,7 +67,7 @@
+diff --git a/file/file.c b/file/file.c
+index 6609734..2e60cb0 100644
+--- a/file/file.c
++++ b/file/file.c
+@@ -67,7 +67,7 @@ static const char sccsid[] USED = "@(#)file.sl	1.33 (gritter) 4/14/06";
  #include <libgen.h>
  #include <inttypes.h>
  #ifndef	major
@@ -226,10 +216,11 @@ diff -Nru ../heirloomorig/heirloom-070715/file/file.c ./file/file.c
  #endif
  #include "iblok.h"
  #include "asciitype.h"
-diff -Nru ../heirloomorig/heirloom-070715/find/find.c ./find/find.c
---- ../heirloomorig/heirloom-070715/find/find.c	Mon May  8 12:29:36 2006
-+++ ./find/find.c	Wed Nov 24 17:16:22 2021
-@@ -84,7 +84,7 @@
+diff --git a/find/find.c b/find/find.c
+index fac70f0..f4d4568 100644
+--- a/find/find.c
++++ b/find/find.c
+@@ -84,7 +84,7 @@ static const char sccsid[] USED = "@(#)find.sl	1.45 (gritter) 5/8/06";
  #include <sys/sysmacros.h>
  #endif
  #ifndef	major
@@ -238,9 +229,10 @@ diff -Nru ../heirloomorig/heirloom-070715/find/find.c ./find/find.c
  #endif
  #if __NetBSD_Version__>= 300000000
  #include <sys/statvfs.h>
-diff -Nru ../heirloomorig/heirloom-070715/libcommon/getdir.c ./libcommon/getdir.c
---- ../heirloomorig/heirloom-070715/libcommon/getdir.c	Sun May 14 10:24:39 2006
-+++ ./libcommon/getdir.c	Wed Nov 24 18:02:20 2021
+diff --git a/libcommon/getdir.c b/libcommon/getdir.c
+index 245b764..c9ef2e5 100644
+--- a/libcommon/getdir.c
++++ b/libcommon/getdir.c
 @@ -35,6 +35,8 @@
  #include	<stdlib.h>
  #include	<errno.h>
@@ -250,7 +242,7 @@ diff -Nru ../heirloomorig/heirloom-070715/libcommon/getdir.c ./libcommon/getdir.
  
  #if defined (__UCLIBC__)
  #include <linux/types.h>
-@@ -59,7 +61,7 @@
+@@ -59,7 +61,7 @@ extern int	getdents(int, struct dirent *, size_t);
  #ifdef	__hpux
  #define		_KERNEL
  #endif	/* __hpux */
@@ -259,10 +251,11 @@ diff -Nru ../heirloomorig/heirloom-070715/libcommon/getdir.c ./libcommon/getdir.
  #ifdef		__hpux
  #ifndef	_INO64_T
  typedef	unsigned long long	uint64_t;
-diff -Nru ../heirloomorig/heirloom-070715/ls/ls.c ./ls/ls.c
---- ../heirloomorig/heirloom-070715/ls/ls.c	Tue Apr 17 16:56:32 2007
-+++ ./ls/ls.c	Wed Nov 24 17:16:56 2021
-@@ -91,6 +91,7 @@
+diff --git a/ls/ls.c b/ls/ls.c
+index e4480d0..70e448c 100644
+--- a/ls/ls.c
++++ b/ls/ls.c
+@@ -91,6 +91,7 @@ static char ifmt_c[] = "-pc-d-b--nl-SD--";
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <sys/ioctl.h>
@@ -270,9 +263,10 @@ diff -Nru ../heirloomorig/heirloom-070715/ls/ls.c ./ls/ls.c
  #include <stdio.h>
  #include <string.h>
  #include <stddef.h>
-diff -Nru ../heirloomorig/heirloom-070715/makefile ./makefile
---- ../heirloomorig/heirloom-070715/makefile	Sun Jul 15 10:36:59 2007
-+++ ./makefile	Wed Nov 24 18:14:30 2021
+diff --git a/makefile b/makefile
+index 04a0655..9039ad8 100644
+--- a/makefile
++++ b/makefile
 @@ -1,21 +1,36 @@
  SHELL = /bin/sh
  
@@ -318,10 +312,11 @@ diff -Nru ../heirloomorig/heirloom-070715/makefile ./makefile
  
  dummy: makefiles all
  
-diff -Nru ../heirloomorig/heirloom-070715/mknod/mknod.c ./mknod/mknod.c
---- ../heirloomorig/heirloom-070715/mknod/mknod.c	Sun May 29 09:55:42 2005
-+++ ./mknod/mknod.c	Wed Nov 24 17:17:58 2021
-@@ -46,7 +46,7 @@
+diff --git a/mknod/mknod.c b/mknod/mknod.c
+index b772b88..503003e 100644
+--- a/mknod/mknod.c
++++ b/mknod/mknod.c
+@@ -46,7 +46,7 @@ static const char sccsid[] USED = "@(#)mknod.sl	1.8 (gritter) 5/29/05";
  #include	<limits.h>
  #include	<unistd.h>
  #ifndef	major
@@ -330,10 +325,11 @@ diff -Nru ../heirloomorig/heirloom-070715/mknod/mknod.c ./mknod/mknod.c
  #endif	/* !major */
  
  #ifndef	S_IFNAM
-diff -Nru ../heirloomorig/heirloom-070715/su/su.c ./su/su.c
---- ../heirloomorig/heirloom-070715/su/su.c	Tue Feb 21 11:59:23 2006
-+++ ./su/su.c	Wed Nov 24 17:18:15 2021
-@@ -505,7 +505,7 @@
+diff --git a/su/su.c b/su/su.c
+index 8d11925..4a9ef51 100644
+--- a/su/su.c
++++ b/su/su.c
+@@ -505,7 +505,7 @@ main(int argc, char **argv)
  		dolog('-');
  		if (sleeptime)
  			sleep(sleeptime);
@@ -342,10 +338,11 @@ diff -Nru ../heirloomorig/heirloom-070715/su/su.c ./su/su.c
  		status = 1;
  	}
  #ifdef	PAM
-diff -Nru ../heirloomorig/heirloom-070715/tar/tar.c ./tar/tar.c
---- ../heirloomorig/heirloom-070715/tar/tar.c	Sat Apr 14 10:48:55 2007
-+++ ./tar/tar.c	Wed Nov 24 17:18:29 2021
-@@ -99,7 +99,7 @@
+diff --git a/tar/tar.c b/tar/tar.c
+index 2d3dada..1cf3a45 100644
+--- a/tar/tar.c
++++ b/tar/tar.c
+@@ -99,7 +99,7 @@ static const char sccsid[] USED = "@(#)tar.sl	1.177 (gritter) 4/14/07";
  #endif
  
  #ifndef	major
@@ -354,9 +351,10 @@ diff -Nru ../heirloomorig/heirloom-070715/tar/tar.c ./tar/tar.c
  #endif	/* !major */
  
  #include <getdir.h>
-diff -Nru ../heirloomorig/heirloom-070715/test/defs.h ./test/defs.h
---- ../heirloomorig/heirloom-070715/test/defs.h	Sat Jul  2 09:36:39 2005
-+++ ./test/defs.h	Wed Nov 24 17:18:42 2021
+diff --git a/test/defs.h b/test/defs.h
+index e97bccc..be4b9e6 100644
+--- a/test/defs.h
++++ b/test/defs.h
 @@ -31,6 +31,7 @@
  #include <string.h>
  #include <wchar.h>
