@@ -1,8 +1,8 @@
 diff --git a/build/mk.config b/build/mk.config
-index a05983e..f88d70d 100644
+index a05983e..6e08326 100644
 --- a/build/mk.config
 +++ b/build/mk.config
-@@ -6,7 +6,7 @@
+@@ -6,25 +6,28 @@
  # Bourne shell is recommended. It then must obviously be compiled and
  # installed first.
  #
@@ -11,7 +11,13 @@ index a05983e..f88d70d 100644
  
  #
  # Specify the path name for a POSIX-conforming shell here. For example,
-@@ -19,39 +19,46 @@ POSIX_SHELL = /bin/sh
+ # Solaris users should insert /usr/xpg4/bin/sh. This shell is used for
+ # the shell escape in the POSIX variants of the ed utility.
+ #
++# To be honest: POSIX is boring.
+ POSIX_SHELL = /bin/sh
+ 
+ #
  # Root directory. Mainly useful for package building; leave empty for
  # normal installation.
  #
@@ -22,50 +28,21 @@ index a05983e..f88d70d 100644
  # Location for binaries that have no special personality. This location
  # may be identical to that of one of the first three personalities below.
  #
--DEFBIN = /usr/5bin
-+# Note: don't worry with the /usr/bin, we'll be reorganizing them later.
-+#DEFBIN = /usr/5bin
-+DEFBIN = /usr/bin
++# Note: don't worry with the original /bin and /usr/bin, we'll be reorganizing
++# it later.
+ DEFBIN = /usr/5bin
  
  #
- # Location for SVID3/SVR4-style binaries.
- #
--SV3BIN = /usr/5bin
-+#SV3BIN = /usr/5bin
-+SV3BIN = /usr/bin
- 
- #
- # Location for SVID4/SVR4.2-style binaries.
- #
--S42BIN = /usr/5bin/s42
-+#S42BIN = /usr/5bin/s42
-+S42BIN = /usr/bin/s42
- 
- #
- # Location for POSIX.2/SUS-style binaries.
- #
--SUSBIN = /usr/5bin/posix
-+#SUSBIN = /usr/5bin/posix
-+SUSBIN = /usr/bin/posix
- 
- #
- # Location for POSIX.1-2001/SUSv3-style binaries.
--SU3BIN = /usr/5bin/posix2001
-+#SU3BIN = /usr/5bin/posix2001
-+SU3BIN = /usr/bin/posix2001
- 
- #
- # Location for SVR4 UCB-style binaries. These do not form a complete
+@@ -51,7 +54,7 @@ SU3BIN = /usr/5bin/posix2001
  # personality, and the binary path must not be identical to the default
  # one.
  #
 -UCBBIN = /usr/ucb
-+#UCBBIN = /usr/ucb/bin
 +UCBBIN = /usr/ucb/bin
  
  #
  # Location for development binaries. The "tsort" utility is
-@@ -64,18 +71,20 @@ CCSBIN = /usr/ccs/bin
+@@ -64,17 +67,20 @@ CCSBIN = /usr/ccs/bin
  #
  # Location for library files.
  #
@@ -82,30 +59,37 @@ index a05983e..f88d70d 100644
  
  #
  # Location for manual pages (with man1, man1b ... man8 below).
- #
--MANDIR = /usr/share/man/5man
-+#MANDIR = /usr/share/man/5man
-+MANDIR = /usr/share/man
+-#
++# Since Heirloom's manual pages are fairly different from OpenBSD's, we'll be
++# keeping it on /usr/share/man/5man instead of /usr/share/man/ and setting
++# MANPATH as /usr/share/man:/usr/share/man/5man
+ MANDIR = /usr/share/man/5man
  
  #
- # Location for default files. Make sure that this directory is accessible
-@@ -92,13 +101,13 @@ SPELLHIST = /var/adm/spellhist
+@@ -91,14 +97,18 @@ SPELLHIST = /var/adm/spellhist
+ 
  #
  # Location for the su logfile.
- #
+-#
 -SULOG = /var/log/sulog
-+#SULOG = /var/log/sulog
++# We probably won't be using Heirloom's su(1), since we already got it on
++# shadow-utils. Although shadow-utils provides a homegrown implementation
++# instead of the original AT&T code, it still more trustable and way more
++# useful.
++#SULOG = /var/adm/sulog
  
  #
  # Where to store the file command's magic. Note that the existing
  # file at this location is replaced unconditionally at installation.
- #
+-#
 -MAGIC = $(DEFLIB)/magic
-+#MAGIC = $(DEFLIB)/magic
++# In this case, I will be creating a subdirectory at /lib called 5lib, to store
++# magic itself, so it won't be overwriting our file(1) implementation's one
++MAGIC = $(DEFLIB)/5lib/magic
  
  #
  # The group whose members may write utmp or utmpx entries. Appropriate values
-@@ -108,7 +117,7 @@ MAGIC = $(DEFLIB)/magic
+@@ -108,7 +118,7 @@ MAGIC = $(DEFLIB)/magic
  #
  # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
  #
@@ -114,7 +98,7 @@ index a05983e..f88d70d 100644
  
  #
  # Curses library. Change to -lncurses if necessary. Caution: Some gcc
-@@ -121,7 +130,7 @@ TTYGRP = -g utmp
+@@ -121,7 +131,7 @@ TTYGRP = -g utmp
  # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
  # to CPPFLAGS.
  #
@@ -123,7 +107,7 @@ index a05983e..f88d70d 100644
  
  #
  # Socket library, necessary on Solaris and Open UNIX. If your system has
-@@ -144,7 +153,7 @@ LCURS = -lcurses
+@@ -144,7 +154,7 @@ LCURS = -lcurses
  # compression when creating zip files with cpio.
  #
  LIBZ = -Wl,-Bstatic -lz -Wl,-Bdynamic
@@ -132,7 +116,7 @@ index a05983e..f88d70d 100644
  
  #
  # The name of the bzip2 library, and whether to use it. The library is only
-@@ -158,12 +167,14 @@ USE_BZLIB = 0
+@@ -158,12 +168,14 @@ USE_BZLIB = 0
  #
  
  #CC = $(HOME)/src/diet gcc
@@ -150,7 +134,7 @@ index a05983e..f88d70d 100644
  
  #
  # Flags for the C preprocessor.
-@@ -174,7 +185,7 @@ LDFLAGS =
+@@ -174,7 +186,7 @@ LDFLAGS =
  # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
  # On NetBSD, add -DUSE_TERMCAP.
  #
@@ -159,7 +143,7 @@ index a05983e..f88d70d 100644
  
  #
  # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
-@@ -195,10 +206,10 @@ CPPFLAGS = -D_GNU_SOURCE
+@@ -195,10 +207,10 @@ CPPFLAGS = -D_GNU_SOURCE
  # compiler mode (which is the default) until this issue is properly
  # handled by the system vendor.
  #
@@ -174,7 +158,7 @@ index a05983e..f88d70d 100644
  
  #
  # Binaries are stripped with this command after installation.
-@@ -222,11 +233,11 @@ LARGEF = -D_FILE_OFFSET_BITS=64L
+@@ -222,11 +234,11 @@ LARGEF = -D_FILE_OFFSET_BITS=64L
  #
  # Use this if you prefer symbolic links between installed files.
  #
@@ -286,58 +270,61 @@ index e4480d0..70e448c 100644
  #include <string.h>
  #include <stddef.h>
 diff --git a/makefile b/makefile
-index 04a0655..1927377 100644
+index 04a0655..6ce4924 100644
 --- a/makefile
 +++ b/makefile
-@@ -1,21 +1,40 @@
- SHELL = /bin/sh
+@@ -2,20 +2,43 @@ SHELL = /bin/sh
  
  SUBDIRS = build libwchar libcommon libuxre _install \
--	banner basename bc bdiff bfs \
-+	banner basename bdiff bfs \
- 	cal calendar cat chmod chown \
+ 	banner basename bc bdiff bfs \
+-	cal calendar cat chmod chown \
 -	cksum cmp col comm copy cp cpio csplit cut \
 -	date dc dd deroff diff diff3 dircmp dirname df du \
-+	cksum cmp comm copy csplit cut \
-+	date deroff dircmp dirname df du \
- 	echo ed env expand expr \
+-	echo ed env expand expr \
 -	factor file find fmt fmtmsg fold \
-+	find factor fmt fmtmsg fold \
++	cal col cp calendar cat chmod chown \
++	cksum cmp comm copy csplit cut \
++	dc date deroff dircmp dirname df du \
++	diff diff3 echo ed env expand expr \
++	file find factor fmt fmtmsg fold \
  	getconf getopt grep groups hd head hostname id join \
 -	kill line listusers ln logins logname ls \
 -	mail man mesg mkdir mkfifo mknod more mvdir \
 -	nawk news nice nl nohup oawk od \
-+	kill line listusers ls logins logname \
-+	mail mesg mkdir more mvdir \
++	kill line listusers ln ls logins logname \
++	mail mesg mkdir mkfifo mknod more mvdir \
 +	news nice nl nohup oawk od \
  	paste pathchk pg pgrep pr printenv printf priocntl ps psrinfo pwd \
--	random renice rm rmdir \
+ 	random renice rm rmdir \
 -	sdiff sed setpgrp shl sleep sort spell split stty su sum sync \
 -	tabs tail tapecntl tar tcopy tee test time touch tr true tsort tty \
 -	ul uname uniq units users wc what who whoami whodo xargs yes
-+	random renice rmdir \
-+	setpgrp shl sleep sort spell split stty sum sync \
-+	tail tapecntl tcopy tee test time touch tr tsort tty \
-+	ul uname uniq units users wc what who whoami whodo yes 
++	setpgrp shl sdiff sed sleep sort spell split stty sum sync \
++	tabs tail tapecntl tcopy tee test time touch tr tsort tty ul \
++       	uname uniq units users wc what who whoami whodo xargs yes
 +
 +# Unknown type 'mode_t' or sys/mkdev.h
 +# cpio 
 +# 
-+# Multiple definition of "idk_what"
++# Multiple definition of "idk_what" --- May -fcommon on GCC can fix this,
++# although I have been trying to get it working since 2021 with no success.
 +# cpio diff{,3} tabs
 +# 
 +# unknown type name intptr_t
 +# nawk
 +# 
-+# Lacks basic POSIX specification for nowadays:
++# Lacks basic POSIX specification for nowadays, but we will be keeping these in
++# the system for historical and portability purposes, at /usr/5bin:
 +# rm, ln
 +#
 +# Supplied by others (lobase, star, mandoc, independent packages et cetera):
 +# bc/dc, col, colrm, cp, dd, {s,}diff{,3}, file, find, ln, man, mk{fifo,nod},
 +# nawk, rm, sed, su, tabs, tar, true, xargs
 +
-+SKIPDIR = bc col cp cpio dc diff diff3 file find ln man mkfifo mknod \
-+	  nawk rm sdiff sed su tabs tar true xargs 
++# In fact broken:
++# man, true
++
++SKIPDIR = cpio man nawk rm su tar true
  
  dummy: makefiles all
  
