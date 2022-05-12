@@ -1,20 +1,21 @@
-diff -Naru lobase.orig/bin/Makefile lobase/bin/Makefile
---- lobase.orig/bin/Makefile	2018-04-06 15:17:25.000000000 -0300
-+++ lobase/bin/Makefile	2022-02-07 05:06:42.000000000 -0300
-@@ -1,4 +1,7 @@
+diff --git a/bin/Makefile b/bin/Makefile
+index 91db4d1..924b932 100644
+--- a/bin/Makefile
++++ b/bin/Makefile
+@@ -1,4 +1,6 @@
  TOPDIR?=..
 -SUBDIR=	cat chmod cp date dd df domainname echo ed expr hostname kill ksh ln ls\
 -	md5 mkdir mv pax pwd rm rmdir sleep stty sync test
-+SUBDIR= cat chmod cp date dd kill ln md5 \
-+	mkdir mv pwd rm rmdir domainname
-+
-+SKIPDIR= echo ed expr pax ksh df ls sleep \
-+	 stty sync test hostname
++SUBDIR= cat chmod cp date dd df domainname expr hostname kill ls ln md5 \
++       	mkdir mv pwd rm rmdir stty sync test 
++	
++SKIPDIR= echo ed pax ksh sleep 
  include ${.TOPDIR}/mk/bsd.subdir.mk
-diff -Naru lobase.orig/config.mk.in lobase/config.mk.in
---- lobase.orig/config.mk.in	2018-04-06 15:17:25.000000000 -0300
-+++ lobase/config.mk.in	2022-02-07 05:06:42.000000000 -0300
-@@ -24,7 +24,7 @@
+diff --git a/config.mk.in b/config.mk.in
+index 83300b6..5004d4b 100644
+--- a/config.mk.in
++++ b/config.mk.in
+@@ -24,7 +24,7 @@ YACC=@YACC@
  
  CFLAGS+=@CFLAGS@
  CPPFLAGS+=@CPPFLAGS@ @DEFS@ $(PATHS) -I$(TOPDIR)/include
@@ -23,10 +24,11 @@ diff -Naru lobase.orig/config.mk.in lobase/config.mk.in
  
  HAVE_STRLCAT=@HAVE_STRLCAT@
  HAVE_STRLCPY=@HAVE_STRLCPY@
-diff -Naru lobase.orig/configure lobase/configure
---- lobase.orig/configure	2018-04-06 15:17:25.000000000 -0300
-+++ lobase/configure	2022-02-07 05:06:42.000000000 -0300
-@@ -568,7 +568,7 @@
+diff --git a/configure b/configure
+index e890b91..ea3c411 100755
+--- a/configure
++++ b/configure
+@@ -568,7 +568,7 @@ ac_hostname=`(hostname || uname -n) 2>/dev/null | sed 1q`
  #
  # Initializations.
  #
@@ -35,10 +37,11 @@ diff -Naru lobase.orig/configure lobase/configure
  ac_clean_files=
  ac_config_libobj_dir=.
  LIBOBJS=
-diff -Naru lobase.orig/mk/bsd.own.mk lobase/mk/bsd.own.mk
---- lobase.orig/mk/bsd.own.mk	2018-04-06 15:17:25.000000000 -0300
-+++ lobase/mk/bsd.own.mk	2022-02-07 05:06:42.000000000 -0300
-@@ -23,7 +23,7 @@
+diff --git a/mk/bsd.own.mk b/mk/bsd.own.mk
+index d141ab4..d18a07c 100644
+--- a/mk/bsd.own.mk
++++ b/mk/bsd.own.mk
+@@ -23,7 +23,7 @@ include ${.TOPDIR}/config.mk
  VPATH+=	${.CURDIR}
  
  BINOWN?=	root
@@ -47,9 +50,10 @@ diff -Naru lobase.orig/mk/bsd.own.mk lobase/mk/bsd.own.mk
  BINMODE?=	555
  NONBINMODE?=	444
  DIRMODE?=	755
-diff -Naru lobase.orig/usr.bin/Makefile lobase/usr.bin/Makefile
---- lobase.orig/usr.bin/Makefile	2018-04-06 15:17:25.000000000 -0300
-+++ lobase/usr.bin/Makefile	2022-02-07 05:06:42.000000000 -0300
+diff --git a/usr.bin/Makefile b/usr.bin/Makefile
+index 8655bd8..d8afab3 100644
+--- a/usr.bin/Makefile
++++ b/usr.bin/Makefile
 @@ -1,12 +1,14 @@
  TOPDIR?=..
 -SUBDIR=	apply awk basename bc biff cal calendar cmp colrm col column comm \
@@ -62,16 +66,31 @@ diff -Naru lobase.orig/usr.bin/Makefile lobase/usr.bin/Makefile
 -	which xinstall htpasswd cu newsyslog banner cap_mkdb unifdef whois xargs \
 -	csplit compress ctags deroff yes
 -SKIPDIR=file ftp cu
-+SUBDIR= apply col colrm column diff diff3 false jot lam leave lndir \
-+	logger look lorder mkdep readlink sdiff sed shar split stat true \
-+	unifdef vis which xargs xinstall 
++SUBDIR= apply cal calendar cmp colrm col column comm cut du diff diff3 \
++	encrypt env expand false find fmt fold getconf getent getopt grep head \
++	hexdump id join jot lam leave lndir logger logname look nice nl nohup \
++        paste patch pr printenv printf readlink renice rev rs sdiff sed shar \
++       	signify sort spell split stat tail tee time touch tr true tsort tty \
++	ul units unexpand uniq unvis vis wc which xinstall newsyslog banner \
++	xargs csplit yes
 +
-+SKIPDIR= awk basename bc biff cal calendar cmp compress comm \
-+	cut dc dirname du encrypt env expand file find fmt fold \
-+	from ftp getconf getent getopt head hexdump id indent join \
-+	logname mail file ftp tail tee telnet tftp time touch tr tsort tty \
-+	ul units uname unexpand uniq unvis uudecode uuencode vacation wc what mktemp \
-+ 	htpasswd cu newsyslog banner cap_mkdb whois pkg-config pr printenv printf rcs  \
-+	csplit ctags deroff yes
++SKIPDIR= awk basename bc biff cap_mkdb compress ctags cu dc deroff dirname \
++	 file from ftp htpasswd indent lorder mail mkdep mktemp pkg-config \
++	 rcs telnet tftp uname unifdef uudecode uuencode vacation what whois
 +
+ include ${.TOPDIR}/mk/bsd.subdir.mk
+diff --git a/usr.sbin/Makefile b/usr.sbin/Makefile
+index 393547c..b482c92 100644
+--- a/usr.sbin/Makefile
++++ b/usr.sbin/Makefile
+@@ -1,3 +1,9 @@
+ TOPDIR?=..
+-SUBDIR=	chroot mtree rdate dev_mkdb
++SUBDIR=	chroot mtree dev_mkdb
++
++# OpenBSD's rdate(8) implementation has a great reputation over the Internet, it
++# has even been ported as "openrdate" some years ago; but, since we will be
++# using OpenNTPD, rdate will just become redundant.
++# Always, if you feel the need, you can just edit this file and compile it.
++SKIPDIR= rdate
  include ${.TOPDIR}/mk/bsd.subdir.mk
