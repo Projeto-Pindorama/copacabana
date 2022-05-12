@@ -1,8 +1,8 @@
 diff --git a/build/mk.config b/build/mk.config
-index a05983e..6e08326 100644
+index a05983e..191205d 100644
 --- a/build/mk.config
 +++ b/build/mk.config
-@@ -6,25 +6,28 @@
+@@ -6,52 +6,55 @@
  # Bourne shell is recommended. It then must obviously be compiled and
  # installed first.
  #
@@ -28,12 +28,36 @@ index a05983e..6e08326 100644
  # Location for binaries that have no special personality. This location
  # may be identical to that of one of the first three personalities below.
  #
+-DEFBIN = /usr/5bin
 +# Note: don't worry with the original /bin and /usr/bin, we'll be reorganizing
 +# it later.
- DEFBIN = /usr/5bin
++DEFBIN = /usr/sysv/bin
  
  #
-@@ -51,7 +54,7 @@ SU3BIN = /usr/5bin/posix2001
+ # Location for SVID3/SVR4-style binaries.
+ #
+-SV3BIN = /usr/5bin
++SV3BIN = /usr/sysv/bin
+ 
+ #
+ # Location for SVID4/SVR4.2-style binaries.
+ #
+-S42BIN = /usr/5bin/s42
++S42BIN = /usr/sysv/bin/s42
+ 
+ #
+ # Location for POSIX.2/SUS-style binaries.
+ #
+-SUSBIN = /usr/5bin/posix
++SUSBIN = /usr/sysv/bin/posix
+ 
+ #
+ # Location for POSIX.1-2001/SUSv3-style binaries.
+-SU3BIN = /usr/5bin/posix2001
++SU3BIN = /usr/sysv/bin/posix2001
+ 
+ #
+ # Location for SVR4 UCB-style binaries. These do not form a complete
  # personality, and the binary path must not be identical to the default
  # one.
  #
@@ -42,13 +66,13 @@ index a05983e..6e08326 100644
  
  #
  # Location for development binaries. The "tsort" utility is
-@@ -64,17 +67,20 @@ CCSBIN = /usr/ccs/bin
+@@ -64,18 +67,21 @@ CCSBIN = /usr/ccs/bin
  #
  # Location for library files.
  #
 -DEFLIB = /usr/5lib
 +#DEFLIB = /usr/5lib
-+DEFLIB = /usr/lib
++DEFLIB = /usr/sysv/lib
  
  #
  # Location for superuser-only binaries. May be identical to the
@@ -60,13 +84,15 @@ index a05983e..6e08326 100644
  #
  # Location for manual pages (with man1, man1b ... man8 below).
 -#
+-MANDIR = /usr/share/man/5man
 +# Since Heirloom's manual pages are fairly different from OpenBSD's, we'll be
 +# keeping it on /usr/share/man/5man instead of /usr/share/man/ and setting
 +# MANPATH as /usr/share/man:/usr/share/man/5man
- MANDIR = /usr/share/man/5man
++MANDIR = /usr/sysv/man
  
  #
-@@ -91,14 +97,18 @@ SPELLHIST = /var/adm/spellhist
+ # Location for default files. Make sure that this directory is accessible
+@@ -91,13 +97,17 @@ SPELLHIST = /var/adm/spellhist
  
  #
  # Location for the su logfile.
@@ -82,13 +108,11 @@ index a05983e..6e08326 100644
  # Where to store the file command's magic. Note that the existing
  # file at this location is replaced unconditionally at installation.
 -#
--MAGIC = $(DEFLIB)/magic
 +# In this case, I will be creating a subdirectory at /lib called 5lib, to store
 +# magic itself, so it won't be overwriting our file(1) implementation's one
-+MAGIC = $(DEFLIB)/5lib/magic
+ MAGIC = $(DEFLIB)/magic
  
  #
- # The group whose members may write utmp or utmpx entries. Appropriate values
 @@ -108,7 +118,7 @@ MAGIC = $(DEFLIB)/magic
  #
  # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
