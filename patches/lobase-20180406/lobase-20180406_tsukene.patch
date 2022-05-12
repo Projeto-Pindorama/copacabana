@@ -50,6 +50,19 @@ index d141ab4..d18a07c 100644
  BINMODE?=	555
  NONBINMODE?=	444
  DIRMODE?=	755
+diff --git a/mk/bsd.prog.mk b/mk/bsd.prog.mk
+index f9e248e..f919a03 100644
+--- a/mk/bsd.prog.mk
++++ b/mk/bsd.prog.mk
+@@ -111,7 +111,7 @@ ifneq (,$(LINKS))
+ 		echo "$$t -> $$l"; \
+ 		mkdir -p $$(dirname $$t); \
+ 		rm -f $$t; \
+-		ln -s $$l $$t; \
++		ln $$l $$t; \
+ 	done
+ 
+ endif
 diff --git a/usr.bin/Makefile b/usr.bin/Makefile
 index 8655bd8..d8afab3 100644
 --- a/usr.bin/Makefile
