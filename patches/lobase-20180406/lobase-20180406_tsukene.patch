@@ -1,15 +1,15 @@
 diff --git a/bin/Makefile b/bin/Makefile
-index 91db4d1..924b932 100644
+index 91db4d1..03c59f8 100644
 --- a/bin/Makefile
 +++ b/bin/Makefile
 @@ -1,4 +1,6 @@
  TOPDIR?=..
 -SUBDIR=	cat chmod cp date dd df domainname echo ed expr hostname kill ksh ln ls\
 -	md5 mkdir mv pax pwd rm rmdir sleep stty sync test
-+SUBDIR= cat chmod cp date dd df domainname expr hostname kill ls ln md5 \
-+       	mkdir mv pwd rm rmdir stty sync test 
++SUBDIR= cat chmod cp date dd df domainname echo expr hostname kill ls \
++	ln md5 mkdir mv pwd rm rmdir sleep stty sync test 
 +	
-+SKIPDIR= echo ed pax ksh sleep 
++SKIPDIR= ed pax ksh
  include ${.TOPDIR}/mk/bsd.subdir.mk
 diff --git a/config.mk.in b/config.mk.in
 index 83300b6..5004d4b 100644
