@@ -12,14 +12,16 @@ For more technical information about the distribution itself, read the
 Copacabana tabula at the Silicon Tabula:
 http://silicon.pindorama.dob.jp/copacabana
 
+## Chip in!
+
 If you are willing to contribute in documenting the distribution, the
-documentation is open at our git repository, inside the `contents/` directory:
+documentation is open at our git repository, inside the ``docs/`` directory:
 http://github.com/Projeto-Pindorama/Silicon-Tabula
 
 Any other contributions are entirely accepted, for more information read the
-"Chip in" session at Copacabana's website.
+"Chip in!" session at [Copacabana's website](http://copacabana.pindorama.dob.jp).
 
-### Other Pindorama projects intrinsically related to the distribution that you may want to contribute 
+### Other Pindorama projects intrinsically related to the distribution that you may want to chip in
 
 - [The Motoko Package Manager](https://github.com/Projeto-Pindorama/motoko) (**W.I.P**);
 - [Mitzune](https://github.com/Projeto-Pindorama/mitzune);
