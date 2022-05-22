@@ -54,7 +54,6 @@ d1257dc3a483eae44fe8a34cd0924a326809a0b63bd1940367514c376e357c4d  ./pkgs/gnu/tex
 63287527c8d9e27e801cf0804436f3494bd569db05d49dcdd2a942ae72fa9055  ./pkgs/gnu/gperf-3.0.3.tar.gz
 16b77de9f013bcd536b7bc1efbe314223aedfe250f9063e33cbb4dfd347215a2  ./pkgs/gnu/make-3.81.tar.gz
 ae6f06d5668ca6f8ef1666c5fbcde0e8e0aa737c423ba00270954836bfd62597  ./pkgs/gnu/gcc-10.3.1_git20210424.tar.xz
-ecb5c6469d732bcf01d6ec1afe9e64f1668caba5bfdb103c28d7f537ba3cdb8a  ./pkgs/gnu/patch-2.5.9.tar.gz
 e0d34b8faca0b3cca0703f6c6b498afbe72f0ba16c35980c10ec9ef7724d6204  ./pkgs/gnu/findutils-4.2.31.tar.gz
 fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2  ./pkgs/gnu/gmp-6.2.1.tar.xz
 cbd6ebc5aaf080ed60d0162d7f6aeae58211a1ee9ba9bb25623daa6cd942683b  ./pkgs/gnu/sed-4.4.tar.xz
