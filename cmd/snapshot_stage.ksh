@@ -34,7 +34,7 @@ function snapshot {
 	# elsewhere
        	# Of course, you can change this with some Shell hacking	
 	case $stage in
-		tsukene) stage_dir="." ;; # This is kind of a shoot in the dark,
+		base) stage_dir="." ;; # This is kind of a shoot in the dark,
 					  # since we're considering "." is
 					  # $COPA's root just because we cd'd on
 					  # it.
