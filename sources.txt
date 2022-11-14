@@ -6,7 +6,7 @@ http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.42.ta
 http://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.tar.xz
 http://dev.gentoo.org/~blueness/eudev/eudev-3.2.9.tar.gz
 http://razaoinfo.dl.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.45.6/e2fsprogs-1.45.6.tar.gz
-http://www.infodrom.org/projects/sysklogd/download/sysklogd-1.5.1.tar.gz
+http://github.com/troglobit/sysklogd/releases/download/v2.4.4/sysklogd-2.4.4.tar.gz
 http://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.4.tar.xz
 http://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.16.tar.xz
 http://github.com/shadow-maint/shadow/releases/download/4.8.1/shadow-4.8.1.tar.xz
