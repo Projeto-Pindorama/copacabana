@@ -1,0 +1,142 @@
+diff -Naru heirloom-ng-221025.orig/build/mk.config heirloom-ng-221025/build/mk.config
+--- heirloom-ng-221025.orig/build/mk.config	Wed Oct 26 01:09:27 2022
++++ heirloom-ng-221025/build/mk.config	Sat Nov 26 05:38:24 2022
+@@ -19,39 +19,39 @@
+ # Root directory. Mainly useful for package building; leave empty for
+ # normal installation.
+ #
+-ROOT =
++ROOT = /tmp/heirloom-ng
+ 
+ #
+ # Location for binaries that have no special personality. This location
+ # may be identical to that of one of the first three personalities below.
+ #
+-DEFBIN = /usr/5bin
++DEFBIN = /usr/bin
+ 
+ #
+ # Location for SVID3/SVR4-style binaries.
+ #
+-SV3BIN = /usr/5bin
++SV3BIN = /usr/bin
+ 
+ #
+ # Location for SVID4/SVR4.2-style binaries.
+ #
+-S42BIN = /usr/5bin/s42
++S42BIN = /usr/bin/s42
+ 
+ #
+ # Location for POSIX.2/SUS-style binaries.
+ #
+-SUSBIN = /usr/5bin/posix
++SUSBIN = /usr/bin/posix
+ 
+ #
+ # Location for POSIX.1-2001/SUSv3-style binaries.
+-SU3BIN = /usr/5bin/posix2001
++SU3BIN = /usr/bin/posix2001
+ 
+ #
+ # Location for SVR4 UCB-style binaries. These do not form a complete
+ # personality, and the binary path must not be identical to the default
+ # one.
+ #
+-UCBBIN = /usr/ucb
++UCBBIN = /usr/ucb/bin
+ 
+ #
+ # Location for development binaries. The "tsort" utility is
+@@ -64,18 +64,18 @@
+ #
+ # Location for library files.
+ #
+-DEFLIB = /usr/5lib
++DEFLIB = /usr/lib
+ 
+ #
+ # Location for superuser-only binaries. May be identical to the
+ # default binary directory.
+ #
+-DEFSBIN = /usr/5bin
++DEFSBIN = /sbin
+ 
+ #
+ # Location for manual pages (with man1, man1b ... man8 below).
+ #
+-MANDIR = /usr/share/man/5man
++MANDIR = /usr/share/man
+ 
+ #
+ # Location for default files. Make sure that this directory is accessible
+@@ -92,13 +92,13 @@
+ #
+ # Location for the su logfile.
+ #
+-SULOG = /var/log/sulog
++SULOG = /var/adm/sulog
+ 
+ #
+ # Where to store the file command's magic. Note that the existing
+ # file at this location is replaced unconditionally at installation.
+ #
+-MAGIC = $(DEFLIB)/magic
++#MAGIC = $(DEFLIB)/magic
+ 
+ #
+ # The group whose members may write utmp or utmpx entries. Appropriate values
+@@ -108,7 +108,7 @@
+ #
+ # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
+ #
+-TTYGRP = -g utmp
++TTYGRP = -g adm 
+ 
+ #
+ # Library path, just change it if you need. This is somewhat self-describing:
+@@ -130,7 +130,7 @@
+ # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
+ # to CPPFLAGS.
+ #
+-LCURS = -lcurses
++LCURS = $(shell pkg-config ncurses --libs) 
+ 
+ #
+ # Socket library, necessary on Solaris and Open UNIX. If your system has
+diff -Naru heirloom-ng-221025.orig/makefile heirloom-ng-221025/makefile
+--- heirloom-ng-221025.orig/makefile	Wed Oct 26 01:09:27 2022
++++ heirloom-ng-221025/makefile	Sat Nov 26 06:08:35 2022
+@@ -1,21 +1,22 @@
+ SHELL = /bin/sh
+ 
+ SUBDIRS = build libwchar libcommon libuxre _install \
+-	banner basename bc bdiff bfs \
++	banner basename bdiff bfs \
+ 	cal calendar cat chmod chown chroot \
+ 	cksum cmp col comm copy cp cpio csplit cut \
+-	date dc dd deroff diff diff3 dircmp dirname df du \
++	date dd deroff diff diff3 dircmp dirname df du \
+ 	echo ed env expand expr \
+-	factor file find fmt fmtmsg fold \
+-	getconf getopt grep groups hd head hostname id join \
+-	kill line listusers ln logins logname ls \
+-	mail man mesg mkdir mkfifo mknod more mvdir \
+-	nawk news nice nl nohup oawk od \
+-	paste pathchk pg pgrep pr printenv printf priocntl ps psrinfo pwd \
++	factor find fmt fmtmsg fold \
++	getopt grep groups hd head hostname id join \
++	line listusers ln logins logname ls \
++	mail mesg mkdir mkfifo mknod more mvdir \
++	news nice nl nohup od \
++	paste pathchk pg pgrep pr printenv printf priocntl psrinfo pwd \
+ 	random renice rm rmdir \
+-	sdiff sed setpgrp shl sleep sort spell split stty su sum sync \
+-	tabs tail tapecntl tar tcopy tee test time touch tr true tsort tty \
++	sdiff sed setpgrp shl sleep sort spell split stty sum sync \
++	tabs tail tapecntl tcopy tee test time touch tr true tsort tty \
+ 	ul uname uniq units users wc what who whoami whodo xargs yes
++SKIPDIR =  bc dc file getconf ps kill tar man nawk oawk su 
+ 
+ dummy: makefiles all
+ 

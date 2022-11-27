@@ -1,15 +1,15 @@
 12c12
 < #define	_PATH_MAILDIR	"/var/mail"
 ---
-> #define	_PATH_MAILDIR	"/usr/spool/mail"
+> #define	_PATH_MAILDIR	"/var/spool/mail"
 21,23c21,23
 < #define _PATH_UTMP	"/dev/null/utmp"
 < #define	_PATH_VI	"/usr/bin/vi"
 < #define _PATH_WTMP	"/dev/null/wtmp"
 ---
-> #define _PATH_UTMP	"/var/run/utmps/utmp"
+> #define _PATH_UTMP	"/run/utmps/utmp"
 > #define	_PATH_VI	"/bin/vi"
-> #define _PATH_WTMP	"/var/adm/wtmp"
+> #define _PATH_WTMP	"/run/utmps/wtmp"
 29c29
 < #define	_PATH_VARTMP	"/var/tmp/"
 ---
