@@ -1,0 +1,63 @@
+diff -Naru heirloom-doctools-191015.orig//mk.config heirloom-doctools-191015/mk.config
+--- heirloom-doctools-191015.orig//mk.config	Sat Oct 26 04:51:56 2019
++++ heirloom-doctools-191015/mk.config	Sun Dec 25 20:11:17 2022
+@@ -6,27 +6,27 @@
+ #
+ # Packaging prefix.
+ #
+-PREFIX=/usr/local
++PREFIX=/usr
+ 
+ #
+ # Where to place binaries.
+ #
+-BINDIR=$(PREFIX)/ucb
++BINDIR=$(PREFIX)/bin
+ 
+ #
+ # Where to place libraries.
+ #
+-LIBDIR=$(PREFIX)/ucblib
++LIBDIR=$(PREFIX)/share/lib
+ 
+ #
+ # Where to place ASCII charts and the like.
+ #
+-PUBDIR=$(PREFIX)/pub
++PUBDIR=$(LIBDIR)
+ 
+ #
+ # Where to place manual pages.
+ #
+-MANDIR=$(PREFIX)/share/heirloom-doctools/man
++MANDIR=$(PREFIX)/share/man
+ 
+ #
+ # Where to place the troff macro packages.
+@@ -71,6 +71,11 @@
+ STRIP=strip
+ 
+ #
++# The compiler-compiler.
++#
++YACC=byacc
++
++#
+ # The C compiler.
+ #
+ #CC=
+@@ -96,12 +101,12 @@
+ #
+ # Linker flags.
+ #
+-_LDFLAGS=$(LDFLAGS) $(__CLDBG)
++_LDFLAGS=-static $(LDFLAGS) $(__CLDBG)
+ 
+ #
+ # Additional libraries to link with.
+ #
+-#LIBS=
++LIBS= -L/usr/lib
+ 
+ #
+ # A Bourne-compatible shell.
