@@ -1,6 +1,6 @@
 diff -Naru heirloom-doctools-191015.orig//mk.config heirloom-doctools-191015/mk.config
 --- heirloom-doctools-191015.orig//mk.config	Sat Oct 26 04:51:56 2019
-+++ heirloom-doctools-191015/mk.config	Sun Dec 25 20:11:17 2022
++++ heirloom-doctools-191015/mk.config	Sun Dec 25 21:45:25 2022
 @@ -6,27 +6,27 @@
  #
  # Packaging prefix.
@@ -51,7 +51,7 @@ diff -Naru heirloom-doctools-191015.orig//mk.config heirloom-doctools-191015/mk.
  # Linker flags.
  #
 -_LDFLAGS=$(LDFLAGS) $(__CLDBG)
-+_LDFLAGS=-static $(LDFLAGS) $(__CLDBG)
++_LDFLAGS=-static -z muldefs $(LDFLAGS) $(__CLDBG)
  
  #
  # Additional libraries to link with.
