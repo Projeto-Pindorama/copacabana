@@ -5,7 +5,7 @@ http://www.kernel.org/pub/linux/utils/kbd/kbd-2.3.0.tar.xz
 http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.42.tar.xz
 http://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.tar.xz
 http://dev.gentoo.org/~blueness/eudev/eudev-3.2.9.tar.gz
-http://razaoinfo.dl.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.45.6/e2fsprogs-1.45.6.tar.gz
+https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.46.2/e2fsprogs-1.46.2.tar.gz
 http://github.com/troglobit/sysklogd/releases/download/v2.4.4/sysklogd-2.4.4.tar.gz
 http://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.4.tar.xz
 http://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.16.tar.xz
@@ -37,7 +37,7 @@ http://github.com/gavinhoward/bc/releases/download/5.2.1/bc-5.2.1.tar.xz
 http://www.mktemp.org/dist/mktemp-1.7.tar.gz
 http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.10.2.tar.gz
 http://github.com/ksh93/ksh/archive/refs/tags/v1.0.0-beta.2.tar.gz
-https://sites.google.com/a/bostic.com/keithbostic/files/nvi-1.79.tar.gz
+http://github.com/johnsonjh/OpenVi/archive/refs/tags/7.2.19.tar.gz
 http://anduin.linuxfromscratch.org/LFS/vim-8.2.2890.tar.gz
 http://curl.se/download/curl-7.74.0.tar.xz
 http://mirrors.edge.kernel.org/pub/linux/docs/man-pages/Archive/man-pages-5.10.tar.xz
@@ -58,7 +58,7 @@ http://sourceware.org/pub/bzip2/bzip2-latest.tar.gz
 http://tukaani.org/xz/xz-5.2.5.tar.xz
 http://ftp.barfooze.de/pub/sabotage/tarballs/gettext-tiny-0.3.2.tar.xz
 http://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
-http://github.com/pkgconf/pkgconf/releases/download/pkgconf-1.0.1/pkgconf-1.0.1.tar.xz
+http://distfiles.dereferenced.org/pkgconf/pkgconf-1.0.1.tar.xz
 #< pkgs
 
 #> pkgs/dev
