@@ -29,8 +29,6 @@ http://roy.marples.name/downloads/dhcpcd/dhcpcd-9.4.0.tar.xz
 http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.1.tar.gz
 http://github.com/Projeto-Pindorama/heirloom-ng/archive/refs/tags/221025.tar.gz
 http://github.com/Projeto-Pindorama/stripped-lobase/archive/refs/tags/20180406-original.tar.gz
-http://github.com/Projeto-Pindorama/isainfo/releases/download/1.0/pindorama_isainfo-1.0.NOARCH.Copacabana.tar.xz
-http://github.com/Projeto-Pindorama/nproc/releases/download/1.0/pindorama_nproc-1.0.NOARCH.Copacabana.tar.xz
 http://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.2.tar.gz
 http://github.com/onetrueawk/awk/archive/refs/tags/20180827.tar.gz
 http://github.com/gavinhoward/bc/releases/download/5.2.1/bc-5.2.1.tar.xz
