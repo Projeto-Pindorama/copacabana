@@ -1,6 +1,6 @@
 University of Illinois/NCSA Open Source License
 
-Copyright (c) 2019-2022 Pindorama. All rights reserved.
+Copyright (c) 2019-2023 Pindorama. All rights reserved.
 
 Developed by: Pindorama
 	      Caio Novais (caioyoshimura)
