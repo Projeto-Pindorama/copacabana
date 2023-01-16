@@ -55,7 +55,7 @@ main() {
 
     for ((j = 0; j < n_urls; j++)) {
       printf 'Downloading %s\n' "`basename ${urls[${j}]}`"
-      curl -LO "${urls[${j}]}"
+      curl -LO "${urls[${j}]}" -k
     }
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
