@@ -44,7 +44,7 @@ function check_elevate_method {
         typeset -fx elevate
     elif [ $UID == 0 ]; then
         printerr 'Warning: running as root. This isn'\''t recommended.\n'
-    elif $(grep 'wheel' < $(id -nG $(whoami)) &>/dev/null); then
+    elif $(id -nG $(whoami) | grep 'wheel' >/dev/null); then
         printerr \
         'Warning: %s can log directly as root, although using sudo/doas is preferable.\n' \
 	"$USER"
