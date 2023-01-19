@@ -1,0 +1,60 @@
+# vim: set filetype=sh :
+
+# Reads simple Shell-based configuration files.
+# "#" is used for comments, and white spaces are ignored for read(1).
+function rconfig {
+  (sed '/#/d; /^$/d' "$1") \
+    | while IFS='=' read identifier value; do
+        eval $identifier=$value
+      done
+}
+
+# Just a wrapper to a decompressor such as gzip, xz, bzip2 etc.
+# Derived from copy2prefix() at https://git.io/mitzune
+function c {
+  tarball="$2"
+	# First, cut the absolute path off
+  tarball_ext="${tarball##*/}"
+	# Then, the filename itself,
+	# we just want the extension.
+  tarball_ext="${tarball_ext##*.}"
+  case "$tarball_ext" in
+    gz|tgz) { gzip "$@"; } ;;
+    xz|txz) { xz "$@"; } ;;
+    bz2|tbz) { bzip2 "$@"; } ;;
+    tar) { shift; cat "$@"; } ;;
+    *) printerr "$0: File format not recognized." ;;
+  esac
+}
+
+# A wrapper for elevating permissions when needed. Be careful.
+# Derived from check_doas() at https://git.io/mitzune
+function elevate {
+    # Clever way to get UID without having to use id(1) or $UID itself.
+    UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"
+
+    # This could be cached (by exporting the elevate() function for once), so we
+    # won't be needing to do all the checks every time we need to elevate
+    # permissions. That's done in GNU Broken-Again Shell by using "export -f".
+    # Although there's "typeset -xf" in Korn Shell 93 for the same purpose, I rather
+    # to do not risk for now.
+    if $(grep "$(whoami)" /etc/doas.conf &>/dev/null); then
+ 	{ doas -- "$@"; }
+    elif $(sudo -v &>/dev/null); then
+        { sudo -- "$@"; }
+    elif [ $UID == 0 ]; then
+        printerr 'Warning: running as root. This isn'\''t recommended.'
+    elif $(id -nG $USER | grep 'wheel'); then
+	printerr 'Warning: %s can log directly as root, although using doas is better.' \
+		"$USER"
+	{ su -c "$@"; }
+    else
+        printerr 'Fatal: It appears your user doesn'\''t have superuser privileges.'
+        exit 10
+    fi
+}
+
+# Use this function both for errors and warnings
+function printerr {
+    printf "$@" 1>&2
+}

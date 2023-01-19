@@ -1,0 +1,62 @@
+# POSIX shell alternatives for external processes, in a single libary.
+# Copied from Mitzune's lib/ directory, with just the removal of the "local"
+# keyword at timeout(), which isn't available on Korn Shell 93 since the
+# functions already have variables defined in local scopes.
+
+# vim: filetype=sh :
+
+# basename
+basename(){
+	DIR=${1%${1##*[!/]}}
+	DIR=${DIR##*/}
+	DIR=${DIR%"$2"}
+	printf '%s\n' "${DIR:-/}"
+}
+
+# realpath
+realpath(){
+  # ./sources.txt -> sources.txt
+  file_basename="`basename "$1"`"
+  # ./sources.txt -> .
+  file_dirname="`dirname "$1"`"
+	# get the absolute directory name
+	# example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
+	# cd ./; pwd -> /usr/src/copacabana-repo
+  echo "`cd "${file_dirname}"; pwd`/${file_basename}"
+}
+
+# wc -l
+lines(){
+	while IFS= read -r LINE || [ -n "${LINE}" ]; do
+		LINES=$[ ${LINES} + 1 ]
+	done < "${1}"
+	printf '%s\n' "$LINES"
+	unset LINES
+}
+
+# timeout
+timeout(){
+	"${2}" & PID="${!}"; sleep "${1}" && kill "${PID}"
+}
+
+# nproc
+nproc(){
+  case "`uname -s`" in
+    Darwin | Linux) getconf '_NPROCESSORS_ONLN';;
+    FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN';;
+    SunOS) echo "`ksh93 -c 'getconf NPROCESSORS_ONLN'`" ;;
+  esac
+}
+
+# The # macro for arrays.
+n(){
+	# based on what Caio did on
+	# Copacabana's cmd/download_sources.sh
+	echo ${@} | wc -w
+}
+
+trim_home_path(){
+	echo ${@} | sed 's@.*/home/@~@'
+}
+
+##End of alternatives section
