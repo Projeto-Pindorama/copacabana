@@ -1,5 +1,9 @@
 # vim: set filetype=sh :
 
+# Copyright (c) 2023 Pindorama
+#                    Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
+
 # Reads simple Shell-based configuration files.
 # "#" is used for comments, and white spaces are ignored for read(1).
 function rconfig {

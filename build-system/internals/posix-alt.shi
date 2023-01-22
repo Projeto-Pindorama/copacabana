@@ -3,6 +3,10 @@
 # keyword at timeout(), which isn't available on Korn Shell 93 since the
 # functions already have variables defined in local scopes.
 
+# Copyright (c) 2020-2021 Caio Novais and Luiz Antônio Rangel
+# Copyright (c) 2020-2023 Luiz Antônio Rangel
+# SPDX-Licence-Identifier: Caldera
+
 # Include dirs(), pushd() and popd()
 . ./dirs.shi
 

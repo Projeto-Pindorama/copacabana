@@ -2,7 +2,10 @@
 # Rewrite of MKS Toolkit's dirs(), pushd() and popd(),
 # but with popd() payloads based on GNU Broken-Again Shell.
 # No "+n" options implemented yet.
-# Free under NCSA licence, as Copacabana work itself.
+
+# Copyright (c) 2023 Pindorama
+#                    Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
 
 typeset -A dirstack
 
