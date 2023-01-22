@@ -21,7 +21,7 @@ function pushd {
     # An empty entry at cd means that we want to
     # change directory into $HOME.
     printerr '%s: No such file or directory.\n' "$0"
-    exit 1
+    return 1
   fi
   dirstack=( "$1" ${dirstack[@]} )
 }
@@ -38,6 +38,6 @@ function popd {
     cd "${dirstack[0]}"
   else
     printerr '%s: Stack is empty.\n' "$0"
-    exit 1
+    return 1
   fi
 }
