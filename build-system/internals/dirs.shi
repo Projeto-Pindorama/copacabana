@@ -1,0 +1,43 @@
+# vim: set filetype=sh :
+# Rewrite of MKS Toolkit's dirs(), pushd() and popd(),
+# but with popd() payloads based on GNU Broken-Again Shell.
+# No "+n" options implemented yet.
+# Free under NCSA licence, as Copacabana work itself.
+
+typeset -A dirstack
+
+function dirs {
+  # It's not clear if it prints each directory
+  # in the stack in separate lines of if it
+  # prints everything in one line.
+  printf '%s\n' "${dirstack[@]}"
+}
+
+function pushd {
+  dirstack=( "$(pwd)" )
+  if [ ! -z "$1" ]; then
+    cd "$1"
+  else
+    # An empty entry at cd means that we want to
+    # change directory into $HOME.
+    printerr '%s: No such file or directory.\n' "$0"
+    exit 1
+  fi
+  dirstack=( "$1" ${dirstack[@]} )
+}
+
+function popd {
+  # Pop the last directory out, then move to the second on the stack.
+  # This is faster than re-setting the entire array with a shift-left.
+  tmpdirstack=( ${dirstack[@]} )
+  unset tmpdirstack[0]
+  dirstack=( ${tmpdirstack[@]} )
+  unset tmpdirstack
+
+  if [ ! -z "${dirstack[0]}" ]; then
+    cd "${dirstack[0]}"
+  else
+    printerr '%s: Stack is empty.\n' "$0"
+    exit 1
+  fi
+}

@@ -3,6 +3,9 @@
 # keyword at timeout(), which isn't available on Korn Shell 93 since the
 # functions already have variables defined in local scopes.
 
+# Include dirs(), pushd() and popd()
+. ./dirs.shi
+
 # vim: filetype=sh :
 
 # basename
