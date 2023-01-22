@@ -1,3 +1,4 @@
+# vim: set filetype=sh :
 # POSIX shell alternatives for external processes, in a single libary.
 # Copied from Mitzune's lib/ directory, with just the removal of the "local"
 # keyword at timeout(), which isn't available on Korn Shell 93 since the
