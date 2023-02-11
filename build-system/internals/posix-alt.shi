@@ -9,7 +9,7 @@
 # SPDX-Licence-Identifier: Caldera
 
 # Include dirs(), pushd() and popd()
-. ./dirs.shi
+. "$progdir/build-system/internals/dirs.shi"
 
 # vim: filetype=sh :
 
@@ -65,6 +65,15 @@ n(){
 
 trim_home_path(){
 	echo ${@} | sed 's@.*/home/@~@'
+}
+
+# More powerful "source" macro for Korn Shell 93,
+# which can't source a file from the current
+# directory.
+source(){
+ { [ -e "$1" ] && [ -r "$1" ] \
+   && . "$(realpath "$1")"; } \
+   || return 1
 }
 
 ##End of alternatives section
