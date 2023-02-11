@@ -32,7 +32,7 @@ set -x
   [ ! -e "$pkgbuild_location" ] \
     && { printerr '%s: Couldn'\''t open %s: directory not found.\n' \
     "$driver_name" "$pkgbuild_location"; return 1; }
-  source "$alambiko_directory/$category/$package_name/pkgbuild"
+  source "$pkgbuild_location/pkgbuild"
 }
 
 function print_help {
