@@ -13,6 +13,19 @@ function rconfig {
       done
 }
 
+# Checks if a function or a variable is defined via its identifier. Analogous
+# on purpose to the C preprocessor special operator defined(), meant for being
+# used in if conditions.
+function defined {
+  # First it will check if it's a function defined on the environment and/or in
+  # a sourced file, if it's not, then it will check if it is a variable.
+  {
+    type -t "$1" | grep 'function' 2>&1>/dev/null \
+    || test ! -z "$(eval "echo \$$1")"
+  } \
+  || return 1
+}
+
 # Just a wrapper to a decompressor such as gzip, xz, bzip2 etc.
 # Derived from copy2prefix() at https://git.io/mitzune
 function c {
