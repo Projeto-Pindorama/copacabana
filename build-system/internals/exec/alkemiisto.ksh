@@ -5,12 +5,10 @@
 set -x
 
 # shellcheck disable=SC2068
-progdir=/home/jorge/copacabana
 
 driver_name="$0"
 alambiko_directory="$progdir/packages"
-
-function printerr { printf "$@" ; }
+patch_directory="$progdir/patches"
 
 function main {
   while getopts ":D:" options; do
@@ -32,7 +30,20 @@ set -x
   [ ! -e "$pkgbuild_location" ] \
     && { printerr '%s: Couldn'\''t open %s: directory not found.\n' \
     "$driver_name" "$pkgbuild_location"; return 1; }
+  [ ! -e "$pkgbuild_location/pkgbuild" ] \
+    && { printerr '%s: Couldn'\''t open %s: file not found.\n' \
+    "$driver_name" "$pkgbuild_location"; return 1; }
   source "$pkgbuild_location/pkgbuild"
+
+  pushd $SRCDIR
+  unarchive
+  popd
+
+  [ ! -z "${patches[@]}" ] && patch_add ${patches[@]}
+
+  pushd Destdir
+  post_install
+  popd
 }
 
 function print_help {
