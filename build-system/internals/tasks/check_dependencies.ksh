@@ -72,11 +72,17 @@ function check_dependencies {
 		else # Bzip2, Gzip or Xz tests
 			for (( l=1; l <= 9; l++ )); do
 				printerr 'With compression level %s? ' $l
-				
+			
+				# Test the alphabet string can be compressed
+				# without being corrupted, then, do a more
+				# "difficult" test using the main build.ksh
+				# script file.
 				{ printf '%s' {a..z} | "${archivers[$h]}" -"$l" -cf \
-					| "${archivers[$h]}" -dcf | wc -c | test `cat` -eq 26 ; } \
+					| "${archivers[$h]}" -dcf | wc -m | tr -d '[[:space:]]' \
+					| test `cat` -eq 26 ; } \
 				&& { cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf \
-					| "${archivers[$h]}" -dcf | cmp - "$progdir/$progname"; }
+					| "${archivers[$h]}" -dcf \
+				       	| cmp - "$progdir/$progname"; }
 					printerr 'Ok...\n'
 				sleep 0.5
 			done
