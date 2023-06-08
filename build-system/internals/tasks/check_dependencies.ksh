@@ -78,7 +78,7 @@ function check_dependencies {
 				# "difficult" test using the main build.ksh
 				# script file.
 				{ printf '%s' {a..z} | "${archivers[$h]}" -"$l" -cf \
-					| "${archivers[$h]}" -dcf | wc -m | tr -d '[[:space:]]' \
+					| "${archivers[$h]}" -dcf | wc -m | tr -d '[:space:]' \
 					| test `cat` -eq 26 ; } \
 				&& { cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf \
 					| "${archivers[$h]}" -dcf \
