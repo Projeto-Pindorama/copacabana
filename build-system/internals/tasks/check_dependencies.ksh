@@ -1,8 +1,17 @@
+# This task script is part of Copacabana's build system.
+# It contains a function for checking if all the dependencies needed for
+# building Copacabana are present.
+#
+# Copyright (c) 2023: Pindorama
+# SPDX-Licence-Identifier: NCSA
+# C and C++ sanity checks by Samuel (callsamu), Lucas (volatusveritas)
+# and Luiz Antônio Rangel (takusuman)
+
 function check_dependencies {
-	
-	ksh_sanity_test="$trash/XXXXXX.sanity.ksh"
-	c_sanity_test="$trash/XXXXXX.sanity.c"
-	cxx_sanity_test="$trash/XXXXXX.sanity.cxx"
+	# The place were sanity tests will be placed
+	ksh_sanity_test="$trash/sanity.ksh"
+	c_sanity_test="$trash/sanity.c"
+	cxx_sanity_test="$trash/sanity.cxx"
 	archiver_sanity="$trash/archiver_sanity"
 
 	# Internal helper scripts (at cmd/)
@@ -20,7 +29,7 @@ function check_dependencies {
 	GNUBinutils_commands=( 'addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit' \
 		'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' \
 		'size' 'strings' 'strip' )
-
+ 
 	# GNU auto*conf commands
 	GNUAutoconf_commands=( 'aclocal' 'automake' 'autoconf' 'autoscan' \
 		'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate' \
@@ -36,7 +45,6 @@ function check_dependencies {
 
 	for (( h=0; h < $(n ${archivers[@]}); h++ )); do
 		printerr 'Does %s work for what we want? ' "${archivers[$h]}"
-		{
 		if [ "${archivers[$h]}" == 'tar'  ]; then # TAR-specific tests
 			if [[ "$(readlink -f "$(type -p tar)")" =~ (star) ]] \
 				|| $(tar -h 2>&1| grep 'star' 2>&1 >/dev/null); then
@@ -53,27 +61,27 @@ function check_dependencies {
 			cd "$archiver_sanity"
 			> vulgar_file
 			mkfifo pipe_test
-			ln -s "$(readlink -f "$tar_sanity")" potentially_unsafe_link 
+			ln -sf "$(readlink -f "$archiver_sanity")" potentially_unsafe_link 
 			ln -f vulgar_file hard_link
 			# We already expect an error/warning
 			ln -f not_a_vulgar_file broken_link 2>/dev/null
 			)
-			( cd "$tar_sanity"
-			tar -cf - . ) | tar -xf - -C "${tar_sanity}_results"
-			} && rm -rf "${tar_sanity}_results"
+			( cd "$archiver_sanity"
+			tar -cf - . ) | tar -xf - -C "${archiver_sanity}_results"
+			} && rm -rf "${archiver_sanity}_results"
 		else # Bzip2, Gzip or Xz tests
-			for (( l=0; l =< 9; l++ )); do
-			        if (( l < 1 )) && [[ "${archivers[$h]}" == 'xz' ]]; then
-					l="$(( l + 1 ))"
-				fi
+			for (( l=1; l <= 9; l++ )); do
+				printerr 'With compression level %s? ' $l
 				
-				printerr '\rWith compression level %s? ' $l
-				"${archivers[$h]}" -"$l" -cf | "${archivers[$h]}" -dcf | 
+				{ printf '%s' {a..z} | "${archivers[$h]}" -"$l" -cf \
+					| "${archivers[$h]}" -dcf | wc -c | test `cat` -eq 26 ; } \
+				&& { cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf \
+					| "${archivers[$h]}" -dcf | cmp - "$progdir/$progname"; }
+					printerr 'Ok...\n'
 				sleep 0.5
 			done
 		fi
-		} \
-		&& printerr 'Sounds like a yes.\n' 
+		printerr 'Sounds like a yes.\n' 
 	done
 	
 #	for (( i=0; i < $(n ${GNUAutoconf_commands[@]}); i++ )); do
@@ -110,7 +118,7 @@ cat > "$c_sanity_test" << 'EO_CSANITY'
 
 int main(void) {
 	if (! RETURN) {
-		puts("Great, we're on a supported compiler (GCC or LLVM).");
+		puts("Great! We're on a supported C compiler (GCC or LLVM).");
 	} else {
 		puts("Not on a supported compiler.");
 	}
@@ -129,7 +137,7 @@ cat > "$cxx_sanity_test" << 'EO_C++SANITY'
 
 int main(void) {
 	if (! RETURN) {
-		std::cout << "Great! We're on a supported compiler (GCC or LLVM)." << std::endl;
+		std::cout << "Great! We're on a supported C++ compiler (GCC or LLVM)." << std::endl;
 	} else {
 		std::cout << "Not on a supported compiler." << std::endl;
 	}
@@ -137,7 +145,8 @@ int main(void) {
 }
 EO_C++SANITY
 
-eval "$CC" -o"$trash/c_sanity" "$c_sanity_test"; "$trash/c_sanity"
+{ "$CC" -o"$trash/c_sanity" "$c_sanity_test"; "$trash/c_sanity" \
+	&& "$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test" && "$trash/cxx_sanity"; } \
+	|| exit $?
 
-eval "$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test"; "$trash/cxx_sanity"
 }

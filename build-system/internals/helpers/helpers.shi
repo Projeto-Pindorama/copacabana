@@ -20,7 +20,7 @@ function defined {
   # First it will check if it's a function defined on the environment and/or in
   # a sourced file, if it's not, then it will check if it is a variable.
   {
-    type -t "$1" | grep 'function' 2>/dev/null \
+    type -t "$1" | grep 'function' 2>&1 > /dev/null \
     || test ! -z "$(eval "echo \$$1")"
   } \
   || return 1
@@ -56,7 +56,7 @@ function check_elevate_method {
     # instead of Korn Shell 93, since $UID is read-only on GNU's Shell.
     [ -z $UID ] && UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"
 
-    if $(grep "$(whoami)" /etc/doas.conf 2>/dev/null); then
+    if $(grep "$(whoami)" /etc/doas.conf &>/dev/null); then
  	function elevate { doas -- "$@"; }
         typeset -fx elevate
     elif $(sudo -v 2>/dev/null); then

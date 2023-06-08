@@ -1,3 +1,4 @@
+function platform_checks {
 # Small checks about the shell being used for running this, if not
 # the more recent versions ( 2012-08-01 < ) of Korn Shell 93.
 if [ -z "$BASH" ] \
@@ -63,3 +64,4 @@ If you wish to risk anyway, you can define "FIX_VBOX_BUILD" as 0 at '\''machine.
 	1>&2
 	typeset -x FIX_VBOX_BUILD=1
 fi
+}
