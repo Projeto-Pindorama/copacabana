@@ -25,16 +25,19 @@ function check_dependencies {
 	# General compressing tools
 	archivers=('tar' 'bzip2' 'gzip' 'xz')
 
-	# GNU Binutils commands
-	GNUBinutils_commands=( 'addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit' \
-		'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' \
-		'size' 'strings' 'strip' )
- 
 	# GNU auto*conf commands
 	GNUAutoconf_commands=( 'aclocal' 'automake' 'autoconf' 'autoscan' \
 		'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate' \
 		'libtool' 'libtoolize' )
 
+	# GNU Binutils commands
+	GNUBinutils_commands=( 'addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit' \
+		'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' \
+		'size' 'strings' 'strip' )
+
+       # Generic utilities that will only be checked about its presence on the
+       # system.	
+	utils=( ${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
 
 	for (( g=0; g < $(n ${general_commands[@]}); g++ )); do
 		printerr 'Searching for %s at PATH (%s)... ' \
@@ -84,19 +87,16 @@ function check_dependencies {
 					| "${archivers[$h]}" -dcf \
 				       	| cmp - "$progdir/$progname"; }
 					printerr 'Ok...\n'
-				sleep 0.5
 			done
 		fi
 		printerr 'Sounds like a yes.\n' 
 	done
 	
-#	for (( i=0; i < $(n ${GNUAutoconf_commands[@]}); i++ )); do
-#	
-#	done
-#
-#	for (( j=0; j < $(n ${GNUBinutils_commands[@]}); j++ )); do
-#
-#	done
+	for (( i=0; i < $(n ${utils[@]}); i++ )); do
+		printerr 'Is %s present on this system? ' "${utils[$i]}"
+		command -v ${utils[$i]} 2>&1 > /dev/null && printerr 'Sounds like a yes.\n' \
+			|| { printerr '%s not found.\n' ${utils[$i]}; return 1; }
+	done
 	
 	for (( k=0; k < $(n ${internal_scripts[@]}); k++ )); do
 		printerr 'Searching for independent script %s at %s... ' \
@@ -112,6 +112,34 @@ function check_dependencies {
 	done
 
 # Programming language interpreters/compilers sanity checks.
+
+printerr 'Does the running shell (%s) work for what we need?\n' "$(readlink -f /proc/$$/exe)"
+
+cat > "$ksh_sanity_test" << 'EO_KSHSANITY'
+#!/usr/bin/env ksh
+interpreter="$(readlink -f /proc/$$/exe)" 	
+
+if [[ "$interpreter" =~ (ksh|ksh93) ]]; then
+	print -f \
+	'It seems like %s is Korn Shell 93, but let me test it... ' \
+		"$interpreter" 1>&2
+	if (PATH=.; alias -x) && [ -z $BASH ] && [ -n ${.sh.version} ]; then
+		print -f 'Well, it is, time to move on.\n' 1>&1
+	fi
+elif [[ "$interpreter" =~ (bash) && -n $BASH ]]; then
+	printf 'It seems like %s is GNU Broken-Again Shell.
+Anyway, this script is designed to work with it. Move on.\n' \
+	"$interpreter" 1>&2
+else
+	printf '%s is unsupported. Oddly, it passed the platform checks, but not these small sanity tests.
+Please, report this at https://github.com/Projeto-Pindorama/copacabana.\n' "$interpreter"
+	return 1
+fi
+EO_KSHSANITY
+
+"$(readlink -f /proc/$$/exe)" "$ksh_sanity_test"
+
+printerr 'Does the C/C++ compiler work for what we need?\n' 
 
 cat > "$c_sanity_test" << 'EO_CSANITY'
 #include <stdio.h>
@@ -134,6 +162,7 @@ EO_CSANITY
 
 cat > "$cxx_sanity_test" << 'EO_C++SANITY'
 #include <iostream>
+using std::cout;
 
 #if defined(__GNUG__) || defined(__clang__)
 #define RETURN 0
