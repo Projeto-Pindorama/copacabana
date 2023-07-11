@@ -18,13 +18,6 @@ function check_dependencies {
 	internal_scripts=( 'cmd/download_sources.bash' \
 		'cmd/populate_fhs.ksh' 'cmd/snapshot_stage.ksh' )
 
-	# General commands
-	general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'patch' \
-		'find' 'grep' 'm4' 'mitzune' )
-
-	# General compressing tools
-	archivers=('tar' 'bzip2' 'gzip' 'xz')
-
 	# GNU auto*conf commands
 	GNUAutoconf_commands=( 'aclocal' 'automake' 'autoconf' 'autoscan' \
 		'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate' \
@@ -35,9 +28,13 @@ function check_dependencies {
 		'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' \
 		'size' 'strings' 'strip' )
 
-       # Generic utilities that will only be checked about its presence on the
-       # system.	
-	utils=( ${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
+	# General commands
+	general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'patch' \
+		'find' 'grep' 'm4' 'mitzune' \
+		${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
+
+	# General compressing tools
+	archivers=('tar' 'bzip2' 'gzip' 'xz')
 
 	for (( g=0; g < $(n ${general_commands[@]}); g++ )); do
 		printerr 'Searching for %s at PATH (%s)... ' \
@@ -113,7 +110,13 @@ function check_dependencies {
 
 # Programming language interpreters/compilers sanity checks.
 
-printerr 'Does the running shell (%s) work for what we need?\n' "$(readlink -f /proc/$$/exe)"
+# Exporting our running Shell for using later in other tasks.
+export run_shell="$(readlink -f /proc/$$/exe)"
+printerr 'Does the running shell (%s) work for what we need?\n' "$run_shell"
+
+# Not caching "$(readlink -f /proc/$$/exe)" via $run_shell on the sanity test,
+# since we expect it to run as a new process, so as a new P.ID. and as a new
+# "folder" at /proc, explaining in a extremely simplistic way.
 
 cat > "$ksh_sanity_test" << 'EO_KSHSANITY'
 #!/usr/bin/env ksh
@@ -137,7 +140,7 @@ Please, report this at https://github.com/Projeto-Pindorama/copacabana.\n' "$int
 fi
 EO_KSHSANITY
 
-"$(readlink -f /proc/$$/exe)" "$ksh_sanity_test"
+"$run_shell" "$ksh_sanity_test"
 
 printerr 'Does the C/C++ compiler work for what we need?\n' 
 
