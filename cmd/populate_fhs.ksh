@@ -20,7 +20,7 @@ function main {
 }
 
 function run_as_root {
-	if [ $UID != 0 ]; then
+	if [ `whoami` != root ]; then
 		printerr 'This script must be run using the root user (or doas),
 since we'\''ll be changing permissions for some directories later.\n'
 		exit 2
