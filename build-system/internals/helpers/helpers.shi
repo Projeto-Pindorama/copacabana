@@ -54,7 +54,8 @@ function check_elevate_method {
     # Clever way to get UID without having to use id(1) or $UID itself.
     # Check if UID is defined; small fix for using GNU Broken-Again Shell
     # instead of Korn Shell 93, since $UID is read-only on GNU's Shell.
-    [ -z $UID ] && UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"
+    # We'll be making it public because many scripts will use it later.
+    [ -z $UID ] && { UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"; export UID; }
 
     if $(grep "$(whoami)" /etc/doas.conf &>/dev/null); then
  	function elevate { doas -- "$@"; }

@@ -34,8 +34,6 @@ function check_right_place {
 Although we could chdir you into %s, we'\''re going to cowardly exit the
 script.\n' "$COPA" "$COPA"
 		exit 1		
-	else
-		continue
 	fi
 }
 
