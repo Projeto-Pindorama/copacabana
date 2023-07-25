@@ -10,11 +10,11 @@ progdir="$(cd "$(dirname "$progname")"; pwd -P)"
 trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 
 # Task files
-. "$progdir/build-system/internals/tasks/platform_checks.ksh"
-. "$progdir/build-system/internals/tasks/check_dependencies.ksh"
-. "$progdir/build-system/internals/tasks/disk_managenment.ksh"
+. "$progdir/build-system/tasks/platform_checks.ksh"
+. "$progdir/build-system/tasks/check_dependencies.ksh"
+. "$progdir/build-system/tasks/disk_managenment.ksh"
 
-. "$progdir/build-system/internals/tasks/finish.ksh"
+. "$progdir/build-system/tasks/finish.ksh"
 
 # Internal build system functions
 . "$progdir/build-system/internals/helpers/helpers.shi"

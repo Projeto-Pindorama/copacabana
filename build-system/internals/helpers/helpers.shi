@@ -55,26 +55,35 @@ function check_elevate_method {
     # Check if UID is defined; small fix for using GNU Broken-Again Shell
     # instead of Korn Shell 93, since $UID is read-only on GNU's Shell.
     # We'll be making it public because many scripts will use it later.
-    [ -z $UID ] && { UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"; export UID; }
+    # Using export directly on variable declaration since it would require to
+    # use another comparison for knowing if UID is available if we export just
+    # at the end. 
+    [[ -z $UID ]] && export UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"
 
-    if $(grep "$(whoami)" /etc/doas.conf &>/dev/null); then
+    # Cache the user name from whoami(1) and, unlike $USER, made it read-only
+    # to prevent manipulation from overwriting.
+    readonly user="$(whoami)"
+
+    if $(grep "$user" /etc/doas.conf &>/dev/null); then
  	function elevate { doas -- "$@"; }
         typeset -fx elevate
     elif $(sudo -v 2>/dev/null); then
         function elevate { sudo -- "$@"; }
         typeset -fx elevate
-    elif [ $UID == 0 ]; then
+    elif [[ $UID == 0 ]]; then
         printerr 'Warning: running as root. This isn'\''t recommended.\n'
-    elif $(groups $(whoami) | grep 'wheel' >/dev/null); then
+    elif $(groups $user | grep 'wheel' >/dev/null); then
         printerr \
         'Warning: %s can log directly as root, although using sudo/doas is preferable.\n' \
-	"$USER"
+	"$user"
 	function elevate { su -c "$@"; }
         typeset -fx elevate
     else
         printerr 'Fatal: It appears your user doesn'\''t have superuser privileges.\n'
         exit 10
     fi
+
+    export user
 }
 
 # Use this function both for errors and warnings
