@@ -14,6 +14,8 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 . "$progdir/build-system/internals/tasks/check_dependencies.ksh"
 . "$progdir/build-system/internals/tasks/disk_managenment.ksh"
 
+. "$progdir/build-system/internals/tasks/finish.ksh"
+
 # Internal build system functions
 . "$progdir/build-system/internals/helpers/helpers.shi"
 . "$progdir/build-system/internals/helpers/posix-alt.shi"
@@ -22,9 +24,9 @@ rconfig "$progdir/build-system/machine.conf"
 rconfig "$progdir/build-system/paths.conf"
 
 platform_checks
-(( FIX_VBOX_BUILD == 1 )) \
-	&& { function nproc { echo 1; }; typeset -xf nproc; }
 check_elevate_method
 check_dependencies
-
 create_disk "$DISK_BLOCK"
+populate
+
+finish
