@@ -63,5 +63,9 @@ If you wish to risk anyway, you can define "FIX_VBOX_BUILD" as 0 at '\''machine.
 	"$(grep -c 'processor' /proc/cpuinfo)" \
 	1>&2
 	typeset -x FIX_VBOX_BUILD=1
+	if (( FIX_VBOX_BUILD == 1 )); then
+		function nproc { echo 1; }
+		typeset -xf nproc;
+	fi
 fi
 }
