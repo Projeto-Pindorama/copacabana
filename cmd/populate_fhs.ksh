@@ -13,7 +13,7 @@ function main {
 	run_as_root
 	check_right_place
 	for (( i=0; i < n_directory_tree; i++ )){
-	       	printerr 'Creating directory number %s: %s\n' $i "${directory_tree[$i]}"
+		printerr 'Creating directory number %s: %s\n' $(( i + 1 )) "${directory_tree[$i]}"
 		mkdir "${directory_tree[$i]}" 2>/dev/null
 	}
 	exit $?
