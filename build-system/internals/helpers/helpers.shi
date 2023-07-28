@@ -1,5 +1,6 @@
 # vim: set filetype=sh :
-
+# Internal helper library for the Copacabana build system.
+# Meant to be used with Korn Shell 93.
 # Copyright (c) 2023 Pindorama
 #                    Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
@@ -24,6 +25,16 @@ function defined {
     || test ! -z "$(eval "echo \$$1")"
   } \
   || return 1
+}
+
+# Multiple file input support for realpath(1)
+# Basically a boilerplate.
+function realpaths {
+	files=( ${@} )
+	for (( count=0; count < ${#files[@]}; count++ )); do
+		realpath "${files[$count]}"
+	done
+	unset count files
 }
 
 # Boilerplate to "cd"

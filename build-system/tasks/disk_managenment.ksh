@@ -129,7 +129,7 @@ function populate {
 	(cd "$COPA"; elevate $run_shell "$progdir/cmd/populate_fhs.ksh")
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
-		$(realpath /{cross-,}tools) "$COPA/usr/src"
+		$(realpaths /{cross-,}tools) "$COPA/usr/src"
 	elevate chown -RH "$user" /{cross-,}tools "$COPA/usr/src"
 }
 
