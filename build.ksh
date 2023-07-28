@@ -1,4 +1,4 @@
-#!/bin/ksh93
+#!/usr/bin/env ksh93
 # This script is the head of Copacabana's build system.
 # Copyright (c) 2023: Pindorama
 # SPDX-Licence-Identifier: NCSA
