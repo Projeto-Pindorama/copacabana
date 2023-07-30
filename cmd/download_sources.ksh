@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ksh93 
 # Simple shell hack to download and SHA256 check source tarballs.
 #
 # Copyright 2021 - 2023 Luiz Antônio Rangel (takusuman).
@@ -46,7 +46,7 @@ main() {
     category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
     printf '==> %s\n' "${categories[${i}]}"
     # sed: Remove comments (lines starting with %%)
-    # (N)awk: Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
+    # AWK: Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
     urls=(`sed '/%%/d' ${sources_file} | awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag"`)
     n_urls="`n ${urls[*]}`"
 
