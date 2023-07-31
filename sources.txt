@@ -26,9 +26,13 @@ https://data.iana.org/time-zones/releases/tzcode2023a.tar.gz
 https://data.iana.org/time-zones/releases/tzdata2023a.tar.gz
 https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.17.0.tar.xz
 https://roy.marples.name/downloads/dhcpcd/dhcpcd-9.4.1.tar.xz
-https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.7.1.tar.gz
-http://pindorama.dob.jp/pub/heirloom-ng/230503.tar.gz
-https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.2-a.tar.gz
+https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.7.2.tar.gz
+%% Real men test in production
+%% FIXME: Talking serious now, we shall move to the next stable
+%% release of Heirloom NG as soon its out, but there's changes
+%% on the current branch that we can't forgo.
+https://github.com/Projeto-Pindorama/heirloom-ng/archive/refs/heads/master.tar.gz
+https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.3.tar.gz
 https://github.com/gavinhoward/bc/releases/download/6.5.0/bc-6.5.0.tar.xz
 https://www.mktemp.org/dist/mktemp-1.7.tar.gz
 http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.12.tar.gz
