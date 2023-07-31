@@ -16,9 +16,9 @@ SSL_CMD=${SSL_CMD:-openssl}
 CLASSIC=false
 
 function main {
-	while getopts ":oC:h:" options; do
+	while getopts ":oC:c:h:" options; do
 		case "$options" in
-			C) check "$OPTARG" ;;
+			C|c) check "$OPTARG" ;;
 			h) hashfile="$OPTARG" ;;
 			o) CLASSIC=true ;;
 			\?|*) print_help ;;
@@ -35,8 +35,7 @@ function main {
 	# the null device, so we will not have our screen being bombed by its error
 	# messages "tee: cannot open". It still printing to the standard output.
 	# Business as usual.
-	[[ -n $hashfile ]] && output_hashfile="$(readlink -f "$hashfile")" \
-		|| output_hashfile="/dev/null"
+	output_hashfile="${hashfile:-/dev/null}"
 
 	get_checksum "$file" | tee -a "${output_hashfile}"
 }
