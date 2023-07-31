@@ -15,8 +15,8 @@ function check_dependencies {
 	archiver_sanity="$trash/archiver_sanity"
 
 	# Internal helper scripts (at cmd/)
-	internal_scripts=( 'cmd/download_sources.ksh' 'cmd/sha256sum.ksh' \
-		'cmd/populate_fhs.ksh' 'cmd/snapshot_stage.ksh' )
+	internal_scripts=( 'cmd/download_sources.ksh' 'cmd/populate_fhs.ksh' \
+		'cmd/sha256sum.ksh' 'cmd/snapshot_stage.ksh' )
 
 	# GNU auto*conf commands
 	GNUAutoconf_commands=( 'aclocal' 'automake' 'autoconf' 'autoscan' \
