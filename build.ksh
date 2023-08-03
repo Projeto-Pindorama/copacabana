@@ -13,6 +13,7 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 . "$progdir/build-system/tasks/platform_checks.ksh"
 . "$progdir/build-system/tasks/check_dependencies.ksh"
 . "$progdir/build-system/tasks/disk_managenment.ksh"
+. "$progdir/build-system/tasks/get_source-code.ksh"
 
 . "$progdir/build-system/tasks/finish.ksh"
 
@@ -28,5 +29,7 @@ check_elevate_method
 check_dependencies
 create_disk "$DISK_BLOCK"
 populate
+get_sources sources.txt sources.sha256
+
 
 finish

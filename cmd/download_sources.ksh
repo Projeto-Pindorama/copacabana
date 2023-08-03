@@ -12,10 +12,20 @@
 # Word splitting is required.
 # shellcheck disable=SC2001,SC2006,SC2086,SC2207
 
+# We expect sha256sum.ksh to be in the same directory as
+# download_sources.ksh if running from build.ksh
+
 SHA256CHECK=${SHA256CHECK:-YES}
 COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
 umask 0022
+
+# If we're running from the Copacabana build system, use
+# internal sha256sum(1) implementation.
+if $BUILD_KSH; then
+  build_kshdir="$(cd "$(dirname "${0##*/}")"; pwd -P)"
+  sha256sum() { "$build_kshdir/cmd/sha256sum.ksh" "$@"; }
+fi
 
 # Workaround to the # macro in arrays
 # which doesn't work properly in bash 4.3 for some reason.
