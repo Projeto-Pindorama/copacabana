@@ -1,8 +1,10 @@
 function create_disk {
 	disk_block="$1"
+
 	# Estabilish a default size of 20 GB for a virtual disk
 	virtuadisk_size=${VIRTUADISK_SIZE:-20}
 	disk_label=${DISK_LABEL:-'Copacabana'}
+
 	# These are only used in virtual disks
 	# o = Use a DOS label
 	# n = Create a new partition
@@ -68,7 +70,7 @@ function create_disk {
 		dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
 
 		# Does the size in blocks matches with what du(1)'s getting?
-		virtuadisk_reported_size=$(du -s "$virtuadisk_path" | nawk '{print $1}')
+		virtuadisk_reported_size=$(du -s "$virtuadisk_path" | nawk '{ printf("%d", $1); }')
 		
 		if (( virtuadisk_blksize == virtuadisk_reported_size )); then
 			printerr 'Info: %s is o.k. Proceeding.\n' "$virtuadisk_path"
