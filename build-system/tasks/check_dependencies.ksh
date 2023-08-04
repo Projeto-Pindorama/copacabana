@@ -110,8 +110,7 @@ function check_dependencies {
 
 # Programming language interpreters/compilers sanity checks.
 
-# Exporting our running Shell for using later in other tasks.
-export run_shell="$(readlink -f /proc/$$/exe)"
+run_shell="$(readlink -f /proc/$$/exe)"
 printerr 'Does the running shell (%s) work for what we need?\n' "$run_shell"
 
 # Not caching "$(readlink -f /proc/$$/exe)" via $run_shell on the sanity test,
@@ -139,7 +138,6 @@ Please, report this at https://github.com/Projeto-Pindorama/copacabana.\n' "$int
 	return 1
 fi
 EO_KSHSANITY
-
 "$run_shell" "$ksh_sanity_test"
 
 printerr 'Does the C/C++ compiler work for what we need?\n' 
@@ -186,5 +184,34 @@ EO_C++SANITY
 { "$CC" -o"$trash/c_sanity" "$c_sanity_test"; "$trash/c_sanity" \
 	&& "$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test" && "$trash/cxx_sanity"; } \
 	|| exit $?
+
+printerr 'Info: Generating our cross-compiling host based on this machine'\''s type...\n'
+printerr 'Does this system have GNU Broken-Again Shell for $MACHTYPE or we'\''ll be depending on %s? ' \
+       	"$CC"
+if ! type -p bash 2>&1 > /dev/null; then
+	printerr 'Nah, it'\''s clean.\n'
+	has_bash=false
+else
+	printerr 'It has, we'\''re going with it.\n'
+	has_bash=true
+fi
+
+COPA_HOST="$(if ! $has_bash; then
+	$CC -v 2>&1 | nawk '/Target/{ sub(/.*Target:/, "", $0); print $1 }'
+else
+	bash -c 'echo $MACHTYPE'
+fi \
+	| nawk '{ 
+	split($0, host, "-");
+	sub(host[2], "crossCOPACABANA", $0);
+	printf("%s\n", $0); }'
+)"
+unset has_bash
+
+printerr 'Info: COPA_HOST will be "%s".\n' "$COPA_HOST"
+
+# Exporting our running Shell for using later in other tasks and also the
+# $COPA_HOST, that will be used when building the cross-compiler.
+export run_shell COPA_HOST
 
 }
