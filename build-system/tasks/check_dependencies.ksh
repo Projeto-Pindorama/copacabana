@@ -192,20 +192,13 @@ if ! type -p bash 2>&1 > /dev/null; then
 	printerr 'Nah, it'\''s clean.\n'
 	has_bash=false
 else
-	printerr 'It has, we'\''re going with it.\n'
+	printerr 'It does, we'\''re going with it.\n'
 	has_bash=true
 fi
 
-COPA_HOST="$(if ! $has_bash; then
-	$CC -v 2>&1 | nawk '/Target/{ sub(/.*Target:/, "", $0); print $1 }'
-else
-	bash -c 'echo $MACHTYPE'
-fi \
-	| nawk '{ 
-	split($0, host, "-");
-	sub(host[2], "crossCOPACABANA", $0);
-	printf("%s\n", $0); }'
-)"
+COPA_HOST="$( ( ($has_bash && bash -c 'echo $MACHTYPE') \
+	|| (gcc -v 2>&1 | nawk '/Target/{ sub(/.*Target:/, "", $0); printf("%s", $1); }') ) \
+	| nawk '{ split($0, host, "-"); sub(host[2], "crossCOPACABANA", $0); printf("%s\n", $0); }')"
 unset has_bash
 
 printerr 'Info: COPA_HOST will be "%s".\n' "$COPA_HOST"
