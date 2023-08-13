@@ -122,13 +122,23 @@ function populate {
 	if [[ -d "$COPA/cross-tools" && -d "$COPA/tools" ]]; then
 		printerr 'Info: Symbolic linking %s to %s...\n' \
 			{"$COPA/",/}cross-tools {"$COPA/",/}tools 
-		elevate ln -s {"$COPA/",/}cross-tools
-		elevate ln -s {"$COPA/",/}tools
+
+		# If /cross-tools is already a symbolic link to
+		# $COPA/cross-tools, then don't re-do it.
+		# The same applies to /tools.
+		( test -L /cross-tools \
+		&& [[ $(realpath /cross-tools) == "$COPA/cross-tools" ]] ) \
+		|| elevate ln -s {"$COPA/",/}cross-tools
+
+		( test -L /tools \
+		&& [[ $(realpath /tools) == "$COPA/tools" ]] ) \
+		|| elevate ln -s {"$COPA/",/}tools
+
 		(cd /; ls -l ./{cross-,}tools)
 	fi
 	printerr 'Info: Making directories in %s for populating the file system.\n' \
 		"$COPA"
-	(cd "$COPA"; elevate $run_shell "$progdir/cmd/populate_fhs.ksh")
+	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh")
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
 		$(realpaths /{cross-,}tools) "$COPA/usr/src"
