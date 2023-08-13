@@ -124,12 +124,19 @@ function populate {
 			{"$COPA/",/}cross-tools {"$COPA/",/}tools 
 
 		# If /cross-tools is already a symbolic link to
-		# $COPA/cross-tools, then don't re-do it.
+		# $COPA/cross-tools, then don't re-do it. Else, if it's a
+		# symbolic link but it doesn't link to $COPA/cross-tools,
+		# re-do it.
 		# The same applies to /tools.
+		[[ $(realpath /cross-tools) != "$COPA/cross-tools" ]] \
+		&& elevate rm /cross-tools
 		( test -L /cross-tools \
 		&& [[ $(realpath /cross-tools) == "$COPA/cross-tools" ]] ) \
-		|| elevate ln -s {"$COPA/",/}cross-tools
+		|| elevate ln -s {"$COPA/",/}cross-tools 
 
+		
+		[[ $(realpath /tools) != "$COPA/tools" ]] \
+		&& elevate rm /tools
 		( test -L /tools \
 		&& [[ $(realpath /tools) == "$COPA/tools" ]] ) \
 		|| elevate ln -s {"$COPA/",/}tools
