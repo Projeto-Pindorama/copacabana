@@ -18,6 +18,7 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 . "$progdir/build-system/tasks/check_dependencies.ksh"
 . "$progdir/build-system/tasks/disk_managenment.ksh"
 . "$progdir/build-system/tasks/get_source-code.ksh"
+. "$progdir/build-system/tasks/build_all.ksh"
 
 . "$progdir/build-system/tasks/finish.ksh"
 
@@ -30,6 +31,13 @@ check_dependencies
 create_disk "$DISK_BLOCK"
 populate
 get_sources sources.txt sources.sha256
+build cross-tools "base/kernel-headers" "dev/GNUBinutils" \
+	"dev/GNUcc" "base/LibC" "dev/GNUcc"
 
+#build tools "base/kernel-headers" "dev/GNUBinutils" \
+#	"dev/GNUcc" "base/LibC" "dev/GNUcc"
+
+#build base "base/kernel-headers" "dev/GNUBinutils" \
+#	"dev/GNUcc" "base/LibC" "dev/GNUcc"
 
 finish
