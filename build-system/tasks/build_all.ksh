@@ -8,15 +8,15 @@ export progdir
 # Syntax: build [stage_name] packages ...
 function build {
 	case $1 in
-		cross-tools) shift; build_xtools $@ ;;
-		tools) shift; build_tools $@ ;;
-		base) shift; build_base $@ ;;
+		cross-tools) shift; build_xtools "$@" ;;
+		tools) shift; build_tools "$@" ;;
+		base) shift; build_base "$@" ;;
 	esac
 }
 
 function build_xtools {
-	packages=( $@ )
-	n_packages=$(n ${packages[*]})
+	packages=( "$@" )
+	n_packages=$(n "${packages[@]}")
 	for (( n=0; n < n_packages; n++ )); do
 		# GNUcc pkgbuild will use it in a kind of messy way to determine
 		# if we're building stage 1 of cross-tools' G.C.C. or not.
@@ -33,4 +33,4 @@ function build_base {
 	return 0
 }
 
-build $@
+build "$@"
