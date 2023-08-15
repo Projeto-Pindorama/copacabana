@@ -40,6 +40,7 @@ function main {
 }
 
 function eval_pkgbuild_path {
+	set -x
 	package="$1"
 	package_name="${package#*/}"
 	category="${package%/*}"
