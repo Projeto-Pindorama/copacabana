@@ -4,7 +4,9 @@ function get_sources {
 	# function.
 	source_list="$(readlink -f "$1")"
 	source_hash="$(readlink -f "$2")"
-	export SHA256CHECK="$SHA256CHECK"
+	SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
+	SHA256CHECK="$SHA256CHECK"
+	export SHA256CHECK SRCDIR
 
 	printerr 'Info: Downloading sources for building Copacabana using %s as the list.\n' \
 		"$source_list"
