@@ -8,7 +8,7 @@ set -e
 
 # shellcheck disable=SC2068
 
-drvname="$0"
+drvname="$1"
 
 # If (and when) ran from build.ksh, this will $0 will be build.ksh, so we can
 # get its directory and touché: we also have the base directory for pkgbuilds
@@ -18,6 +18,12 @@ build_kshdir="$(cd "$(dirname "${0##*/}")"; pwd -P)"
 progdir="$build_kshdir"
 alambiko_directory="$progdir/packages"
 patch_directory="$progdir/patches"
+
+# Base directories for building packages, one is for residue, object
+# files and source code ("slact"), the other is for built packages ("aqua
+# vitæ").
+base_objdir="$trash/slact"
+base_destdir="$trash/aqua_vitæ"
 
 function main {
 	if (( $# == 0 )); then
@@ -90,26 +96,36 @@ function transmutacio {
 	package="$1"
 	
 	read_pkgbuild "$package"
-	
-	pushd "$SRCDIR"
-		unarchive
-	popd
 
-	if [ $(defined prepare) ]; then
-		prepare
-	fi
+	# Where will files be extracted, this folder may ocupy a lot of space
+	# depending on the packages built.
+	OBJDIR="$base_objdir/$VARIANT"
+
+	#
+	DESTDIR="$base_destdir/$VARIANT/${Archive_name%.t*}"
+	export OBJDIR DESTDIR
 	
-	if $(defined patches[@]); then
-		for (( i=0; i < $(n ${patches[@]}); i++ )); do
-			printf 'Adding patch no. %s, %s\n' \
-				$(( i + 1 )) "${patches[$i]}"
-			patch_add "${patches[$i]}"
-		done
+	# Check if every "standard" pkgbuild function is defined before running,
+	# so we won't have problems with future "boilerplate" pkgbuilds that
+	# just create symbolic links, for instance.
+	if $(defined unarchive); then
+		# Find the source code archive inside the $SRCDIR using find(1)
+		# so we won't be having to alias categories from Alambiko with
+		# internal Copacabana category names.
+		source_archive_dir="$(dirname "$(find "$SRCDIR" -name "$Archive_name" -type f -print)")"
+
+		pushd "$source_archive_dir"
+			unarchive
+		popd
 	fi
 
-	if $(defined post_install); then
-		pushd "$Destdir"
-			post_install
+	if $(defined package_conf); then
+		# If $Destdir not defined from the pkgbuild, default it
+		# to $DESTDIR. It is expected to be declared when the package
+		# needs to be installed in a custom location.
+		# For instance, cross-tools' and tools' base/LibC package.
+		pushd "${Destdir:-$DESTDIR}"
+			package_conf
 		popd
 	fi
 }
