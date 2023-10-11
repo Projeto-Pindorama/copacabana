@@ -11,7 +11,7 @@ https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.5.tar.xz
 https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.2.tar.xz
 https://github.com/shadow-maint/shadow/releases/download/4.12.3/shadow-4.12.3.tar.xz
 https://www.musl-libc.org/releases/musl-1.2.3.tar.gz
-https://github.com/Projeto-Pindorama/musl-compat/archive/refs/tags/0.5-a.tar.gz
+https://github.com/Projeto-Pindorama/musl-compat/archive/refs/tags/20230601.tar.gz
 https://github.com/Projeto-Pindorama/musl-extra/archive/refs/tags/20230531.tar.gz
 https://github.com/void-linux/musl-fts/archive/refs/tags/v1.2.7.tar.gz
 https://github.com/void-linux/musl-obstack/archive/refs/tags/v1.2.3.tar.gz
