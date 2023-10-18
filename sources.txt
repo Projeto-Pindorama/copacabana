@@ -59,8 +59,13 @@ https://distfiles.dereferenced.org/pkgconf/pkgconf-1.9.2.tar.xz
 #< pkgs
 
 #> pkgs/dev
+https://github.com/Projeto-Pindorama/mussel/archive/refs/heads/main.tar.gz
+https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.1/llvm-project-17.0.1.src.tar.xz
+https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0.tar.bz2
 https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.36.6.tar.xz
 https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.36.6.tar.xz
+https://dl.google.com/go/go1.4-bootstrap-20171003.tar.gz
+https://dl.google.com/go/go1.21.3.src.tar.gz
 https://www.cpan.org/src/5.0/perl-5.32.0.tar.xz
 https://sources.buildroot.net/perl/perl-cross-1.3.5.tar.gz
 https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
@@ -68,14 +73,15 @@ https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tar.xz
 https://www.python.org/ftp/python/doc/3.11.4/python-3.11.4-docs-text.tar.bz2
 https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz
 https://www.python.org/ftp/python/doc/2.7.18/python-2.7.18-docs-text.tar.bz2
-http://downloads.sourceforge.net/tcl/tcl8.6.10-src.tar.gz
-http://downloads.sourceforge.net/tcl/tcl8.6.10-html.tar.gz
-http://github.com/michaelforney/samurai/releases/download/1.2/samurai-1.2.tar.gz
-http://github.com/mesonbuild/meson/releases/download/0.55.0/meson-0.55.0.tar.gz
-http://invisible-island.net/datafiles/release/byacc.tar.gz
-http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
-http://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
-http://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
+https://downloads.sourceforge.net/tcl/tcl8.6.10-src.tar.gz
+https://downloads.sourceforge.net/tcl/tcl8.6.10-html.tar.gz
+https://github.com/michaelforney/samurai/releases/download/1.2/samurai-1.2.tar.gz
+https://github.com/Kitware/CMake/releases/download/v3.28.0-rc1/cmake-3.28.0-rc1.tar.gz
+https://github.com/mesonbuild/meson/releases/download/0.55.0/meson-0.55.0.tar.gz
+https://invisible-island.net/datafiles/release/byacc.tar.gz
+https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+https://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
+https://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
 #< pkgs/dev
 
 #> pkgs/extra
@@ -89,15 +95,10 @@ https://github.com/hfiref0x/LightFTP/archive/refs/tags/v2.3.tar.gz
 
 #> pkgs/gnu
 https://ftp.gnu.org/gnu/bash/bash-3.2.57.tar.gz
-https://ftp.gnu.org/gnu/sed/sed-4.4.tar.gz
+https://ftp.gnu.org/gnu/sed/sed-4.1.5.tar.gz
 https://ftp.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
 https://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
-https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
-https://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
-https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
-https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz
 https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz
-https://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz
 https://ftp.gnu.org/gnu/make/make-3.81.tar.gz
 https://ftp.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
 https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
