@@ -1,9 +1,27 @@
 # The Copacabana Linux(R) distribution
-![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama%20Copacabana%20Banner.png)   
+
+![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama%20Copacabana%20Banner.png)
+
+### *Now built with LLVM!*
+
+Hell yeah.  
+
+|![Hell yeah](https://licensing.imageconscious.com/wp-content/uploads/sites/2/2021/01/H1753D-1.jpg) |
+|:--:|
+| Hell yeah |
+
+## What is this repository about?
 
 This repository contains most of the resources that you would need to build
 Copacabana, in case a build consolidation made of small scripts that
 automate the process.  
+This time, we're trying a build using LLVM and following a considerable part of
+dslm4515's [Clang Musl Linux from Scratch](https://github.com/dslm4515/CMLFS.git)
+guide for building the toolchain. We aim to both get Copacabana fully built wit
+LLVM and to cooperate with CMLFS, sending patches when help needed and/or flaws
+discovered in the process.  
+If it succeeds and presents a nice performance, this branch will be merged into
+the main branch.
 
 For more information about porting, translation, documentation etc, read
 the website: http://copacabana.pindorama.dob.jp  
