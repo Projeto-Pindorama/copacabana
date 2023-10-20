@@ -1,3 +1,4 @@
 [submodule "packages"]
 	path = packages
 	url = https://github.com/Projeto-Pindorama/alambiko.git
+	branch = copaclang
