@@ -13,7 +13,7 @@ export readonly BUILD_KSH=true
 function rconfig {
   (sed '/#/d; /^$/d' "$1") \
     | while IFS='=' read identifier value; do
-        eval $identifier=$value
+      	eval $(printf '%s=%s' $identifier "$value")
       done
 }
 
@@ -37,7 +37,7 @@ function defined {
 function execscript {
 	command="$1";
 	shift; command_args=( "$@" )
-	/bin/sh -c "$command "${command_args[@]}""
+	( exec "$command "${command_args[@]}"" )
 }
 
 # Multiple file input support for realpath(1)
