@@ -111,45 +111,45 @@ function populate {
 	# toolchain and intermediary chroot toolchain.
 	printerr 'Info: Making directories in %s for the building toolchains.\n' \
 		"$COPA"
-	elevate mkdir "$COPA/"{cross-,}tools
+	elevate mkdir "$COPA/"{cgnu,llvm}tools
 	(cd "$COPA"; ls -lah .)
 
-	# Make a symbolic link from $COPA/cross-tools to /cross-tools, the same
+	# Make a symbolic link from $COPA/cgnutools to /cgnutools, the same
 	# for /tools.
 	# For instance:
-	# {"$COPA/",/}cross-tools expands to $COPA/cross-tools /cross-tools,
+	# {"$COPA/",/}cgnutools expands to $COPA/cgnutools /cgnutools,
 	# which is the input that we'd need to ln(1).
-	if [[ -d "$COPA/cross-tools" && -d "$COPA/tools" ]]; then
+	if [[ -d "$COPA/cgnutools" && -d "$COPA/llvmtools" ]]; then
 		printerr 'Info: Symbolic linking %s to %s...\n' \
-			{"$COPA/",/}cross-tools {"$COPA/",/}tools 
+			{"$COPA/",/}cgnutools {"$COPA/",/}llvmtools 
 
-		# If /cross-tools is already a symbolic link to
-		# $COPA/cross-tools, then don't re-do it. Else, if it's a
-		# symbolic link but it doesn't link to $COPA/cross-tools,
+		# If /cgnutools is already a symbolic link to
+		# $COPA/cgnutools, then don't re-do it. Else, if it's a
+		# symbolic link but it doesn't link to $COPA/cgnutools,
 		# re-do it.
-		# The same applies to /tools.
-		[[ $(realpath /cross-tools) != "$COPA/cross-tools" ]] \
-		&& elevate rm /cross-tools
-		( test -L /cross-tools \
-		&& [[ $(realpath /cross-tools) == "$COPA/cross-tools" ]] ) \
-		|| elevate ln -s {"$COPA/",/}cross-tools 
+		# The same applies to /llvmtools.
+		[[ $(realpath /cgnutools) != "$COPA/cgnutools" ]] \
+		&& elevate rm /cgnutools
+		( test -L /cgnutools \
+		&& [[ $(realpath /cgnutools) == "$COPA/cgnutools" ]] ) \
+		|| elevate ln -s {"$COPA/",/}cgnutools 
 
 		
-		[[ $(realpath /tools) != "$COPA/tools" ]] \
-		&& elevate rm /tools
-		( test -L /tools \
-		&& [[ $(realpath /tools) == "$COPA/tools" ]] ) \
-		|| elevate ln -s {"$COPA/",/}tools
+		[[ $(realpath /llvmtools) != "$COPA/llvmtools" ]] \
+		&& elevate rm /llvmtools
+		( test -L /llvmtools \
+		&& [[ $(realpath /llvmtools) == "$COPA/llvmtools" ]] ) \
+		|| elevate ln -s {"$COPA/",/}llvmtools
 
-		(cd /; ls -l ./{cross-,}tools)
+		(cd /; ls -l ./{cgnu,llvm}tools)
 	fi
 	printerr 'Info: Making directories in %s for populating the file system.\n' \
 		"$COPA"
 	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh")
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
-		$(realpaths /{cross-,}tools) "$COPA/usr/src"
-	elevate chown -RH "$user" /{cross-,}tools "$COPA/usr/src"
+		$(realpaths /{cgnu,llvm}tools) "$COPA/usr/src"
+	elevate chown -RH "$user" /{cgnu,llvm}tools "$COPA/usr/src"
 }
 
 function unmount_and_detach {
