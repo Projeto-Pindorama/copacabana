@@ -24,6 +24,7 @@ function get_sources {
 			# foo/var => foo\/var
 			category_id="$(echo ${categories[$c]} | sed 's~\/~\\\/~g')"
 
+			printerr 'Info: Using aria2c instead of cmd/download_sources.ksh...\n'
 			printerr 'Info: Downloading %s sources...\n' "${categories[$c]}"
 
 			# sed: Remove comments (lines starting with %%)
