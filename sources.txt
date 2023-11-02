@@ -25,7 +25,7 @@ https://github.com/Mic92/iana-etc/releases/download/20230202/iana-etc-20230202.t
 https://data.iana.org/time-zones/releases/tzcode2023a.tar.gz
 https://data.iana.org/time-zones/releases/tzdata2023a.tar.gz
 https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.17.0.tar.xz
-https://roy.marples.name/downloads/dhcpcd/dhcpcd-9.4.1.tar.xz
+https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.4/dhcpcd-10.0.4.tar.xz
 https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.7.2.tar.gz
 %% Real men test in production
 %% FIXME: Talking serious now, we shall move to the next stable
@@ -50,7 +50,7 @@ https://download.savannah.nongnu.org/releases/acl/acl-2.3.1.tar.xz
 https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
 https://master.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
 https://master.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
-https://zlib.net/pigz/pigz-2.7.tar.gz
+https://zlib.net/pigz/pigz-2.8.tar.gz
 https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.tar.gz
 https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 https://tukaani.org/xz/xz-5.4.2.tar.xz
