@@ -16,6 +16,7 @@
 # download_sources.ksh if running from build.ksh
 
 SHA256CHECK=${SHA256CHECK:-YES}
+USE_ARIA2C=${USE_ARIA2C:-false}
 COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
 umask 0022
@@ -42,6 +43,16 @@ realpath(){
   echo "`cd "${file_dirname}"; pwd`/${file_basename}"
 }
 
+# Drop-in replacement to GNU nproc.
+nproc(){
+  case "`uname -s`" in
+    Darwin | Linux) getconf '_NPROCESSORS_ONLN';;
+    FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN';;
+    SunOS) echo "`ksh93 -c 'getconf NPROCESSORS_ONLN'`" ;;
+    *) echo 1 ;;
+  esac
+}
+
 main() {
   sources_file="`realpath ${1}`"
   sources_directory="`realpath ${SRCDIR}`"
@@ -62,12 +73,23 @@ main() {
 
     category_dir="$sources_directory/${categories[${i}]}"
     mkdir -p "${category_dir}"
-    cd "${category_dir}" || exit 2
 
-    for ((j = 0; j < n_urls; j++)) {
-      printf 'Downloading %s\n' "`basename ${urls[${j}]}`"
-      curl -LO "${urls[${j}]}"
-    }
+    # cURL is slower, but it's present on more systems per default than aria2c,
+    # so we're going with it.
+    if ! $USE_ARIA2C; then
+	cd "${category_dir}" || exit 2
+        for ((j = 0; j < n_urls; j++)) {
+          printf 'Downloading %s\n' "`basename ${urls[${j}]}`"  
+          curl -LO "${urls[${j}]}" 
+        }
+    else
+        # Hell yeah, speed.
+        ( for ((k=0; k < $n_urls; k++ )); do 
+            printf '%s\n\tout=%s\n' \
+                "${urls[$u]}" "${urls[$u]##*/}"
+        done ) \
+        | aria2c -j `nproc` -s `nproc` -d "$category_dir" -i -
+    fi
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
 	  && `test -n "${hashsum_file}"`; then
