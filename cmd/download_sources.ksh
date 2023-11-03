@@ -84,10 +84,10 @@ main() {
         }
     else
         # Hell yeah, speed.
-        ( for ((k=0; k < $n_urls; k++ )); do 
+        ( for ((k = 0; k < $n_urls; k++)){ 
             printf '%s\n\tout=%s\n' \
-                "${urls[$u]}" "${urls[$u]##*/}"
-        done ) \
+                "${urls[$k]}" "${urls[$k]##*/}"
+	} ) \
         | aria2c -j `nproc` -s `nproc` -d "$category_dir" -i -
     fi
   }
