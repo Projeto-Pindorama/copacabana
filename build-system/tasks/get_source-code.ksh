@@ -4,8 +4,9 @@ function get_sources {
 	# function.
 	source_list="$(readlink -f "$1")"
 	source_hash="$(readlink -f "$2")"
-	SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
+
 	SHA256CHECK="$SHA256CHECK"
+	SRCDIR="$SRCDIR"
 	USE_ARIA2C="$USE_ARIA2C"
 	export USE_ARIA2C SHA256CHECK SRCDIR
 
@@ -14,5 +15,5 @@ function get_sources {
 
 	"$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
 
-	unset SHA256CHECK
+	unset SHA256CHECK USE_ARIA2C
 }

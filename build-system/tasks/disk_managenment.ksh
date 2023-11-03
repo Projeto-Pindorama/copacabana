@@ -1,3 +1,7 @@
+# That's the time to decide which will be, in fact, our source-code directory.
+SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
+export SRCDIR
+
 function create_disk {
 	disk_block="$1"
 
@@ -115,7 +119,7 @@ function populate {
 	(cd "$COPA"; ls -lah .)
 
 	# Make a symbolic link from $COPA/cgnutools to /cgnutools, the same
-	# for /tools.
+	# for /llvmtools.
 	# For instance:
 	# {"$COPA/",/}cgnutools expands to $COPA/cgnutools /cgnutools,
 	# which is the input that we'd need to ln(1).
@@ -145,11 +149,11 @@ function populate {
 	fi
 	printerr 'Info: Making directories in %s for populating the file system.\n' \
 		"$COPA"
-	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh")
+	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh; mkdir -p "$COPA/$SRCDIR"")
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
-		$(realpaths /{cgnu,llvm}tools) "$COPA/usr/src"
-	elevate chown -RH "$user" /{cgnu,llvm}tools "$COPA/usr/src"
+		$(realpaths /{cgnu,llvm}tools) "$COPA/$SRCDIR"
+	elevate chown -RH "$user" /{cgnu,llvm}tools "$COPA/$SRCDIR"
 }
 
 function unmount_and_detach {
