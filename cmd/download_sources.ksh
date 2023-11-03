@@ -84,11 +84,11 @@ main() {
         }
     else
         # Hell yeah, speed.
-        ( for ((k = 0; k < $n_urls; k++)){ 
+        ( for ((k = 0; k < n_urls; k++)){ 
             printf '%s\n\tout=%s\n' \
                 "${urls[$k]}" "${urls[$k]##*/}"
 	} ) \
-        | aria2c -j `nproc` -s `nproc` -d "$category_dir" -i -
+        | aria2c -j `nproc` -x `nproc` -d "$category_dir" -i -
     fi
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
