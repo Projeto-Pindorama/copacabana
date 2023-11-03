@@ -8,6 +8,17 @@
 # Make everyone aware we're running from BUILD_KSH.
 export readonly BUILD_KSH=true
 
+# Creates an associative array with identifier, variable name and value as
+# its parameters. It's really similar to the code found on herbiec in this
+# sense, but it was originally used as a "pointeroid" for accessing an A.S.T.
+function record {
+	identifier="$1"
+	variable="$2"
+	value="$3"
+
+	eval $(printf '%s+=([%s]="%s")' "$identifier" "$variable" "$value")
+}
+
 # Reads simple Shell-based configuration files.
 # "#" is used for comments, and white spaces are ignored for read(1).
 function rconfig {
