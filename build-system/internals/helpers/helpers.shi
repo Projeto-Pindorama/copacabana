@@ -41,16 +41,6 @@ function defined {
   || return 1
 }
 
-# This will be used inside Alambiko's driver.ksh.
-# It executes a shell script with its arguments via the running shell.
-# If you need to use some variable defined in the pkgbuild or in some build.ksh
-# task, export it before calling execscript().
-function execscript {
-	command="$1";
-	shift; command_args=( "$@" )
-	( exec "$command "${command_args[@]}"" )
-}
-
 # Multiple file input support for realpath(1)
 # Basically a boilerplate.
 function realpaths {
