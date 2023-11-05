@@ -1,11 +1,16 @@
 # This task script is part of Copacabana's build system.
-# It contains a function for checking if all the dependencies needed for
-# building Copacabana are present.
 #
 # Copyright (c) 2023: Pindorama
 # SPDX-Licence-Identifier: NCSA
 # C and C++ sanity checks by Samuel (callsamu), Lucas (volatusveritas)
 # and Luiz Antônio Rangel (takusuman)
+
+# STEP 0: Resources, part II
+# This file is part of the "step 0" of building Copacabana, it is one of the
+# tools that's being used for checking resources on the machine. In this case,
+# differently from the platform_checks, it contains a function for checking if
+# all the dependencies needed for building Copacabana are present.
+# It looks awful, I apologize.
 
 function check_dependencies {
 	# The place were sanity tests will be placed
@@ -52,7 +57,7 @@ function check_dependencies {
 					"$(type -p tar)"
 				printerr \
 				'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
-				function tar { "$(readlink -f "$(type -p tar)")" --no-secure-links $@ ;}
+				function tar { "$(type -p tar)" --no-secure-links $@ ;}
 				typeset -xf tar
 			fi
 

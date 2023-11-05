@@ -1,3 +1,15 @@
+# This task script is part of Copacabana's build system.
+#
+# Copyright (c) 2023: Pindorama
+# SPDX-Licence-Identifier: NCSA
+
+# STEP 0: Resources, part I
+# This file is part of the "step 0" of building Copacabana, it is one of the
+# tools that's being used for checking resources on the machine.
+# It's not a vulgar task file, since it will be called before others.
+# To be honest, this needs a, let's say, "refactor". It was created back when
+# the project was being desined.
+
 function platform_checks {
 # Small checks about the shell being used for running this, if not
 # the more recent versions ( 2012-08-01 < ) of Korn Shell 93.
@@ -59,11 +71,11 @@ source code to an object file in Oracle VirtualBox with multiple jobs-per-thread
 enabled in gmake.
 For avoiding this sort of problem later on, we will be defining the nproc function
 as just an alias to "echo 1".
-If you wish to risk anyway, you can define "FIX_VBOX_BUILD" as 0 at '\''machine.conf'\''.\n' \
+If you wish to risk anyway, you can define "FIX_VBOX_BUILD" as "false" at '\''machine.conf'\''.\n' \
 	"$(grep -c 'processor' /proc/cpuinfo)" \
 	1>&2
-	typeset -x FIX_VBOX_BUILD=1
-	if (( FIX_VBOX_BUILD == 1 )); then
+	typeset -x FIX_VBOX_BUILD="${FIX_VBOX_BUILD:-true}"
+	if $FIX_VBOX_BUILD; then
 		function nproc { echo 1; }
 		typeset -xf nproc;
 	fi

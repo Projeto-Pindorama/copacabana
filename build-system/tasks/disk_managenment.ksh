@@ -1,7 +1,10 @@
-# That's the time to decide which will be, in fact, our source-code directory.
-SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
-export SRCDIR
+# This task script is part of Copacabana's build system.
+#
+# Copyright (c) 2023: Pindorama
+# SPDX-Licence-Identifier: NCSA
 
+# STEP 1: "Pindorama presents: Fubá Cake" 
+# In this step, we will create and format a disk, virtual or physical.
 function create_disk {
 	disk_block="$1"
 
@@ -110,7 +113,13 @@ function create_disk {
 	printerr 'Info: Copacabana disk %s mounted at %s.\n' "$disk_block" "$COPA"
 }
 
+# STEP 1.5: Populate the file system
+# This function will run the cmd/populate_fhs.ksh script and create directories
+# for the toolchains that will be built. 
 function populate { 
+	# That's the time to decide which will be, in fact, our source-code directory.
+	SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
+
 	# Self-explanatory, just create the directories for the initial
 	# toolchain and intermediary chroot toolchain.
 	printerr 'Info: Making directories in %s for the building toolchains.\n' \
@@ -149,11 +158,12 @@ function populate {
 	fi
 	printerr 'Info: Making directories in %s for populating the file system.\n' \
 		"$COPA"
-	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh; mkdir -p "$COPA/$SRCDIR"")
+	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh; mkdir -p "$SRCDIR"")
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
-		$(realpaths /{cgnu,llvm}tools) "$COPA/$SRCDIR"
-	elevate chown -RH "$user" /{cgnu,llvm}tools "$COPA/$SRCDIR"
+		$(realpaths /{cgnu,llvm}tools) "$SRCDIR"
+	elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR"
+	export SRCDIR
 }
 
 function unmount_and_detach {
