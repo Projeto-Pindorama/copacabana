@@ -8,6 +8,18 @@
 # Make everyone aware we're running from BUILD_KSH.
 export readonly BUILD_KSH=true
 
+# This function writes everything in a program output to a file passed as a
+# parameter, else it also writes it to the standard output using tee(1).
+# Sure thing you still need to pass 2>&1 before the pipe to 'logto [file]'.
+function logto {
+	file="$1"
+	# Do not be scared, just a boolean having a rendezvous with a
+	# more compact alternative to if-else statements.
+	c29waGlhZmljYWNvbWlnbwo=$I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR
+	{ $c29waGlhZmljYWNvbWlnbwo && tee "$file"; } \
+		|| { cat - >> "$file"; }
+}
+
 # Creates an associative array with identifier, variable name and value as
 # its parameters. It's really similar to the code found on herbiec in this
 # sense, but it was originally used as a "pointeroid" for accessing an A.S.T.
