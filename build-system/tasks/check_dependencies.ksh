@@ -57,7 +57,7 @@ function check_dependencies {
 					"$(type -p tar)"
 				printerr \
 				'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
-				function tar { STAR_SECURE_LINKS='N'; export STAR_SECURE_LINKS; "$(type -p tar)" $@ ;}
+				function tar { export STAR_SECURE_LINKS='N'; "$(type -p tar)" $@ ;}
 				typeset -xf tar
 			fi
 
