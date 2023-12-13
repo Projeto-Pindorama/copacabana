@@ -8,6 +8,87 @@
 # Make everyone aware we're running from BUILD_KSH.
 export readonly BUILD_KSH=true
 
+# This function parses .INI files into 
+function dotini {
+	file="$1"
+
+	# The function shall fail before "allocating" anything in memory.
+	if [[ ! -e "$file" ]]; then
+		panic '%s: file %s does not exist.\n' $0 "$file"
+	fi
+
+	# Allocate an array for recording the file and declarate a
+	# integer that represents the number of the line.
+	typeset -a inibuf confline[2]
+	integer nl l s nconf 
+
+	# First of all, we shall remove comments.
+	# I know this could be done manually using a for-loop, but I think sed
+	# can be more relyable.
+	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") | \
+	for ((nl=0; ; nl++)); do
+		if read line; then
+			inibuf[$nl]="$line"
+		else
+			break
+		fi
+	done
+
+	# Open compound variable syntax
+	printf '%c' '('
+	for ((l=0; l < ${#inibuf[@]}; l++)); do
+		line="${inibuf[l]}"
+	
+		# This gets the INI section.
+ 		if section_title="$(rematch "$line" '\[\(.*\)\]')"; then
+			# The formatted section title.
+			formatted_section="$(printf '%s' "$section_title" \
+				| nawk '{ sub(" ", "_"); print(tolower($0)) }')"
+			# We can procceed to the next line.
+			continue
+		fi
+
+		nconf=0
+		for ((s=0; s < ${#line}; s++ )); do
+			q="${line:s:1}"
+			# A value declaration in INI follows the format:
+			# identifier = "value"
+			# Or
+			# identifier=value
+			# confline[1]=id
+			# confline[2]=val
+
+			if [[ "$q" == '=' ]]; then
+				((nconf+= 1 ))
+				continue
+			fi
+
+			confline[$nconf]+="$q"
+		done
+
+		# If there is not a section, it will only declare the INI
+		# variable and its value on the compound variable.
+		if [[ ! -n $formatted_section ]]; then
+			printf '%s="%s" ' \
+			"${confline[0]}" "${confline[1]}"
+			
+			# Continue to the next line.
+			continue
+		fi
+
+		# If it there's a section and the value declaration was already
+		# parsed, return it as a associative array declaration.
+		printf '[%s]+=([%s]=%s) ' \
+		$formatted_section "${confline[0]}" "${confline[1]}"
+
+		# Clean confline[] array.
+		unset confline[0] confline[1]
+	done
+
+	# Close compound variable
+	printf '%c' ')'
+}
+
 # This function writes everything in a program output to a file passed as a
 # parameter, else it also writes it to the standard output using tee(1).
 # Sure thing you still need to pass 2>&1 before the pipe to 'logto [file]'.
@@ -20,16 +101,37 @@ function logto {
 		|| { cat - >> "$file"; }
 }
 
+# Shall rework this later, one minute.
+
 # Creates an associative array with identifier, variable name and value as
 # its parameters. It's really similar to the code found on herbiec in this
 # sense, but it was originally used as a "pointeroid" for accessing an A.S.T.
-function record {
-	identifier="$1"
-	variable="$2"
-	value="$3"
+#function map {
+#	identifier="$1"
+#	variable="$2"
+#	value="$3"
+#
+#	eval $(printf '%s+=([%s]="%s")' "$identifier" "$variable" "$value")
+#}
 
-	eval $(printf '%s+=([%s]="%s")' "$identifier" "$variable" "$value")
-}
+# And this creates a compound variable, which approachs more a Pascal record
+# than the "old" record() that was renamed to "map" (as in Google Go's maps, but
+# weakly typed).
+#function record {
+#	identifier="$1"
+#	variable="$2"
+#	value="$3"
+#
+#	eval $(printf '%s+=(%s="%s")' "$identifier" "$variable" "$value")
+#}
+
+#function __record {
+#	identifier="$1"
+#	variable="$2"
+#	value="$3"
+
+#	eval $(printf '%s+=(%s="%s")' "$identifier" "$variable" "$value")
+#}
 
 # Reads simple Shell-based configuration files.
 # "#" is used for comments, and white spaces are ignored for read(1).
@@ -38,6 +140,31 @@ function rconfig {
     | while IFS='=' read identifier value; do
       	eval $(printf '%s=%s' $identifier "$value")
       done
+}
+
+# Luiz' stupid match/rematch.
+# It's my attempt on mimicking BASH_REMATCH functionality on pretty much
+# any shell. Made it for using on dotini(), but pretty much anyone can adapt
+# this.
+# le.match is just a function that compares a string with a RegEx pattern to
+# check if it matches it. If it does, it can me combined with le.rematch to
+# obtain the capture group.
+function rematch {
+	# Input string.
+	s="$1"
+
+	# Regular expression "rule", as a filter.
+        re="$2"
+
+	# If $re is empty, just exit without questions.
+	[[ ! -n	"$re" ]] && return 0
+
+	# This gets rid of the capture group syntax that we will be using again
+	# on sed. egrep(1) could also be used, but I opted for shell built-ins
+	# since we're already on Korn Shell.
+	[[ "$s" =~ $(printf '%s' "$re" | sed 's/\\(//; s/\\)//') ]] || return 1 
+
+	printf '%s' "$s" | sed "s/$re/\1/"
 }
 
 # Checks if a function or a variable is defined via its identifier. Analogous
@@ -126,4 +253,11 @@ function check_elevate_method {
 # Use this function both for errors and warnings
 function printerr {
     printf "$@" 1>&2
+}
+
+# And use this for fatal errors, it will exit the script.
+function panic {
+	msgbuf="$(printf "$@")"
+	printf 1>&2 'panic: %s' "$msgbuf"
+	exit 255 
 }
