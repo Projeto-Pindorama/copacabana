@@ -8,11 +8,22 @@
 # Make everyone aware we're running from BUILD_KSH.
 export readonly BUILD_KSH=true
 
-# This function parses .INI files into 
+# This function parses .INI files into a compound variable that can be used
+# inside the script via eval.
+# For example:
+#
+# eval private_config=$(dotini conf.ini)
+# Then you could just access like so:
+# printf '%s\n' "${private_config[SectName][KeyName]}"
+# It does not outsource record() or map(), so there's more independence and
+# flexibility on choosing identifiers for your INI file configuration.
 function dotini {
 	file="$1"
 
 	# The function shall fail before "allocating" anything in memory.
+	# This may sound like a worry that a C programmer might have, but it's
+	# just a formality when the topic are ksh-ish languages such as
+	# GNU's Bash or even ksh93 itself.
 	if [[ ! -e "$file" ]]; then
 		panic '%s: file %s does not exist.\n' $0 "$file"
 	fi
@@ -26,7 +37,7 @@ function dotini {
 	# I know this could be done manually using a for-loop, but I think sed
 	# can be more relyable.
 	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") | \
-	for ((nl=0; ; nl++)); do
+	for ((nl=0 ;; nl++)); do
 		if read line; then
 			inibuf[$nl]="$line"
 		else
@@ -55,8 +66,8 @@ function dotini {
 			# identifier = "value"
 			# Or
 			# identifier=value
-			# confline[1]=id
-			# confline[2]=val
+			# confline[1]=identifier
+			# confline[2]=value
 
 			if [[ "$q" == '=' ]]; then
 				((nconf+= 1 ))
@@ -101,40 +112,65 @@ function logto {
 		|| { cat - >> "$file"; }
 }
 
-# Shall rework this later, one minute.
-
-# Creates an associative array with identifier, variable name and value as
-# its parameters. It's really similar to the code found on herbiec in this
-# sense, but it was originally used as a "pointeroid" for accessing an A.S.T.
-#function map {
-#	identifier="$1"
-#	variable="$2"
-#	value="$3"
+# map() and record() functions below.
+# For the "back-end" implementation, see __record(),
+# with the old Bourne/POSIX shell function prototype.
 #
-#	eval $(printf '%s+=([%s]="%s")' "$identifier" "$variable" "$value")
-#}
+# map(): Creates an associative array with identifier,
+# variable name and value as its parameters.
+# It's really similar to the code found on herbiec in
+# this sense, but it was originally used as a "pointeroid"
+# for accessing an A.S.T.
+function map {
+	identifier="$1"
+	variable="$2"
+	value="$3"
 
-# And this creates a compound variable, which approachs more a Pascal record
-# than the "old" record() that was renamed to "map" (as in Google Go's maps, but
-# weakly typed).
-#function record {
-#	identifier="$1"
-#	variable="$2"
-#	value="$3"
-#
-#	eval $(printf '%s+=(%s="%s")' "$identifier" "$variable" "$value")
-#}
+	eval $(__record "$identifier" "$variable" "$value")
+}
 
-#function __record {
-#	identifier="$1"
-#	variable="$2"
-#	value="$3"
+# record(): And this creates a compound variable, which
+# approachs more a Pascal record than the "old" record()
+# --- that was renamed to "map" (as-in Google Go's maps,
+# but weakly typed).
+function record {
+	identifier="$1"
+	variable="$2"
+	value="$3"
 
-#	eval $(printf '%s+=(%s="%s")' "$identifier" "$variable" "$value")
-#}
+	eval $(__record "$identifier" "$variable" "$value")
+}
+
+# Using the good old Bourne function prototype because it permits that the
+# function caller name "escapes" into it.
+__record() {
+	# "London calling to the faraway towns...
+	# But it wasn't my love...
+	# Is she still upset with me?"
+	whos_calling="$0"
+	identifier="$1"
+	variable="$2"
+	value="$3"
+
+	# The only thing that changes between record() and map() is the printf
+	# format before evaluating it into the script.
+	if [[ "$whos_calling" == 'record' ]]; then
+		format='%s+=(%s="%s")'
+	elif [[ "$whos_calling" == 'map' ]]; then
+		format='%s+=([%s]="%s")'
+	else
+		panic '%s: invalid caller '%s'.\n' \
+		"record()/map() backend" "$whos_calling"
+	fi
+
+	# Hope this works.
+	printf "$format" "$identifier" "$variable" "$value"
+}
 
 # Reads simple Shell-based configuration files.
 # "#" is used for comments, and white spaces are ignored for read(1).
+# Could be better written, sed did not need to be here.
+# Deprecated in favour of dotini(), see above.
 function rconfig {
   (sed '/#/d; /^$/d' "$1") \
     | while IFS='=' read identifier value; do
@@ -142,13 +178,10 @@ function rconfig {
       done
 }
 
-# Luiz' stupid match/rematch.
-# It's my attempt on mimicking BASH_REMATCH functionality on pretty much
-# any shell. Made it for using on dotini(), but pretty much anyone can adapt
-# this.
-# le.match is just a function that compares a string with a RegEx pattern to
-# check if it matches it. If it does, it can me combined with le.rematch to
-# obtain the capture group.
+# Luiz' stupid (re)match.
+# It's my attempt on mimicking BASH_REMATCH functionality
+# on pretty much any shell. Made it for using on dotini(),
+# but pretty much anyone can adapt this.
 function rematch {
 	# Input string.
 	s="$1"
