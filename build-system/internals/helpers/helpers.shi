@@ -17,6 +17,28 @@ export readonly BUILD_KSH=true
 # printf '%s\n' "${private_config[SectName][KeyName]}"
 # It does not outsource record() or map(), so there's more independence and
 # flexibility on choosing identifiers for your INI file configuration.
+#
+# FIXME: When I got time --- or someone else that knows at least a bit of
+# KornShell shows up ---, this parser needs to be fixed to support INI files
+# that don't explicitly declare a section.
+# Sure thing that second-rate hacks such as creating a default section called
+# "global" were already thought of, so the ideal is to have just what is being
+# described in the code.
+# I could fix this in some hours, but I'm willing to work more on the rest of
+# the build system instead of just some isolate functions that are already
+# compliant with its needs.
+#
+# FIXME: Also it would be helpful to support files that use spaces between the
+# identifier and value, for example:
+#
+# [sectname]
+# keyname = value
+# keyname_2 = "Another value"
+#
+# Being optimistic and careless about using shell built-ins (read as "read")
+# instead of manipulating the string utilizing just KornShell's repetition
+# control structures, this could be done just like it was done before at the
+# old rconfig() function.
 function dotini {
 	file="$1"
 
@@ -35,7 +57,7 @@ function dotini {
 
 	# First of all, we shall remove comments.
 	# I know this could be done manually using a for-loop, but I think sed
-	# can be more relyable.
+	# can be more reliable.
 	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") | \
 	for ((nl=0 ;; nl++)); do
 		if read line; then
@@ -98,6 +120,41 @@ function dotini {
 
 	# Close compound variable
 	printf '%c' ')'
+}
+
+# This function "converts" a compound variable generated from a .ini file via
+# dotini() to the format "IDENTIFIER=VALUE".
+# It can be useful if the program had just implemented .ini files as a way of
+# configuration and developers doesn't want to mess with the entire source code.
+# It takes the compound variable identifier as a input, for example:
+#
+# inicompat conf
+#
+# NOTE: See dotini()'s first "FIXME" and then implement a way to do it. 
+function inicompat {
+	set -x
+
+	nameref inirecord=$1
+	integer s k
+	typeset -a sections
+
+	sections=( ${!inirecord[@]} )
+
+	for ((s=0; s<${#sections[@]}; s++ )); do
+		typeset -a confkeys
+
+		section=${sections[s]}
+		confkeys=( ${!inirecord[$section][@]} )
+		print -v confkeys
+
+		for (( k=0; k < ${#confkeys[@]}; k++ )); do
+			confkey=${confkeys[$k]}
+			confval="${inirecord[$section][$confkey]}"
+			eval $(printf '%s=%s' $confkey "$confval")
+			unset confkey confval
+		done
+		unset section confkeys confkey confval
+	done
 }
 
 # This function writes everything in a program output to a file passed as a
