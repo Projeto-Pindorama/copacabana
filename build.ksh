@@ -9,12 +9,14 @@ progname="${0##*/}"
 progdir="$(cd "$(dirname "$progname")"; pwd -P)"
 trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 
+# Immediatly source and run the platform checks before doing anything else.
+. "$progdir/build-system/tasks/platform_checks.ksh"; platform_checks
+
 # Internal build system functions
 . "$progdir/build-system/internals/helpers/helpers.shi"
 . "$progdir/build-system/internals/helpers/posix-alt.shi"
 
 # Task files
-. "$progdir/build-system/tasks/platform_checks.ksh"
 . "$progdir/build-system/tasks/check_dependencies.ksh"
 . "$progdir/build-system/tasks/disk_managenment.ksh"
 . "$progdir/build-system/tasks/get_source-code.ksh"
@@ -22,22 +24,23 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 
 . "$progdir/build-system/tasks/finish.ksh"
 
-rconfig "$progdir/build-system/machine.conf"
-rconfig "$progdir/build-system/paths.conf"
+rconfig "$progdir/build-system/machine.ini"
 
-platform_checks
+map dtime initial "$(date +'%Hh%Mmin on %B %d, %Y')" 
+
 check_elevate_method
 check_dependencies
 create_disk "$DISK_BLOCK"
 populate
 get_sources sources.txt sources.sha256
-build cross-tools "base/kernel-headers" "dev/GNUBinutils" \
-	"dev/GNUcc" "base/LibC" "dev/GNUcc"
+build cross-tools cross/mussel
+#build cross-tools "base/kernel-headers" "dev/GNUBinutils" \
+#	"dev/GNUcc" "base/LibC" "dev/GNUcc"
 
 #build tools "base/kernel-headers" "dev/GNUBinutils" \
 #	"dev/GNUcc" "base/LibC" "dev/GNUcc"
 
 #build base "base/kernel-headers" "dev/GNUBinutils" \
 #	"dev/GNUcc" "base/LibC" "dev/GNUcc"
-
+build close
 finish

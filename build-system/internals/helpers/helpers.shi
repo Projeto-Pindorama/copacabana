@@ -4,9 +4,49 @@
 # Copyright (c) 2023 Pindorama
 #                    Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
+#
+# "'Liberdade, Igualdade, Fraternidade',
+# é o seguinte: se tem Liberdade, tem que
+# ter Igualdade, Amor e Fraternidade [...]"
 
 # Make everyone aware we're running from BUILD_KSH.
 export readonly BUILD_KSH=true
+
+# Reads INI configuration files, now a boilerplate function
+# to dotini/inicompat ---  and, in case of using
+# GNU's Broken-Again Shell, it does a coarse conversion of
+# the INI file to a simple Shell-based configuration file
+# format. 
+function rconfig {
+	file="$1"
+
+	if [[ -z $BASH && -n $KSH_VERSION ]]; then
+		# Load the .ini configuration file as
+		# a compound variable to the memory.
+		# Simple as that.
+		eval conf=$(dotini "$file")
+		inicompat conf
+	elif [[ -n $BASH ]]; then # BASH
+		cat "$1" | \
+		for (( ;; )); do
+			if read line; then
+				if [[ "$line" =~ \[.*\] ]] || [[ "$line" =~ ^$ ]] \
+					|| [[ "$line" =~ '^[#;].*$' ]]; then
+					continue
+				else
+					keyval="$(printf '%s' "$line" \
+						| sed 's/^\(.*\)[#;].*/\1/;')"
+					identifier="${keyval%%=*}"
+					value="${keyval##*=}"
+					[[ "$keyval" =~ ^$ ]] && continue
+					eval $(printf '%s='\''%s'\''' $identifier "$value")
+				fi
+			else
+				break
+			fi
+		done 
+	fi
+}
 
 # This function parses .INI files into a compound variable that can be used
 # inside the script via eval.
@@ -102,7 +142,17 @@ function dotini {
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
 		if [[ ! -n $formatted_section ]]; then
-			printf '%s="%s" ' \
+			# Using a apostrophe instead of quotations marks
+			# because, apart from the fact that it works as a
+			# micro-optimization --- since the shell will be
+			# treating its contents as vulgar strings instead of
+			# trying to interpret what is inside them ---, also
+			# prevents globbing of strings.
+			# The only thing that it doesn't prevents,
+			# unfortunately, is the abuse of subshells or malicious
+			# substitutions, but I do not think this can be a
+			# problem here. 
+			printf '%s='\''%s'\'' ' \
 			"${confline[0]}" "${confline[1]}"
 			
 			# Continue to the next line.
@@ -111,7 +161,7 @@ function dotini {
 
 		# If it there's a section and the value declaration was already
 		# parsed, return it as a associative array declaration.
-		printf '[%s]+=([%s]=%s) ' \
+		printf '[%s]+=([%s]='\''%s'\'') ' \
 		$formatted_section "${confline[0]}" "${confline[1]}"
 
 		# Clean confline[] array.
@@ -132,8 +182,6 @@ function dotini {
 #
 # NOTE: See dotini()'s first "FIXME" and then implement a way to do it. 
 function inicompat {
-	set -x
-
 	nameref inirecord=$1
 	integer s k
 	typeset -a sections
@@ -145,11 +193,11 @@ function inicompat {
 
 		section=${sections[s]}
 		confkeys=( ${!inirecord[$section][@]} )
-		print -v confkeys
 
 		for (( k=0; k < ${#confkeys[@]}; k++ )); do
 			confkey=${confkeys[$k]}
 			confval="${inirecord[$section][$confkey]}"
+
 			eval $(printf '%s=%s' $confkey "$confval")
 			unset confkey confval
 		done
@@ -200,6 +248,10 @@ function record {
 
 # Using the good old Bourne function prototype because it permits that the
 # function caller name "escapes" into it.
+# This is broken in GNU's Broken-Again Shell --- well, maybe I'm repeating
+# this joke too many times, but Bash lives up to its nickname --- but this
+# is no problem for now since Bash doesn't support compound variables,
+# just associative arrays, so both "map" and "record" can be the same to Bash.
 __record() {
 	# "London calling to the faraway towns...
 	# But it wasn't my love...
@@ -222,17 +274,6 @@ __record() {
 
 	# Hope this works.
 	printf "$format" "$identifier" "$variable" "$value"
-}
-
-# Reads simple Shell-based configuration files.
-# "#" is used for comments, and white spaces are ignored for read(1).
-# Could be better written, sed did not need to be here.
-# Deprecated in favour of dotini(), see above.
-function rconfig {
-  (sed '/#/d; /^$/d' "$1") \
-    | while IFS='=' read identifier value; do
-      	eval $(printf '%s=%s' $identifier "$value")
-      done
 }
 
 # Luiz' stupid (re)match.
