@@ -116,7 +116,7 @@ function dotini {
  		if section_title="$(rematch "$line" '\[\(.*\)\]')"; then
 			# The formatted section title.
 			formatted_section="$(printf '%s' "$section_title" \
-				| nawk '{ sub(" ", "_"); print(tolower($0)) }')"
+				| nawk '{ gsub(" ", "_"); print(tolower($0)) }')"
 			# We can procceed to the next line.
 			continue
 		fi
