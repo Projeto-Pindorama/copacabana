@@ -57,7 +57,12 @@ function check_dependencies {
 					"$(type -p tar)"
 				printerr \
 				'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
-				function tar { export STAR_SECURE_LINKS='N'; "$(type -p tar)" $@ ;}
+				printerr \
+				'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).\n'
+				function tar {
+					"$(type -p tar)" "$@" \
+						--no-secure-links --artype=xustar
+				}
 				typeset -xf tar
 			fi
 
