@@ -4,5 +4,5 @@ function finish {
 	fi
 
 	# Remove the trash directory with sanity tests
-	rm -r "$trash"
+	rm -rf "$trash"
 } 

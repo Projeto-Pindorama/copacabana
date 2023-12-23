@@ -114,11 +114,13 @@ function create_disk {
 }
 
 # STEP 1.5: Populate the file system
-# This function will run the cmd/populate_fhs.ksh script and create directories
+# This function will run the cmd/populate_fhs.sh script and create directories
 # for the toolchains that will be built. 
 function populate { 
 	# That's the time to decide which will be, in fact, our source-code directory.
 	SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
+	# Also declare who will be our log file.
+	blackbox="$COPA/build.log.$CPU"
 
 	# Self-explanatory, just create the directories for the initial
 	# toolchain and intermediary chroot toolchain.
@@ -156,14 +158,19 @@ function populate {
 
 		(cd /; ls -l ./{cgnu,llvm}tools)
 	fi
+
 	printerr 'Info: Making directories in %s for populating the file system.\n' \
 		"$COPA"
-	(cd "$COPA"; elevate $run_shell -c "COPA=$COPA $progdir/cmd/populate_fhs.ksh; mkdir -p "$SRCDIR"")
+	elevate $run_shell -c "COPA=$COPA BUILD_KSH=$BUILD_KSH $progdir/cmd/populate_fhs.sh; mkdir -p "$SRCDIR""
+
+	printerr 'Info: Initializing blackbox file (%s) for the build.\n' \
+		"$blackbox"
+	( cd "$COPA"; elevate sh -c "> $blackbox; chown $user $blackbox" )
 
 	printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
 		$(realpaths /{cgnu,llvm}tools) "$SRCDIR"
 	elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR"
-	export SRCDIR
+	export blackbox SRCDIR
 }
 
 function unmount_and_detach {

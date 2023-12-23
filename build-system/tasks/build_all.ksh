@@ -32,8 +32,12 @@ function build {
 function build_xtools {
 	packages=( "$@" )
 	n_packages=$(n "${packages[@]}")
+	
 	for (( n=0; n < n_packages; n++ )); do
-		"$progdir/build-system/internals/cmd/driver.ksh" -Dcross "${packages[$n]}" 
+		"$progdir/build-system/internals/cmd/driver.ksh" -Dcross "${packages[$n]}" \
+			|| { $I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR \
+			|| printerr 'Error: Failed to build %s, please check log (%s) for more details.\n' \
+		       		"${packages[$n]}" "$blackbox"; } 
 	done
 }
 
@@ -52,16 +56,19 @@ function build_base {
 function close_build {
 	version="$progdir/version"
 	release_file="$COPA/etc/copacabana-release"
-	if [[ ! -s "$version" ]] || ; then
+	if [[ ! -s "$version" ]]; then
 		printf '%.1f' 0.0 > "$version"
 	fi
-	record dtime final "$(date +'%Hh%Mmin on %B %d, %Y')"
+	map dtime final "$(date +'%Hh%Mmin on %B %d, %Y')"
 
 	printf > "$release_file" \
 	'Copacabana %.1f/%s\nCopyright (c) %d-%d Pindorama. All rights reserved.\n\nDesigned between %s and %s. Built from %s until %s (UTC %s).\n' \
 		"$(cat $version)" "$CPU" '2019' "$(date +"%Y")" \
 		'February 2021' "$(date +'%B %Y')" \
 		"${dtime[initial]}" "${dtime[final]}" "$(date +%Z)"
+	
+	printerr 'Info: Build done at %s.\n' \
+		"${dtime[final]}" | tee "$blackbox"
 
 	return 0
 }

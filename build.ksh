@@ -25,6 +25,8 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 . "$progdir/build-system/tasks/finish.ksh"
 
 rconfig "$progdir/build-system/machine.ini"
+rconfig "$progdir/build-system/work.ini"
+rconfig "$progdir/build-system/fhs.ini"
 
 map dtime initial "$(date +'%Hh%Mmin on %B %d, %Y')" 
 
