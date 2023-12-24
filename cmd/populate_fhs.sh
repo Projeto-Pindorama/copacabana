@@ -4,8 +4,6 @@
 #                    Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
-set -x
-
 progname="${0##*/}"
 COPA=${COPA:-/dsk/0v}
 mtab='/etc/mtab'
