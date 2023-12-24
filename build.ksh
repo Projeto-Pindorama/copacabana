@@ -7,7 +7,6 @@ set -e
 
 progname="${0##*/}"
 progdir="$(cd "$(dirname "$progname")"; pwd -P)"
-trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 
 # Immediatly source and run the platform checks before doing anything else.
 . "$progdir/build-system/tasks/platform_checks.ksh"; platform_checks
@@ -27,6 +26,8 @@ trash="$(mktemp -d /tmp/CopaBuild.XXXXXX)"
 rconfig "$progdir/build-system/machine.ini"
 rconfig "$progdir/build-system/work.ini"
 rconfig "$progdir/build-system/fhs.ini"
+
+trash="$(mktemp -d "$TRASH_PREFIX/CopaBuild.XXXXXX")"
 
 map dtime initial "$(date +'%Hh%Mmin on %B %d, %Y')" 
 
