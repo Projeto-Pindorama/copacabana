@@ -1,6 +1,6 @@
 # This task script is part of Copacabana's build system.
 #
-# Copyright (c) 2023: Pindorama
+# Copyright (c) 2023-2024: Pindorama
 # SPDX-Licence-Identifier: NCSA
 # C and C++ sanity checks by Samuel (callsamu), Lucas (volatusveritas)
 # and Luiz Antônio Rangel (takusuman)

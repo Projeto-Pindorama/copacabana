@@ -1,7 +1,7 @@
 #!/bin/sh
 # Simple shell hack to populate Copacabana's FHS on a new disk
-# Copyright (c) 2023 Pindorama
-#                    Luiz Antônio Rangel
+# Copyright (c) 2023-2024 Pindorama
+#                    	  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
 progname="${0##*/}"

@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh93
 # Simple shell hack to snapshot a Copacabana stage. 
-# Copyright 2022: Luiz Antônio (takusuman).
+# Copyright 2022-2024: Luiz Antônio (takusuman).
 # This script is licensed under UUIC/NCSA (as Copacabana work itself).
 # PS: It can also be run in GNU Broken... eh, I mean BOURNE-Again Shell
 # if you don't have AT&T's ksh93 installed. 

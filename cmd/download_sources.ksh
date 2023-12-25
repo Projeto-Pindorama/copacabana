@@ -1,7 +1,7 @@
 #!/usr/bin/env ksh93 
 # Simple shell hack to download and SHA256 check source tarballs.
 #
-# Copyright 2021 - 2023 Luiz Antônio Rangel (takusuman).
+# Copyright 2021 - 2024 Luiz Antônio Rangel (takusuman).
 # n() function by Caio Novais (caionova).
 # This script is licensed under UUIC/NCSA (as Copacabana work itself).
 # Forked from CMLFS, which was originally dual-licensed between

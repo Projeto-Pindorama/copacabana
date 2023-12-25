@@ -1,6 +1,6 @@
 # This task script is part of Copacabana's build system.
 #
-# Copyright (c) 2023: Pindorama
+# Copyright (c) 2023-2024: Pindorama
 # SPDX-Licence-Identifier: NCSA
 
 # STEP 2: Ingredients

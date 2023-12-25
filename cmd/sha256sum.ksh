@@ -2,8 +2,8 @@
 # sha256sum.ksh - Generate SHA256 hashes for a file using Open/LibreSSL.  
 # Can be extended to more digest formats later, the code is pretty maleable.
 #
-# Copyright (c) 2023 Pindorama
-# 		Luiz Antônio Rangel
+# Copyright (c) 2023-2024 Pindorama
+# 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
 progname=${0##*/}
