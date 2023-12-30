@@ -261,6 +261,7 @@ __record() {
 	variable="$2"
 	value="$3"
 
+	if [[ -z "$BASH" ]]; then # This is for KornShell 93
 	# The only thing that changes between record() and map() is the printf
 	# format before evaluating it into the script.
 	if [[ "$whos_calling" == 'record' ]]; then
@@ -269,7 +270,15 @@ __record() {
 		format='%s+=([%s]="%s")'
 	else
 		panic '%s: invalid caller '%s'.\n' \
-		"record()/map() backend" "$whos_calling"
+		'record()/map() backend' "$whos_calling"
+	fi
+	else # Broken-Again
+	format='%s['%s']="%s"'
+	fi
+
+	if [[ -n "$BASH" ]]; then
+	# Declare a global, associative array.
+	printf 'declare -gA %s\n' "$identifier"
 	fi
 
 	# Hope this works.
