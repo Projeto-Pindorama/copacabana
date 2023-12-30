@@ -243,14 +243,12 @@ function record {
 	variable="$2"
 	value="$3"
 
-	# Broken-Again Shell, unlike KornShell, can not get
-	# a function caller by $0, so we will need to define
-	# a new variable with this information.
-	# Doing it specifically on record() because compound
-	# variables are not supported on Bash.
+	# Shouting to __record() that, since we are on Bash,
+	# record() shall not be supported as is, because
+	# compound variables are not supported on Bash.
 	if [[ -n $BASH ]]; then
-	bash_caller=$FUNCNAME
-	export bash_caller
+	bash_supports_compound=false
+	export bash_supports_compound
 	fi
 
 	eval $(__record "$identifier" "$variable" "$value")
@@ -283,13 +281,13 @@ __record() {
 		'record()/map() backend' "$whos_calling"
 	fi
 	else # Broken-Again
-	if [[ "$bash_caller" == 'record' ]]; then
+	if ! $bash_supports_compound; then
 		panic \
 		'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.\n' \
 		'record()/map() backend'
 		# Basic sanitizing in case of panic() does
 		# not quitting the program as intended.
-		unset bash_caller
+		unset bash_supports_compound
 	fi
 	format='%s['%s']="%s"'
 	fi
