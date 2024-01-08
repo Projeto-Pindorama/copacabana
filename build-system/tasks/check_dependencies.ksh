@@ -34,7 +34,7 @@ function check_dependencies {
 		'size' 'strings' 'strip' )
 
 	# General commands
-	general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'patch' \
+	general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'ed' 'patch' \
 		'find' 'grep' 'm4' 'mitzune' \
 		${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
 
