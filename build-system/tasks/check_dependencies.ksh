@@ -35,7 +35,7 @@ function check_dependencies {
 
 	# General commands
 	general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'ed' 'patch' \
-		'find' 'grep' 'm4' 'mitzune' \
+		'find' 'grep' 'lemount' 'm4' 'mitzune' \
 		${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
 
 	# General compressing tools
