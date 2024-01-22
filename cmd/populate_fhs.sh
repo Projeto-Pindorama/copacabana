@@ -36,7 +36,7 @@ while read line; do
 	disk="${line%%[[:space:]]*}"
 	dirtotest_=${line#*[[:space:]]}
 	dirtotest=${dirtotest_%%[[:space:]]*}
-	if $(printf '%s' "$dirtotest" | egrep "^$COPA\$" 2>&1 > /dev/null); then
+	if [ "x$dirtotest" = "x$COPA" ]; then
 		printf 1>&2 'Found %s as a mountpoint for %s.\n' "$COPA" "$disk"
 		err=0
 		break
