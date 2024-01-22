@@ -37,7 +37,8 @@ while read line; do
 	dirtotest_=${line#*[[:space:]]}
 	dirtotest=${dirtotest_%%[[:space:]]*}
 	if [ "x$dirtotest" = "x$COPA" ]; then
-		printf 1>&2 'Found %s as a mountpoint for %s.\n' "$COPA" "$disk"
+		printf 1>&2 'Found %s as a mountpoint for %s.\n' \
+			"$COPA" "$disk"
 		err=0
 		break
 	fi
