@@ -41,6 +41,11 @@ function check_dependencies {
 	# General compressing tools
 	archivers=('tar' 'bzip2' 'gzip' 'xz')
 
+	# Check for aria2c
+	if $USE_ARIA2C; then
+		general_commands[1]='aria2c'
+	fi	
+
 	for (( g=0; g < $(n ${general_commands[@]}); g++ )); do
 		printerr 'Searching for %s at PATH (%s)... ' \
 			"${general_commands[$g]}" "$PATH"
