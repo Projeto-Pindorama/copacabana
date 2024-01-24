@@ -414,6 +414,7 @@ function printerr {
 # And use this for fatal errors, it will exit the script.
 function panic {
 	msgbuf="$(printf "$@")"
-	printf 1>&2 'panic: %s' "$msgbuf"
+	printerr 'panic: %s' "$msgbuf"
+
 	exit 255 
 }
