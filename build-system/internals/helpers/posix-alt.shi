@@ -23,14 +23,18 @@ basename(){
 
 # realpath
 realpath(){
-  # ./sources.txt -> sources.txt
-  file_basename="`basename "$1"`"
-  # ./sources.txt -> .
-  file_dirname="`dirname "$1"`"
-	# get the absolute directory name
-	# example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
-	# cd ./; pwd -> /usr/src/copacabana-repo
-  echo "`cd "${file_dirname}"; pwd`/${file_basename}"
+  if ! command -v readlink 2>&1 >/dev/null; then
+    # ./sources.txt -> sources.txt
+    file_basename="`basename "$@"`"
+    # ./sources.txt -> .
+    file_dirname="`dirname "$@"`"
+	 # get the absolute directory name
+	 # example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
+	 # cd ./; pwd -> /usr/src/copacabana-repo
+    echo "`(cd "${file_dirname}"; pwd)`/${file_basename}"
+  else
+    readlink -f "$@"
+  fi
 }
 
 # wc -l
