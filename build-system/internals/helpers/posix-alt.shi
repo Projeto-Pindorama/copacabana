@@ -5,7 +5,7 @@
 # functions already have variables defined in local scopes.
 
 # Copyright (c) 2020-2021 Caio Novais and Luiz Antônio Rangel
-# Copyright (c) 2020-2023 Luiz Antônio Rangel
+# Copyright (c) 2020-2024 Luiz Antônio Rangel
 # SPDX-Licence-Identifier: Caldera
 
 # Include dirs(), pushd() and popd()
@@ -44,7 +44,13 @@ lines(){
 
 # timeout
 timeout(){
-	"${2}" & PID="${!}"; sleep "${1}" && kill "${PID}"
+	if ! command -v timeout 2>&1 >/dev/null; then
+		time="$1"
+		shift
+		"$@" & PID="${!}"; sleep "$time" && kill "$PID"
+	else
+		command timeout "$@"
+	fi
 }
 
 # nproc
