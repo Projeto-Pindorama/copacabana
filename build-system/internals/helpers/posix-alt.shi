@@ -60,7 +60,12 @@ timeout(){
 # nproc
 nproc(){
   case "`uname -s`" in
-    Darwin | Linux) getconf '_NPROCESSORS_ONLN';;
+    Darwin) getconf '_NPROCESSORS_ONLN';;
+    Linux) if [ `getconf HEIRLOOM_TOOLCHEST_VERSION` -lt 230305 ]; then
+            grep -c 'processor' /proc/cpuinfo
+    	   else
+            getconf '_NPROCESSORS_ONLN'
+    	   fi ;;
     FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN';;
     SunOS) echo "`ksh93 -c 'getconf NPROCESSORS_ONLN'`" ;;
   esac
