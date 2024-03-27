@@ -6,6 +6,7 @@
 # STEP 1: "Pindorama presents: Fubá Cake" 
 # In this step, we will create and format a disk, virtual or physical.
 function create_disk {
+	set -x
 	disk_block="$1"
 
 	# Set first_time flag to indicate that it's the first time building the
@@ -73,7 +74,10 @@ function create_disk {
 			first_time=false
 		fi
 	elif [[ "$VIRTUAL_DISK" ]]; then
-		virtuadisk_path="$(realpath "$disk_block")"
+		# This would be the equivalent of the old realpath() builtin
+		# at posix-alt.shi, it gets $disk_block's directory location
+		# and then contatenates it with its name.
+		virtuadisk_path="$(cd "${disk_block%/*}"; pwd -P)/${disk_block##*/}"
 		printerr 'Info: Using a virtual disk, located at %s, with a pre-determined size of %d MB.\n' \
 			"$virtuadisk_path" $(( virtuadisk_size * 1024 ))
 
