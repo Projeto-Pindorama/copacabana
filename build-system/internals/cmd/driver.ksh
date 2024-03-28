@@ -125,7 +125,7 @@ function transmutacio {
 	shared_methods=('configure' 'build' 'make_pkg')
 
 	{
-		if $(defined unarchive); then
+		if defined unarchive; then
 			( cd "$source_archive_dir"; unarchive )
 			if (( $? != 0 )); then
 				printerr 'Error: Failed to unarchive %s from %s. Error code: %d\n' \
@@ -137,7 +137,7 @@ function transmutacio {
 		# so we won't have problems with future "boilerplate" pkgbuilds that
 		# just create symbolic links, for instance.
 		for (( c=0; c <= ${#shared_methods[@]}; c++ )); do	
-			if $(defined $(printf '%s' ${shared_methods[$c]})); then
+			if defined $(printf '%s' ${shared_methods[$c]}); then
 				if [[ "${shared_methods[$c]}" == 'make_pkg' ]]; then
 					Destdir="$DESTDIR/$Destdir"
 					DESTDIR="$Destdir"
@@ -153,7 +153,7 @@ function transmutacio {
 			fi
 		done
 
-		if $(defined post_install); then
+		if defined post_install; then
 			# If $Destdir not defined from the pkgbuild, default it
 			# to $DESTDIR. It is expected to be declared when the package
 			# needs to be installed in a custom location.
