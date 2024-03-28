@@ -61,7 +61,7 @@ function create_disk {
 		fi
 	
 		# Check if disk is already initialized.
-		if $(elevate fdisk -x "${disk_block%%?}" | grep "$disk_block" &>/dev/null); then
+		if $(elevate fdisk -x "${disk_block%%[0-9]}" | grep "$disk_block" &>/dev/null); then
 			filesystem=$(eval $(blkid -o udev "$disk_block");
 					printf '%s\n' "$ID_FS_TYPE")
 
