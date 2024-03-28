@@ -100,7 +100,8 @@ function create_disk {
 				# This will (L.E.)mount the disk and view if
 				# there is something that can be done.
 				yes) break ;;
-				no) start_over=true ;;
+				no) start_over=true;
+					break ;;
 				quit|*) return 1 ;;
 			esac
 		done
