@@ -6,7 +6,6 @@
 # STEP 1: "Pindorama presents: Fubá Cake" 
 # In this step, we will create and format a disk, virtual or physical.
 function create_disk {
-	set -x
 	disk_block="$1"
 
 	# Set first_time flag to indicate that it's the first time building the
@@ -38,13 +37,16 @@ function create_disk {
 	fi
 
 	printerr 'Info: %s only creates a plain disk, without partitions for /boot, /usr, etc.\n' $0
-	if [[ ! "$VIRTUAL_DISK" && -b "$disk_block" ]]; then
+	if [[ ! "$VIRTUAL_DISK" ]] && [[ -b "$disk_block" ]] \
+		|| ( [[ "$(uname -s)" == "Linux" ]] && (( KSH93_RELEASE <= 20211217 )) \
+			&& (grep "${disk_block##*/}" /proc/partitions 2>&1 > /dev/null \
+			&& [[ "$(file "$disk_block")" =~ (.*[\t ]block special.*) ]]) ); then
 		# Get the disk size from /proc/partitions, pretty
 		# self-explanatory.
 		disk_size="$(grep "${disk_block##*/}\$" /proc/partitions \
 			| nawk '{ printf "%0.1f\n", ($(NF -1) / 1024); }')"
 
-		printerr 'Info: Using a physical disk, present at %s with size of %d MB.\n' \ 
+		printerr 'Info: Using a physical disk, present at %s with size of %d MB.\n' \
 			"$disk_block" "$disk_size"
 
 		if (( disk_size < (10 * 1024) )); then 
@@ -58,7 +60,7 @@ function create_disk {
 			"$disk_block" $(( 50 * 1024 ))
 		fi
 	
-		# Check if disk is already initialized.	
+		# Check if disk is already initialized.
 		if $(elevate fdisk -x "${disk_block%%?}" | grep "$disk_block" &>/dev/null); then
 			filesystem=$(eval $(blkid -o udev "$disk_block");
 					printf '%s\n' "$ID_FS_TYPE")
@@ -157,35 +159,6 @@ function create_disk {
 	printerr 'Info: Copacabana disk %s mounted at %s.\n' "$disk_block" "$COPA"
 }
 
-# May use this function later, no use for it for now.
-function get_size_blocks {
-	typeset -a disk_size[2]
-	disk_block="$1"
-
-	# The minimum size for a block is 512KiB, not less.
-	# This identifier may sound a little bit erred.
-	readonly blocks_per_kib=512
-	
-	disk_size=( $(elevate fdisk -x "$disk_block" \
-		| sed '1 s/Disk .*: \(.*\),.*,.*/\1/; 1q') )
-
-	size=${disk_size[0]}
-	sizeunit=${disk_size[1]}
-	unset disk_size
-
-	case $sizeunit in
-		'TiB') ((blocks= size * (blocks_per_kib * 4194304) )) ;;
-		'GiB') ((blocks= size * (blocks_per_kib * 4096) )) ;;
-		'MiB') ((blocks= size * (blocks_per_kib * 4) )) ;;
-		'KiB') ((blocks= size / blocks_per_kib )) ;;
- 	esac
-	unset size sizeunit
-
-	printf '%d' $blocks
-
-	return 0
-}
-
 # STEP 1.5: Populate the file system
 # This function will run the cmd/populate_fhs.sh script and create directories
 # for the toolchains that will be built. 
@@ -274,4 +247,33 @@ function check_linuxfs {
 	esac
 
 	return $err
+}
+
+# May use this function later, no use for it for now.
+function get_size_blocks {
+	typeset -a disk_size[2]
+	disk_block="$1"
+
+	# The minimum size for a block is 512KiB, not less.
+	# This identifier may sound a little bit erred.
+	readonly blocks_per_kib=512
+	
+	disk_size=( $(elevate fdisk -x "$disk_block" \
+		| sed '1 s/Disk .*: \(.*\),.*,.*/\1/; 1q') )
+
+	size=${disk_size[0]}
+	sizeunit=${disk_size[1]}
+	unset disk_size
+
+	case $sizeunit in
+		'TiB') ((blocks= size * (blocks_per_kib * 4194304) )) ;;
+		'GiB') ((blocks= size * (blocks_per_kib * 4096) )) ;;
+		'MiB') ((blocks= size * (blocks_per_kib * 4) )) ;;
+		'KiB') ((blocks= size / blocks_per_kib )) ;;
+ 	esac
+	unset size sizeunit
+
+	printf '%d' $blocks
+
+	return 0
 }
