@@ -10,7 +10,10 @@
 # ter Igualdade, Amor e Fraternidade [...]"
 
 # Make everyone aware we're running from BUILD_KSH.
-export readonly BUILD_KSH=true
+readonly BUILD_KSH=true
+readonly KSH93_RELEASE=$(printf '%s' "${KSH_VERSION:-0}" \
+	| nawk '{ gsub("-", ""); print $NF; }')
+export BUILD_KSH KSH93_RELEASE
 
 # Reads INI configuration files, now a boilerplate function
 # to dotini/inicompat ---  and, in case of using
@@ -327,10 +330,17 @@ function rematch {
 # on purpose to the C preprocessor special operator defined(), meant for being
 # used in if conditions.
 function defined {
+  set -x
   # First it will check if it's a function defined on the environment and/or in
   # a sourced file, if it's not, then it will check if it is a variable.
   {
-    type -t "$1" | grep 'function' 2>&1 > /dev/null \
+    # 'type -t' first appeared in KornShell 93 1.0.0. release
+    # as a reimplementation of the GNU Broken-Again extension,
+    # earlier versions do not have it present.
+    { (test $KSH93_RELEASE -ge 20220801 || test -n "$BASH") \
+	    && type -t "$1" \
+	    || type -v "$1"; } \
+	| grep 'function' 2>&1 > /dev/null \
     || test ! -z "$(eval "echo \$$1")"
   } \
   || return 1
