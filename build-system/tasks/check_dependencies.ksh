@@ -66,10 +66,7 @@ function check_dependencies {
 				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.\n'
 
 				printf '%s' "$PATH" \
-				| nawk '{ np=split($0, p, ":");
-					for (n = 1; n < np; n++) {
-						print p[n];
-					}}' \
+				| nawk '{ gsub(":", "\n"); print $0; }' \
 				| for ((;;)); do
 					if read -r d; then
 						tar_cmd="$d/tar"
@@ -78,12 +75,10 @@ function check_dependencies {
 						elif ($tar_cmd --help 2>&1| egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
 							new_tarpath="$d"
 							tmpPATH="$new_tarpath:$PATH"
-							# This big chunk of code, which also
-							# repeats the code utilized above to
-							# split the PATH, works as a 'uniq'
-							# for the PATH variable because
-							# since $new_tarpath was already in PATH,
-							# it would be repeated in the new PATH.
+							# This big chunk of code works as a 'uniq'
+							# for the PATH variable because, since
+							# $new_tarpath was already in PATH, it
+							# would be repeated in the new PATH.
 							PATH="$(printf '%s' "$tmpPATH" \
 							| nawk '{ np=split($0, p, ":");
 								for (n = 1; n <= np; n++) {
