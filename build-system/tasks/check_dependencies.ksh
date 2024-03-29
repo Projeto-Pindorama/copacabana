@@ -56,8 +56,65 @@ function check_dependencies {
 	for (( h=0; h < $(n ${archivers[@]}); h++ )); do
 		printerr 'Does %s work for what we want? ' "${archivers[$h]}"
 		if [ "${archivers[$h]}" == 'tar'  ]; then # TAR-specific tests
-			if [[ "$(readlink -f "$(type -p tar)")" =~ (star) ]] \
-				|| $(tar -h 2>&1| grep 'star' 2>&1 >/dev/null); then
+			tarpath="$(realpath $(type -p tar))"
+			if (strings "$tarpath" | grep '@(#)tar.*\(gritter\)' \
+				&& getconf HEIRLOOM_TOOLCHEST_VERSION) 2>&1 >/dev/null; then
+				printerr '\nI'\''m almost certain that %s is from the Heirloom Toolchest...\n' \
+					"$(type -p tar)"
+				printerr  'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.\n'
+				printerr \
+				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.\n'
+
+				printf '%s' "$PATH" \
+				| nawk '{ np=split($0, p, ":");
+					for (n = 1; n < np; n++) {
+						print p[n];
+					}}' \
+				| for ((;;)); do
+					if read -r d; then
+						tar_cmd="$d/tar"
+						if [[ ! -e "$tar_cmd" || "$d" == "${tarpath%/*}" ]]; then
+							continue
+						elif ($tar_cmd --help 2>&1| egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
+							new_tarpath="$d"
+							tmpPATH="$new_tarpath:$PATH"
+							# This big chunk of code, which also
+							# repeats the code utilized above to
+							# split the PATH, works as a 'uniq'
+							# for the PATH variable because
+							# since $new_tarpath was already in PATH,
+							# it would be repeated in the new PATH.
+							PATH="$(printf '%s' "$tmpPATH" \
+							| nawk '{ np=split($0, p, ":");
+								for (n = 1; n <= np; n++) {
+									if ((n + 1) >= np) {
+										separator=""
+									} else {
+										separator=":"
+									}
+									# If not already present
+									# on the s[] array, print it.
+									if (!s[p[n]]++) {
+										printf("%s%c", p[n], separator);
+									}
+								}
+								}')"
+							printerr 'Info: Found suitable tar at %s\n' $new_tarpath 
+							printerr 'Info: New PATH: %s\n' $PATH
+							export PATH
+							unset new_tarpath tmpPATH
+							break
+						fi
+						unset tar_cmd
+					else
+						panic 'Error: Couldn'\''t find a suitable tar implementation.\n'
+						break # Une pure formalité.
+					fi
+				done
+			fi
+
+			if [[ "$tarpath" =~ (star) ]] \
+				|| (tar -h 2>&1| grep 'star' 2>&1 >/dev/null); then
 				printerr '\nI'\''m almost certain that %s is Schily tar...\n' \
 					"$(type -p tar)"
 				printerr \
@@ -70,6 +127,7 @@ function check_dependencies {
 				}
 				typeset -xf tar
 			fi
+			unset tarpath
 
 			{
 			( mkdir -p "$archiver_sanity"{,_results}
@@ -111,14 +169,14 @@ function check_dependencies {
 	done
 	
 	for (( k=0; k < $(n ${internal_scripts[@]}); k++ )); do
-		printerr 'Searching for independent script %s at %s... ' \
+		printerr 'Info: Searching for independent script %s at %s... ' \
 			"${internal_scripts[$k]}" "$progdir"
 		if [ -e "$progdir/${internal_scripts[$k]}" ] \
 			&& [ ! -z "$(cat "$progdir/${internal_scripts[$k]}")" ]; then
 			printerr 'Found!\n'
 		else
 			printerr '%s not found...\n'
-			printerr 'It seems like your Copacabana repository clone is incomplete.\n'
+			panic 'Error: It seems like your Copacabana repository clone is incomplete.\n'
 			return 1
 		fi
 	done
