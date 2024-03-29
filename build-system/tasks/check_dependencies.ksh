@@ -73,7 +73,7 @@ function check_dependencies {
 						if [[ ! -e "$tar_cmd" || "$d" == "${tarpath%/*}" ]]; then
 							continue
 						elif ($tar_cmd --help 2>&1| egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
-							new_tarpath="$d"
+							new_tarpath="$(realpath $d)"
 							tmpPATH="$new_tarpath:$PATH"
 							# This big chunk of code works as a 'uniq'
 							# for the PATH variable because, since
