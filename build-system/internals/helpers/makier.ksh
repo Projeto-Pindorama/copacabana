@@ -7,5 +7,5 @@ _make(){
 	tak="$1"
 	
 	shift # Remove '$1'
-	. "$(printf '%s/%s/%s.%s' "$pd" "$td" "$tak" "$lang")" "${@:-''}"
+	. "$(printf '%s/%s/%s%s' "$pd" "$td" "$tak" "$lang")" "${@:-''}"
 }
