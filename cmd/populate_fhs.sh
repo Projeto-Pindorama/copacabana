@@ -4,6 +4,8 @@
 #                    	  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
+set -x
+
 progname="${0##*/}"
 COPA=${COPA:-/dsk/0v}
 mtab='/etc/mtab'
@@ -32,6 +34,9 @@ fi
 # Is the Copacabana build disk mounted?
 printf 1>&2 'Checking if %s is a mountpoint...\n' "$COPA"
 {
+# Declare 'err' as being 1 since it will
+# only be changed if a disk is mounted.
+err=1
 while read line; do
 	disk="${line%%[[:space:]]*}"
 	dirtotest_=${line#*[[:space:]]}
@@ -44,7 +49,6 @@ while read line; do
 	fi
 	unset disk dirtotest_ dirtotest
 	# Not mounted?
-	err=1
 done < "$mtab"
 }
 if [ $err != 0 ]; then

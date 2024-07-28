@@ -1,0 +1,45 @@
+# vim: set filetype=sh :
+
+# May use this function later, no use for it for now.
+function get_size_blocks {
+	typeset -a disk_size[2]
+	disk_block="$1"
+
+	# The minimum size for a block is 512KiB, not less.
+	# This identifier may sound a little bit erred.
+	readonly blocks_per_kib=512
+	
+	disk_size=( $(elevate fdisk -x "$disk_block" \
+		| sed '1 s/Disk .*: \(.*\),.*,.*/\1/; 1q') )
+
+	size=${disk_size[0]}
+	sizeunit=${disk_size[1]}
+	unset disk_size
+
+	case $sizeunit in
+		'TiB') ((blocks= size * (blocks_per_kib * 4194304) )) ;;
+		'GiB') ((blocks= size * (blocks_per_kib * 4096) )) ;;
+		'MiB') ((blocks= size * (blocks_per_kib * 4) )) ;;
+		'KiB') ((blocks= size / blocks_per_kib )) ;;
+ 	esac
+	unset size sizeunit
+
+	printf '%d' $blocks
+
+	return 0
+}
+
+# This checks for valid file systems on
+# which Copacabana builds are made and
+# tested.
+function check_linuxfs {
+	fs=$1
+	err=0
+
+	case $fs in
+		btrfs|ext4) break ;;
+		default) err=1; break ;;
+	esac
+
+	return $err
+}
