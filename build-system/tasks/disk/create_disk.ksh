@@ -31,13 +31,16 @@ if (( ${#disk_label} > 16 )); then
 fi
 
 printerr 'Info: %s only creates a plain disk, without partitions for /boot, /usr, etc.\n' $0
-if [[ ! "$VIRTUAL_DISK" && -b "$disk_block" ]]; then
+if [[ ! "$VIRTUAL_DISK" ]] && [[ -b "$disk_block" ]] \
+	|| ( [[ "$(uname -s)" == "Linux" ]] && (( KSH93_RELEASE <= 20211217 )) \
+		&& (grep "${disk_block##*/}" /proc/partitions 2>&1 > /dev/null \
+		&& [[ "$(file "$disk_block")" =~ (.*[\t ]block special.*) ]]) ); then
 	# Get the disk size from /proc/partitions, pretty
 	# self-explanatory.
 	disk_size="$(grep "${disk_block##*/}\$" /proc/partitions \
 		| nawk '{ printf "%0.1f\n", ($(NF -1) / 1024); }')"
 
-	printerr 'Info: Using a physical disk, present at %s with size of %d MB.\n' \ 
+	printerr 'Info: Using a physical disk, present at %s with size of %d MB.\n' \
 		"$disk_block" "$disk_size"
 
 	if (( disk_size < (10 * 1024) )); then 
@@ -51,8 +54,8 @@ if [[ ! "$VIRTUAL_DISK" && -b "$disk_block" ]]; then
 		"$disk_block" $(( 50 * 1024 ))
 	fi
 
-	# Check if disk is already initialized.	
-	if $(elevate fdisk -x "${disk_block%%?}" | grep "$disk_block" &>/dev/null); then
+	# Check if disk is already initialized.
+	if $(elevate fdisk -x "${disk_block%%[0-9]}" | grep "$disk_block" &>/dev/null); then
 		filesystem=$(eval $(blkid -o udev "$disk_block");
 				printf '%s\n' "$ID_FS_TYPE")
 
@@ -67,7 +70,10 @@ if [[ ! "$VIRTUAL_DISK" && -b "$disk_block" ]]; then
 		first_time=false
 	fi
 elif [[ "$VIRTUAL_DISK" ]]; then
-	virtuadisk_path="$(realpath "$disk_block")"
+	# This would be the equivalent of the old realpath() builtin
+	# at posix-alt.shi, it gets $disk_block's directory location
+	# and then contatenates it with its name.
+	virtuadisk_path="$(cd "${disk_block%/*}"; pwd -P)/${disk_block##*/}"
 	printerr 'Info: Using a virtual disk, located at %s, with a pre-determined size of %d MB.\n' \
 		"$virtuadisk_path" $(( virtuadisk_size * 1024 ))
 
@@ -88,7 +94,8 @@ if ! $first_time; then
 			# This will (L.E.)mount the disk and view if
 			# there is something that can be done.
 			yes) break ;;
-			no) start_over=true ;;
+			no) start_over=true;
+				break ;;
 			quit|*) return 1 ;;
 		esac
 	done
