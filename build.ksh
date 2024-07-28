@@ -13,7 +13,7 @@ progdir="$(cd "$(dirname "$progname")"; pwd -P)"
 
 # Immediatly source and run the platform checks
 # before doing anything else.
-_make "checks/platform"
+_make 'checks/platform'
 
 . "$progdir/build-system/internals/helpers/posix-alt.shi"
 . "$progdir/build-system/internals/helpers/helpers.shi"
