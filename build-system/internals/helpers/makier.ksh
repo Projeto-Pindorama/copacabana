@@ -1,11 +1,10 @@
 # Boilerplate for running tasks.
 
 _make(){
-	td='build-system/tasks'
 	lang='.ksh'
-	pd="$progdir"
+	tasks="${tasks:?"task directory not defined"}"
 	tak="$1"
 	
 	shift # Remove '$1'
-	. "$(printf '%s/%s/%s%s' "$pd" "$td" "$tak" "$lang")" "${@:-''}"
+	. "$(printf '%s/%s%s' "$tasks" "$tak" "$lang")" "${@:-''}"
 }

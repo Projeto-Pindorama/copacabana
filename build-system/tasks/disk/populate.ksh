@@ -13,7 +13,7 @@ blackbox="$COPA/build.log.$CPU"
 # toolchain and intermediary chroot toolchain.
 printerr 'Info: Making directories in %s for the building toolchains.\n' \
 	"$COPA"
-elevate mkdir "$COPA/"{cgnu,llvm}tools "$OBJDIR" "$PKGDIR"
+elevate mkdir -p "$COPA/"{cgnu,llvm}tools "$OBJDIR" "$PKGDIR"
 (cd "$COPA"; ls -lah .)
 
 # Make a symbolic link from $COPA/cgnutools to /cgnutools, the same

@@ -9,9 +9,7 @@
 # SPDX-Licence-Identifier: Caldera
 
 # Include dirs(), pushd() and popd()
-. "$progdir/build-system/internals/helpers/dirs.shi"
-
-# vim: filetype=sh :
+#. "$progdir/build-system/internals/helpers/dirs.shi"
 
 # basename
 basename(){
@@ -23,52 +21,57 @@ basename(){
 
 # realpath
 realpath(){
-  if ! command -v readlink 2>&1 >/dev/null; then
-    # ./sources.txt -> sources.txt
-    file_basename="`basename "$1"`"
-    # ./sources.txt -> .
-    file_dirname="`dirname "$1"`"
-	 # get the absolute directory name
-	 # example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
-	 # cd ./; pwd -> /usr/src/copacabana-repo
-    echo "`(cd "${file_dirname}"; pwd)`/${file_basename}"
-  else
-    readlink -f "$1"
-  fi
+	if ! command -v readlink 2>&1 >/dev/null; then
+		# ./sources.txt -> sources.txt
+		file_basename="`basename "$1"`"
+		# ./sources.txt -> .
+		file_dirname="`dirname "$1"`"
+		# get the absolute directory name
+		# example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
+		# cd ./; pwd -> /usr/src/copacabana-repo
+		echo "`(cd "${file_dirname}"; pwd)`/${file_basename}"
+	else
+		readlink -f "$1"
+	fi
 }
 
 # wc -l
 lines(){
-	while IFS= read -r LINE || [ -n "${LINE}" ]; do
-		LINES=$[ ${LINES} + 1 ]
-	done < "${1}"
-	printf '%s\n' "$LINES"
+	LINES=0
+	while IFS= read -r l || [ -n "$l" ]; do
+		LINES=$((LINES + 1))
+	done < "$1"
+	printf '%d\n' "$LINES"
 	unset LINES
 }
 
 # timeout
 timeout(){
+	time="$1"
+	shift
 	if ! command -v timeout 2>&1 >/dev/null; then
-		time="$1"
-		shift
-		"$@" & PID="${!}"; sleep "$time" && kill "$PID"
+		"$@" & PID="$!"; sleep "$time" && kill "$PID"
 	else
-		command timeout "$@"
+		command timeout "$time" "$@"
 	fi
 }
 
 # nproc
 nproc(){
-  case "`uname -s`" in
-    Darwin) getconf '_NPROCESSORS_ONLN';;
-    Linux) if [ `getconf HEIRLOOM_TOOLCHEST_VERSION` -lt 230305 ]; then
-            grep -c 'processor' /proc/cpuinfo
-    	   else
-            getconf '_NPROCESSORS_ONLN'
-    	   fi ;;
-    FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN';;
-    SunOS) echo "`ksh93 -c 'getconf NPROCESSORS_ONLN'`" ;;
-  esac
+	case "`uname -s`" in
+		Darwin) getconf '_NPROCESSORS_ONLN'
+			break ;;
+		Linux) if [ `getconf HEIRLOOM_TOOLCHEST_VERSION` -lt 230305 ]; then
+				grep -c 'processor' /proc/cpuinfo
+			else
+				getconf '_NPROCESSORS_ONLN'
+			fi
+			break ;;
+		FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN'
+			break ;;
+		SunOS) echo "`ksh93 -c 'getconf NPROCESSORS_ONLN'`"
+			break ;;
+	esac
 }
 
 # The # macro for arrays.
@@ -86,9 +89,9 @@ trim_home_path(){
 # which can't source a file from the current
 # directory.
 source(){
- { [ -e "$1" ] && [ -r "$1" ] \
-   && . "$(realpath "$1")"; } \
-   || return 1
+	{ [ -e "$1" ] && [ -r "$1" ] \
+	&& . "$(realpath "$1")"; } \
+	|| return 1
 }
 
 ##End of alternatives section

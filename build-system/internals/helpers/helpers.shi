@@ -1,8 +1,9 @@
 # vim: set filetype=sh :
 # Internal helper library for the Copacabana build system.
 # Meant to be used with Korn Shell 93.
-# Copyright (c) 2023 Pindorama
-#                    Luiz Antônio Rangel
+#
+# Copyright (c) 2023-2024 Pindorama
+# 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 #
 # "'Liberdade, Igualdade, Fraternidade',
@@ -14,18 +15,6 @@ readonly BUILD_KSH=true
 readonly KSH93_RELEASE=$(printf '%s' "${KSH_VERSION:-0}" \
 	| nawk '{ gsub("-", ""); print $NF; }')
 export BUILD_KSH KSH93_RELEASE
-
-# This function writes everything in a program output to a file passed as a
-# parameter, else it also writes it to the standard output using tee(1).
-# Sure thing you still need to pass 2>&1 before the pipe to 'logto [file]'.
-function logto {
-	file="$1"
-	# Do not be scared, just a boolean having a rendezvous with a
-	# more compact alternative to if-else statements.
-	c29waGlhZmljYWNvbWlnbwo=$I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR
-	{ $c29waGlhZmljYWNvbWlnbwo && tee "$file"; } \
-		|| { cat - >> "$file"; }
-}
 
 # map() and record() functions below.
 # For the "back-end" implementation, see __record(),
@@ -221,17 +210,4 @@ function check_elevate_method {
     fi
 
     export user
-}
-
-# Use this function both for errors and warnings
-function printerr {
-    printf "$@" 1>&2
-}
-
-# And use this for fatal errors, it will exit the script.
-function panic {
-	msgbuf="$(printf "$@")"
-	printerr 'panic: %s' "$msgbuf"
-
-	exit 255 
 }
