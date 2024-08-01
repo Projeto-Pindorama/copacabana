@@ -154,8 +154,8 @@ function inicompat {
 	nameref inirecord=$1
 	integer s k
 	typeset -a sections
+	fmt='%s='\''%s'\'''
 	sections=( ${!inirecord[@]} )
-
 	for ((s=0; s<${#sections[@]}; s++ )); do
 		typeset -a confkeys
 
@@ -164,13 +164,14 @@ function inicompat {
 
 		case "${confkeys[0]}" in
 			0) # If dealing with section-less file.
-				eval $(printf '%s=%s' \
+				eval $(printf "$fmt" \
 				$section "${inirecord[$section]}") ;;
 			*) # Default... Or dealing with sections.
 				for (( k=0; k < ${#confkeys[@]}; k++ )); do
 					confkey=${confkeys[$k]}
 					confval="${inirecord[$section][$confkey]}"
-					eval $(printf '%s=%s' $confkey "$confval")
+					eval $(printf "$fmt" \
+						$confkey "$confval")
 					unset confkey confval
 				done ;;
 		esac
