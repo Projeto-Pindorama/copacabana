@@ -103,7 +103,8 @@ function dotini {
 		# confline[1]=identifier
 		# confline[2]=value
 		confline[0]="${line%%=*}"
-		confline[1]="${line#*=}"
+		# Bullet-proofing against subshells.
+		confline[1]="$(printf '%q' "${line#*=}")"
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
@@ -118,7 +119,7 @@ function dotini {
 			# unfortunately, is the abuse of subshells or malicious
 			# substitutions, but I do not think this can be a
 			# problem here.
-			printf '[%s]='\''%s'\'' ' \
+			printf '[%s]=%s ' \
 				"${confline[0]}" "${confline[1]}"
 
 			# Continue to the next line.
@@ -127,7 +128,7 @@ function dotini {
 
 		# If it there's a section and the value declaration was
 		# already parsed, return it as a associative array declaration.
-		printf '[%s]+=([%s]='\''%s'\'') ' \
+		printf '[%s]+=([%s]=%s) ' \
 			$formatted_section "${confline[0]}" "${confline[1]}"
 
 		# Clean confline[] array.
