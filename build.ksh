@@ -10,17 +10,17 @@ progdir="$(cd "$(dirname "$progname")"; pwd -P)"
 
 # _make
 tasks="$progdir/build-system/tasks"
-. "$progdir/build-system/internals/helpers/makier.ksh"
+. "$progdir/build-system/internals/makier.ksh"
 
-# Immediatly source and run the platform checks
-# before doing anything else.
+# Immediatly source and run the platform
+# checks before doing anything else.
 _make 'checks/platform'
 
-. "$progdir/build-system/internals/helpers/posix-alt.shi"
-. "$progdir/build-system/internals/helpers/log.shi"
-. "$progdir/build-system/internals/helpers/helpers.shi"
-. "$progdir/build-system/internals/helpers/rconfig.shi"
-. "$progdir/build-system/internals/helpers/disks.shi"
+. "$progdir/build-system/internals/posix-alt.shi"
+. "$progdir/build-system/internals/log.shi"
+. "$progdir/build-system/internals/helpers.shi"
+. "$progdir/build-system/internals/rconfig.shi"
+. "$progdir/build-system/internals/disks.shi"
 
 rconfig "$progdir/build-system/machine.ini"
 rconfig "$progdir/build-system/work.ini"
