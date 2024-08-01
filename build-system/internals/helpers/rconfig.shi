@@ -103,7 +103,7 @@ function dotini {
 		# confline[1]=identifier
 		# confline[2]=value
 		confline[0]="${line%%=*}"
-		confline[1]="${line##*=}"
+		confline[1]="${line#*=}"
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
