@@ -54,11 +54,12 @@ nproc() {
 }
 
 main() {
-  sources_file="`realpath $1`"
-  sources_directory="`realpath $SRCDIR`"
-  test -n "$2" && hashsum_file="`realpath $2`"
+  sources_file="`realpath "$1"`"
+  sources_directory="`realpath "$SRCDIR"`"
+  test -n "$2" && hashsum_file="`realpath "$2"`"
   mkdir -p "$sources_directory"
-  categories=(`awk '/#>/{$1=""; print $NF }' "$sources_file"`)
+  categories=(`nawk '/#>/{$1=""; sub(/^ /,"", $0); print $0 }' \
+	  	"$sources_file"`)
   n_categories="`n ${categories[*]}`"
 
   for ((i=0; i < n_categories; i++)) {
