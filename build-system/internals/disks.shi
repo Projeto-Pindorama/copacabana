@@ -1,4 +1,9 @@
 # vim: set filetype=sh :
+# Functions to deal with disks and filesystems.
+
+# Copyright (c) 2023-2024 Pindorama
+# 			  Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
 
 # May use this function later, no use for it for now.
 function get_size_blocks {

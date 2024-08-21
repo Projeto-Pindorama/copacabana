@@ -1,8 +1,11 @@
 # STEP 1.5: Populate the file system
 # This function will run the cmd/populate_fhs.sh script and create directories
 # for the toolchains that will be built. 
+set -x
+SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/tmp/src}"
+PKGDIR="${PKGDIR:-"$COPA/usr/tmp/plaza"}"
+OBJDIR="${OBJDIR:-"$COPA/usr/tmp/obj"}"
 
-SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
 # Also declare who will be our log file.
 blackbox="$COPA/build.log.$CPU"
 
@@ -10,7 +13,7 @@ blackbox="$COPA/build.log.$CPU"
 # toolchain and intermediary chroot toolchain.
 printerr 'Info: Making directories in %s for the building toolchains.\n' \
 	"$COPA"
-elevate mkdir "$COPA/"{cgnu,llvm}tools
+elevate mkdir -p "$COPA/"{cgnu,llvm}tools "$OBJDIR" "$PKGDIR"
 (cd "$COPA"; ls -lah .)
 
 # Make a symbolic link from $COPA/cgnutools to /cgnutools, the same
@@ -51,7 +54,7 @@ printerr 'Info: Initializing blackbox file (%s) for the build.\n' \
 	"$blackbox"
 ( cd "$COPA"; elevate sh -c "> $blackbox; chown $user $blackbox" )
 
-printerr 'Info: Making %s, %s and %s writable by the current user.\n' \
-	$(realpaths /{cgnu,llvm}tools) "$SRCDIR"
-elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR"
+printerr 'Info: Making %s, %s, %s, %s and %s writable by the current user.\n' \
+	$(realpaths /{cgnu,llvm}tools) "$SRCDIR" "$OBJDIR" "$PKGDIR"
+elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR" "$OBJDIR" "$PKGDIR"
 export blackbox SRCDIR

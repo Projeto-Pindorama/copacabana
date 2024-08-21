@@ -43,7 +43,7 @@ Any other contributions are entirely accepted, for more information read the
 
 - [Alambiko (Copacabana package repository)](https://github.com/Projeto-Pindorama/alambiko);
 - [Heirloom New Generation](http://heirloom-ng.pindorama.dob.jp);
-- [The Motoko Package Manager](https://github.com/Projeto-Pindorama/motoko) (**W.I.P**);
+- [The Pacote Package Manager](https://github.com/Projeto-Pindorama/pacote) (**W.I.P**);
 - [Mitzune](https://github.com/Projeto-Pindorama/mitzune);
 - [L.E.`mount`](https://github.com/Projeto-Pindorama/lemount);
 - [`isainfo`](https://github.com/Projeto-Pindorama/isainfo);
