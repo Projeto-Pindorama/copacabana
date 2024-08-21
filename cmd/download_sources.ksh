@@ -35,7 +35,7 @@ n() {
   echo "${@}" | wc -w
 }
 
-realpath(){
+realpath() {
   file_basename=`basename $1`
   file_dirname=`dirname $1`
 	# get the absolute directory name
@@ -44,7 +44,7 @@ realpath(){
 }
 
 # Drop-in replacement to GNU nproc.
-nproc(){
+nproc() {
   case "`uname -s`" in
     Darwin | Linux) getconf '_NPROCESSORS_ONLN';;
     FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN';;
@@ -61,14 +61,18 @@ main() {
   categories=(`grep '#>' ${sources_file} | tr -d '#> '`)
   n_categories="`n ${categories[*]}`"
 
-  for ((i = 0; i < n_categories; i++)) {
-
+  for ((i=0; i < n_categories; i++)) {
+	  set -x
     # foo/var => foo\/var
     category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
     printf '==> %s\n' "${categories[${i}]}"
-    # sed: Remove comments (lines starting with %%)
-    # AWK: Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
-    urls=(`sed '/%%/d' ${sources_file} | awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag"`)
+    # AWK: Matches #> $category_id |
+    # 	   counts until the next and last match |
+    # 	   matches #< $category_id |
+    # 	   then removes comments (lines starting with %%)
+    urls=(`nawk "/^#> $category_id$/{ flag=1; next }
+	    /^#< $category_id$/{ flag=0 } flag && !/^%%/" \
+		    "$sources_file"`)
     n_urls="`n ${urls[*]}`"
 
     category_dir="$sources_directory/${categories[${i}]}"
@@ -78,15 +82,15 @@ main() {
     # so we're going with it.
     if ! $USE_ARIA2C; then
 	cd "${category_dir}" || exit 2
-        for ((j = 0; j < n_urls; j++)) {
-          printf 'Downloading %s\n' "`basename ${urls[${j}]}`"  
+        for ((j=0; j < n_urls; j++)) {
+          printf 'Downloading %s\n' "${urls[$j]##*/}"
           curl -LO "${urls[${j}]}" 
         }
     else
         # Hell yeah, speed.
-        ( for ((k = 0; k < n_urls; k++)){ 
+        ( for ((j=0; j < n_urls; j++)) { 
             printf '%s\n\tout=%s\n' \
-                "${urls[$k]}" "${urls[$k]##*/}"
+                "${urls[$j]}" "${urls[$j]##*/}"
 	} ) \
         | aria2c -q -j `nproc` -x `nproc` -d "$category_dir" -i -
     fi
