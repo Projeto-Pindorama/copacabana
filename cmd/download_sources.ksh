@@ -54,15 +54,14 @@ nproc() {
 }
 
 main() {
-  sources_file="`realpath ${1}`"
-  sources_directory="`realpath ${SRCDIR}`"
-  test -n "${2}" && hashsum_file="`realpath ${2}`"
+  sources_file="`realpath $1`"
+  sources_directory="`realpath $SRCDIR`"
+  test -n "$2" && hashsum_file="`realpath $2`"
   mkdir -p "$sources_directory"
-  categories=(`grep '#>' ${sources_file} | tr -d '#> '`)
+  categories=(`awk '/#>/{$1=""; print $NF }' "$sources_file"`)
   n_categories="`n ${categories[*]}`"
 
   for ((i=0; i < n_categories; i++)) {
-	  set -x
     # foo/var => foo\/var
     category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
     printf '==> %s\n' "${categories[${i}]}"
@@ -76,12 +75,12 @@ main() {
     n_urls="`n ${urls[*]}`"
 
     category_dir="$sources_directory/${categories[${i}]}"
-    mkdir -p "${category_dir}"
+    mkdir -p "$category_dir"
 
     # cURL is slower, but it's present on more systems per default than aria2c,
     # so we're going with it.
     if ! $USE_ARIA2C; then
-	cd "${category_dir}" || exit 2
+	cd "$category_dir" || exit 2
         for ((j=0; j < n_urls; j++)) {
           printf 'Downloading %s\n' "${urls[$j]##*/}"
           curl -LO "${urls[${j}]}" 
@@ -96,10 +95,10 @@ main() {
     fi
   }
   if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
-	  && `test -n "${hashsum_file}"`; then
-      cd "${sources_directory}"
-      sha256sum -c "${hashsum_file}" \
-	      && cd "${OLDPWD}"
+	  && `test -n "$hashsum_file"`; then
+      cd "$sources_directory"
+      sha256sum -c "$hashsum_file" \
+	      && cd "$OLDPWD"
   fi
 }
 
