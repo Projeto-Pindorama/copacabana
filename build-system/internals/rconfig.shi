@@ -11,7 +11,7 @@
 # to dotini/inicompat ---  and, in case of using
 # GNU's Broken-Again Shell, it does a coarse conversion of
 # the INI file to a simple Shell-based configuration file
-# format. 
+# format.
 function rconfig {
 	file="$1"
 
@@ -22,24 +22,24 @@ function rconfig {
 		eval conf=$(dotini "$file")
 		inicompat conf
 	elif [[ -n $BASH ]]; then # BASH
-		cat "$1" | \
-		for (( ;; )); do
-			if read line; then
-				if [[ "$line" =~ \[.*\] ]] || [[ "$line" =~ ^$ ]] \
-					|| [[ "$line" =~ '^[#;].*$' ]]; then
-					continue
+		cat "$1" |
+			for ((;;)); do
+				if read line; then
+					if [[ "$line" =~ \[.*\] ]] || [[ "$line" =~ ^$ ]] ||
+						[[ "$line" =~ '^[#;].*$' ]]; then
+						continue
+					else
+						keyval="$(printf '%s' "$line" |
+							sed 's/^\(.*\)[#;].*/\1/;')"
+						identifier="${keyval%%=*}"
+						value="${keyval##*=}"
+						[[ "$keyval" =~ ^$ ]] && continue
+						eval $(printf '%s='\''%s'\''' $identifier "$value")
+					fi
 				else
-					keyval="$(printf '%s' "$line" \
-						| sed 's/^\(.*\)[#;].*/\1/;')"
-					identifier="${keyval%%=*}"
-					value="${keyval##*=}"
-					[[ "$keyval" =~ ^$ ]] && continue
-					eval $(printf '%s='\''%s'\''' $identifier "$value")
+					break
 				fi
-			else
-				break
-			fi
-		done
+			done
 	fi
 }
 
@@ -71,14 +71,14 @@ function dotini {
 	# First of all, we shall remove comments.
 	# I know this could be done manually using a for-loop,
 	# but I think sed can be more reliable.
-	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") | \
-	for ((nl=0 ;; nl++)); do
-		if read line; then
-			inibuf[$nl]="$line"
-		else
-			break
-		fi
-	done
+	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") |
+		for ((nl=0;; nl++)); do
+			if read line; then
+				inibuf[$nl]="$line"
+			else
+				break
+			fi
+		done
 
 	# Open compound variable syntax.
 	printf '%c' '('
@@ -88,10 +88,10 @@ function dotini {
 		line="${inibuf[l]}"
 
 		# This gets the INI section.
- 		if section_title="$(rematch "$line" '\[\(.*\)\]')"; then
+		if section_title="$(rematch "$line" '\[\(.*\)\]')"; then
 			# The formatted section title.
-			formatted_section="$(printf '%s' "$section_title" \
-				| nawk '{ gsub(" ", "_"); print(tolower($0)) }')"
+			formatted_section="$(printf '%s' "$section_title" |
+				nawk '{ gsub(" ", "_"); print(tolower($0)) }')"
 			# We can procceed to the next line.
 			continue
 		fi
@@ -138,7 +138,7 @@ function dotini {
 	# Close compound variable.
 	printf '%c' ')'
 
-	# Remove the section name from the memory, 
+	# Remove the section name from the memory,
 	# since it can cause fuss later.
 	unset formatted_section
 }
@@ -155,25 +155,25 @@ function inicompat {
 	integer s k
 	typeset -a sections
 	fmt='%s='\''%s'\'''
-	sections=( ${!inirecord[@]} )
-	for ((s=0; s<${#sections[@]}; s++ )); do
+	sections=(${!inirecord[@]})
+	for ((s=0; s < ${#sections[@]}; s++)); do
 		typeset -a confkeys
 
 		section=${sections[s]}
 		confkeys=( ${!inirecord[$section][@]} )
 
 		case "${confkeys[0]}" in
-			0) # If dealing with section-less file.
-				eval $(printf "$fmt" \
+		0) # If dealing with section-less file.
+			eval $(printf "$fmt" \
 				$section "${inirecord[$section]}") ;;
-			*) # Default... Or dealing with sections.
-				for (( k=0; k < ${#confkeys[@]}; k++ )); do
-					confkey=${confkeys[$k]}
-					confval="${inirecord[$section][$confkey]}"
-					eval $(printf "$fmt" \
-						$confkey "$confval")
-					unset confkey confval
-				done ;;
+		*) # Default... Or dealing with sections.
+			for ((k=0; k < ${#confkeys[@]}; k++)); do
+				confkey=${confkeys[$k]}
+				confval="${inirecord[$section][$confkey]}"
+				eval $(printf "$fmt" \
+					$confkey "$confval")
+				unset confkey confval
+			done ;;
 		esac
 		unset section confkeys confkey confval
 	done
