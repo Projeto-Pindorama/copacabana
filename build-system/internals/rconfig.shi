@@ -53,7 +53,6 @@ function rconfig {
 # It does not outsource record() or map(), so there's more independence
 # and flexibility on choosing identifiers for your INI file configuration.
 function dotini {
-	set -x
 	file="$1"
 
 	# The function shall fail before "allocating" anything in memory.
@@ -105,8 +104,7 @@ function dotini {
 		# confline[2]=value
 		confline[0]="${line%%=*}"
 		# Bullet-proofing against subshells.
-		confline[1]="$(echo -n "${line#*=}" \
-			| nawk '{gsub("\"", "'\''"); gsub("'\''", "'\'''\'''\''"); print $0 }')"
+		confline[1]="$(echo -n "${line#*=}" | sed 's/\$/\\\$/g; s/\`/\\`/g')"
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
@@ -133,7 +131,6 @@ function dotini {
 		printf '[%s]+=([%s]=%s) ' \
 			$formatted_section "${confline[0]}" "${confline[1]}"
 		
-		print -C confline 1>&2
 		# Clean confline[] array.
 		unset confline[0] confline[1]
 	done
@@ -154,7 +151,6 @@ function dotini {
 #
 # inicompat conf
 function inicompat {
-	set -x
 	nameref inirecord=$1
 	integer s k
 	typeset -a sections
