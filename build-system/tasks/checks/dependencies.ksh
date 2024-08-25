@@ -19,23 +19,23 @@ cxx_sanity_test="$trash/sanity.cxx"
 archiver_sanity="$trash/archiver_sanity"
 
 # Internal helper scripts (at cmd/)
-internal_scripts=( 'cmd/download_sources.ksh' 'cmd/populate_fhs.sh' \
-	'cmd/sha256sum.ksh' 'cmd/snapshot_stage.ksh' )
+internal_scripts=('cmd/download_sources.ksh' 'cmd/populate_fhs.sh'
+	'cmd/sha256sum.ksh' 'cmd/snapshot_stage.ksh')
 
 # GNU auto*conf commands
-GNUAutoconf_commands=( 'aclocal' 'automake' 'autoconf' 'autoscan' \
-	'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate' \
-	'libtool' 'libtoolize' )
+GNUAutoconf_commands=('aclocal' 'automake' 'autoconf' 'autoscan'
+	'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate'
+	'libtool' 'libtoolize')
 
 # GNU Binutils commands
-GNUBinutils_commands=( 'addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit' \
-	'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' \
-	'size' 'strings' 'strip' )
+GNUBinutils_commands=('addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit'
+	'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf'
+	'size' 'strings' 'strip')
 
 # General commands
-general_commands=( 'cmp' 'curl' diff{,3} 'sdiff' 'ed' 'file' \
-	'patch' 'find' 'grep' 'lemount' 'm4' 'mitzune' \
-	${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} )
+general_commands=('cmp' 'curl' diff{,3} 'sdiff' 'ed' 'file'
+	'patch' 'find' 'grep' 'lemount' 'm4' 'mitzune'
+	${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]})
 
 # General compressing tools
 archivers=('tar' 'bzip2' 'gzip' 'xz')
@@ -43,43 +43,56 @@ archivers=('tar' 'bzip2' 'gzip' 'xz')
 # Check for aria2c
 if $USE_ARIA2C; then
 	general_commands[1]='aria2c'
-fi	
+fi
 
-for (( g=0; g < $(n ${general_commands[@]}); g++ )); do
+for ((g=0; g < $(n ${general_commands[@]}); g++)); do
 	printerr 'Searching for %s at PATH (%s)... ' \
 		"${general_commands[$g]}" "$PATH"
-	type -p "${general_commands[$g]}" \
-		|| { printerr 'Not found.\n'; return 1; } 
+	if ! type -p "${general_commands[$g]}"; then
+		case "${general_commands[$g]}" in
+		sha256sum)
+			# Use internal sha256sum implementation
+			function sha256sum {
+				"$build_kshdir/cmd/sha256sum.ksh" "$@"
+			}
+			typeset -xf sha256sum
+			;;
+		*)
+			printerr 'Not found.\n'
+			return 1
+			;;
+		esac
+	fi
 done
 
-for (( h=0; h < $(n ${archivers[@]}); h++ )); do
+for ((h=0; h < $(n ${archivers[@]}); h++)); do
 	printerr 'Does %s work for what we want? ' "${archivers[$h]}"
-	if [ "${archivers[$h]}" == 'tar'  ]; then # TAR-specific tests
+	if [ "${archivers[$h]}" == 'tar' ]; then # TAR-specific tests
 		tarpath="$(realpath $(type -p tar))"
-		if (strings "$tarpath" | grep '@(#)tar.*\(gritter\)' \
-			&& getconf HEIRLOOM_TOOLCHEST_VERSION) 2>&1 >/dev/null; then
+		if (strings "$tarpath" | grep '@(#)tar.*\(gritter\)' &&
+			getconf HEIRLOOM_TOOLCHEST_VERSION) 2>&1 >/dev/null; then
 			printerr '\nI'\''m almost certain that %s is from the Heirloom Toolchest...\n' \
 				"$(type -p tar)"
-			printerr  'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.\n'
+			printerr 'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.\n'
 			printerr \
-			'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.\n'
+				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.\n'
 
-			printf '%s' "$PATH" \
-			| nawk '{ gsub(":", "\n"); print $0; }' \
-			| for ((;;)); do
-				if read -r d; then
-					tar_cmd="$d/tar"
-					if [[ ! -e "$tar_cmd" || "$d" == "${tarpath%/*}" ]]; then
-						continue
-					elif ($tar_cmd --help 2>&1| egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
-						new_tarpath="$(realpath $d)"
-						tmpPATH="$new_tarpath:$PATH"
-						# This big chunk of code works as a 'uniq'
-						# for the PATH variable because, since
-						# $new_tarpath was already in PATH, it
-						# would be repeated in the new PATH.
-						PATH="$(printf '%s' "$tmpPATH" \
-						| nawk '{ np=split($0, p, ":");
+			printf '%s' "$PATH" |
+				nawk '{ gsub(":", "\n"); print $0; }' |
+				for ((;;)); do
+					if read -r d; then
+						tar_cmd="$d/tar"
+						if [[ ! -e "$tar_cmd" || "$d" == "${tarpath%/*}" ]]; then
+							continue
+						elif ($tar_cmd --help 2>&1 | egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
+							new_tarpath="$(realpath $d)"
+							tmpPATH="$new_tarpath:$PATH"
+							# This big chunk of code works as a 'uniq'
+							# for the PATH variable because, since
+							# $new_tarpath was already in PATH, it
+							# would be repeated in the new PATH.
+							PATH="$(printf '%s' "$tmpPATH" |
+								nawk '{ np=split($0, p, ":");
 							for (n = 1; n <= np; n++) {
 								if ((n + 1) >= np) {
 									separator=""
@@ -93,28 +106,28 @@ for (( h=0; h < $(n ${archivers[@]}); h++ )); do
 								}
 							}
 							}')"
-						printerr 'Info: Found suitable tar at %s\n' $new_tarpath 
-						printerr 'Info: New PATH: %s\n' $PATH
-						export PATH
-						unset new_tarpath tmpPATH
-						break
+							printerr 'Info: Found suitable tar at %s\n' $new_tarpath
+							printerr 'Info: New PATH: %s\n' $PATH
+							export PATH
+							unset new_tarpath tmpPATH
+							break
+						fi
+						unset tar_cmd
+					else
+						panic 'Error: Couldn'\''t find a suitable tar implementation.\n'
+						break # Une pure formalité.
 					fi
-					unset tar_cmd
-				else
-					panic 'Error: Couldn'\''t find a suitable tar implementation.\n'
-					break # Une pure formalité.
-				fi
-			done
+				done
 		fi
 
-		if [[ "$tarpath" =~ (star) ]] \
-			|| (tar -h 2>&1| grep 'star' 2>&1 >/dev/null); then
+		if [[ "$tarpath" =~ (star) ]] ||
+			(tar -h 2>&1 | grep 'star' 2>&1 >/dev/null); then
 			printerr '\nI'\''m almost certain that %s is Schily tar...\n' \
 				"$(type -p tar)"
 			printerr \
-			'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
+				'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
 			printerr \
-			'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).\n'
+				'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).\n'
 			function tar {
 				"$(type -p tar)" "$@" \
 					--no-secure-links --artype=xustar
@@ -124,49 +137,55 @@ for (( h=0; h < $(n ${archivers[@]}); h++ )); do
 		unset tarpath
 
 		{
-		( mkdir -p "$archiver_sanity"{,_results}
-		cd "$archiver_sanity"
-		> vulgar_file
-		mkfifo pipe_test
-		ln -sf "$(readlink -f "$archiver_sanity")" potentially_unsafe_link 
-		ln -f vulgar_file hard_link
-		# We already expect an error/warning
-		ln -f not_a_vulgar_file broken_link 2>/dev/null
-		)
-		( cd "$archiver_sanity"
-		tar -cf - . ) | tar -xf - -C "${archiver_sanity}_results"
+			(
+				mkdir -p "$archiver_sanity"{,_results}
+				cd "$archiver_sanity"
+				>vulgar_file
+				mkfifo pipe_test
+				ln -sf "$(readlink -f "$archiver_sanity")" potentially_unsafe_link
+				ln -f vulgar_file hard_link
+				# We already expect an error/warning
+				ln -f not_a_vulgar_file broken_link 2>/dev/null
+			)
+			(
+				cd "$archiver_sanity"
+				tar -cf - .
+			) | tar -xf - -C "${archiver_sanity}_results"
 		} && rm -rf "${archiver_sanity}_results"
 	else # Bzip2, Gzip or Xz tests
-		for (( l=1; l <= 9; l++ )); do
+		for ((l=1; l <= 9; l++)); do
 			printerr 'With compression level %s? ' $l
-		
+
 			# Test the alphabet string can be compressed
 			# without being corrupted, then, do a more
 			# "difficult" test using the main build.ksh
 			# script file.
-			{ printf '%s' {a..z} | "${archivers[$h]}" -"$l" -cf \
-				| "${archivers[$h]}" -dcf | wc -m | tr -d '[:space:]' \
-				| test `cat` -eq 26 ; } \
-			&& { cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf \
-				| "${archivers[$h]}" -dcf \
-				| cmp - "$progdir/$progname"; }
-				printerr 'Ok...\n'
+			{ printf '%s' {a..z} | "${archivers[$h]}" -"$l" -cf |
+				"${archivers[$h]}" -dcf | wc -m | tr -d '[:space:]' |
+				test $(cat) -eq 26; } &&
+				{ cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf |
+					"${archivers[$h]}" -dcf |
+					cmp - "$progdir/$progname"; }
+			printerr 'Ok...\n'
 		done
 	fi
-	printerr 'Sounds like a yes.\n' 
+	printerr 'Sounds like a yes.\n'
 done
 
-for (( i=0; i < $(n ${utils[@]}); i++ )); do
+for ((i=0; i < $(n ${utils[@]}); i++)); do
 	printerr 'Is %s present on this system? ' "${utils[$i]}"
-	command -v ${utils[$i]} 2>&1 > /dev/null && printerr 'Sounds like a yes.\n' \
-		|| { printerr '%s not found.\n' ${utils[$i]}; return 1; }
+	command -v ${utils[$i]} 2>&1 >/dev/null && printerr 'Sounds like a yes.\n' ||
+		{
+			printerr '%s not found.\n' ${utils[$i]}
+			return 1
+		}
 done
 
-for (( k=0; k < $(n ${internal_scripts[@]}); k++ )); do
+for ((k=0; k < $(n ${internal_scripts[@]}); k++)); do
 	printerr 'Info: Searching for independent script %s at %s... ' \
 		"${internal_scripts[$k]}" "$progdir"
-	if [ -e "$progdir/${internal_scripts[$k]}" ] \
-		&& [ ! -z "$(cat "$progdir/${internal_scripts[$k]}")" ]; then
+	if [ -e "$progdir/${internal_scripts[$k]}" ] &&
+		[ ! -z "$(cat "$progdir/${internal_scripts[$k]}")" ]; then
 		printerr 'Found!\n'
 	else
 		printerr '%s not found...\n'
@@ -184,7 +203,7 @@ printerr 'Does the running shell (%s) work for what we need?\n' "$run_shell"
 # since we expect it to run as a new process, so as a new P.ID. and as a new
 # "folder" at /proc, explaining in a extremely simplistic way.
 
-cat > "$ksh_sanity_test" << 'EO_KSHSANITY'
+cat >"$ksh_sanity_test" <<'EO_KSHSANITY'
 #!/usr/bin/env ksh
 interpreter="$(readlink -f /proc/$$/exe)" 	
 
@@ -207,9 +226,9 @@ fi
 EO_KSHSANITY
 "$run_shell" "$ksh_sanity_test"
 
-printerr 'Does the C/C++ compiler work for what we need?\n' 
+printerr 'Does the C/C++ compiler work for what we need?\n'
 
-cat > "$c_sanity_test" << 'EO_CSANITY'
+cat >"$c_sanity_test" <<'EO_CSANITY'
 #include <stdio.h>
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -228,7 +247,7 @@ return RETURN;
 }
 EO_CSANITY
 
-cat > "$cxx_sanity_test" << 'EO_C++SANITY'
+cat >"$cxx_sanity_test" <<'EO_C++SANITY'
 #include <iostream>
 using std::cout;
 
@@ -248,24 +267,27 @@ return RETURN;
 }
 EO_C++SANITY
 
-{ "$CC" -o"$trash/c_sanity" "$c_sanity_test"; "$trash/c_sanity" \
-&& "$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test" && "$trash/cxx_sanity"; } \
-|| exit $?
+{
+	"$CC" -o"$trash/c_sanity" "$c_sanity_test"
+	"$trash/c_sanity" &&
+		"$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test" && "$trash/cxx_sanity"
+} ||
+	exit $?
 
 printerr 'Info: Generating our cross-compiling host based on this machine'\''s type...\n'
 printerr 'Does this system have GNU Broken-Again Shell for $MACHTYPE or we'\''ll be depending on %s? ' \
-"$CC"
-if ! type -p bash 2>&1 > /dev/null; then
-printerr 'Nah, it'\''s clean.\n'
-has_bash=false
+	"$CC"
+if ! type -p bash 2>&1 >/dev/null; then
+	printerr 'Nah, it'\''s clean.\n'
+	has_bash=false
 else
-printerr 'It does, we'\''re going with it.\n'
-has_bash=true
+	printerr 'It does, we'\''re going with it.\n'
+	has_bash=true
 fi
 
-COPA_HOST="$( ( ($has_bash && bash -c 'echo $MACHTYPE') \
-|| (gcc -v 2>&1 | nawk '/Target/{ sub(/.*Target:/, "", $0); printf("%s", $1); }') ) \
-| nawk '{ split($0, host, "-"); sub(host[2], "crossCOPACABANA", $0); printf("%s\n", $0); }')"
+COPA_HOST="$( ( ($has_bash && bash -c 'echo $MACHTYPE') ||
+	(gcc -v 2>&1 | nawk '/Target/{ sub(/.*Target:/, "", $0); printf("%s", $1); }')) |
+	nawk '{ split($0, host, "-"); sub(host[2], "crossCOPACABANA", $0); printf("%s\n", $0); }')"
 unset has_bash
 
 printerr 'Info: COPA_HOST will be "%s".\n' "$COPA_HOST"
