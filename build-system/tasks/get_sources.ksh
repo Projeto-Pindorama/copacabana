@@ -22,14 +22,16 @@
 source_list="$(readlink -f "$1")"
 source_hash="$(readlink -f "$2")"
 
-SHA256CHECK="$SHA256CHECK"
-SRCDIR="$SRCDIR"
-USE_ARIA2C="$USE_ARIA2C"
 export USE_ARIA2C SHA256CHECK SRCDIR
 
 printerr 'Info: Downloading sources for building Copacabana using %s as the list.\n' \
 	"$source_list"
 
-"$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
+if [[ -z $(ls "$SRCDIR" 2>/dev/null) ]] || $(yes2bool "SHA256CHECK" && \
+	(cd "$SRCDIR" && sha256sum -c "$source_hash")); then
+	"$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
+else
+	printerr 'Info: Sources already downloaded and validated, good to go.'
+fi
 
 unset SHA256CHECK USE_ARIA2C
