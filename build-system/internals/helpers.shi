@@ -214,3 +214,8 @@ function check_elevate_method {
 
 	export user
 }
+
+# Converts a 'yes/no' variable to a boolean.
+function yes2bool {
+	(echo $1 | grep -i '^y' &>/dev/null) || false
+}
