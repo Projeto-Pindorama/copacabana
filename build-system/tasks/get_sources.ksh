@@ -27,11 +27,6 @@ export USE_ARIA2C SHA256CHECK SRCDIR
 printerr 'Info: Downloading sources for building Copacabana using %s as the list.\n' \
 	"$source_list"
 
-if [[ -z $(ls "$SRCDIR" 2>/dev/null) ]] || $(yes2bool "SHA256CHECK" && \
-	(cd "$SRCDIR" && sha256sum -c "$source_hash")); then
-	"$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
-else
-	printerr 'Info: Sources already downloaded and validated, good to go.'
-fi
+"$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
 
 unset SHA256CHECK USE_ARIA2C
