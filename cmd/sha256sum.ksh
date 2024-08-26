@@ -38,6 +38,8 @@ function main {
 	output_hashfile="${hashfile:-/dev/null}"
 
 	get_checksum "$file" | tee -a "${output_hashfile}"
+
+	exit $err
 }
 
 function get_checksum {
@@ -57,6 +59,7 @@ function get_checksum {
 
 # This checks if the checksum inside a file matches with the file in the disk.
 function check {
+	err=0
 	# Just for the sake of readability, as in main.
 	hashfile="$1"
 
@@ -92,13 +95,15 @@ function check {
 			printmsg "(SHA256) %s: FAILED\n" "$actual_file_name"
 			printmsg "%s: WARNING: %s computed checksum did NOT match\n" \
 				"$progname" "$actual_file_name"
+			err=1
 		fi
 
 		# Clean variables from the memory
 		unset cksum_line actual_file_cksum file_to_check \
 			file_alleged_hash actual_file_name actual_file_hash
 	done <"$hashfile"
-	exit 0
+
+	export err
 }
 
 # Boilerplate to OpenSSL-compatible shell API.
