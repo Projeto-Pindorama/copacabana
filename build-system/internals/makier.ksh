@@ -5,12 +5,16 @@
 # 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
-_make(){
+_make() {
 	set -e
 	lang='.ksh'
 	tasks="${tasks:?"task directory not defined"}"
-	made="$tasks/made.txt"
+	made="${made:?"task history file not defined.
+To disable it, define as the null character device."}"
 	tak="$1"
+
+	# Create the file if it does not exist yet.
+	[[ ! -e "$made" ]] && echo -n >"$made"
 
 	# Since having access to the date of the last
 	# change done to a file in the UNIX format is
@@ -18,10 +22,11 @@ _make(){
 	# ls(1) program, we will use a rudimentary
 	# technique to keep track of tasks that had
 	# already being ran.
-	if grep -v "$tak" "$made"; then
+	if ! grep "$tak" "$made" >/dev/null; then
 		shift # Remove '$1'
 		. "$(printf '%s/%s%s' "$tasks" "$tak" "$lang")" "${@:-''}"
 		# Write task name to a list of done tasks.
-		echo $tak >> "$tasks/made.txt"
+		[[ "$FORGO_TASKS" == *"$tak"* ]] ||
+			echo $tak >>"$tasks/made.txt"
 	fi
 }
