@@ -4,6 +4,7 @@
 # SPDX-Licence-Identifier: NCSA
 
 set -e
+trap '_make finish' ERR EXIT
 
 progname="${0##*/}"
 progdir="$(cd "$(dirname "$progname")"; pwd -P)"
@@ -34,7 +35,7 @@ _make 'checks/dependencies'
 _make 'disk/create_disk' "$DISK_BLOCK"
 _make 'disk/populate'
 _make get_sources sources.txt sources.sha256
+_make build cross-tools
 #build cross-tools "base/kernel-headers" "dev/GNUBinutils" \
 #	"dev/GNUcc" "base/LibC" "dev/GNUcc"
-
 _make finish
