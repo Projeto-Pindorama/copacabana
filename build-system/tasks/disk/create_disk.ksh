@@ -137,6 +137,7 @@ if "$VIRTUAL_DISK"; then
 	unset disk_block; export disk_block="${loop_disk_block}p1"
 fi
 if ( $first_time || $start_over ); then
+	echo -n > "$made"
 	# Formats the disk block as Ext4 and label it as our defined disk label.
 	elevate "$run_shell" -c "mkfs -V -t ext4 '$disk_block' && e2label '$disk_block' '$disk_label'"
 fi
