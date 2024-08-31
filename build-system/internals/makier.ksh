@@ -9,8 +9,7 @@ _make() {
 	set -e
 	lang='.ksh'
 	tasks="${tasks:?"task directory not defined"}"
-	made="${made:?"task history file not defined.
-To disable it, define as the null character device."}"
+	made="${made:?"task history file not defined"}"
 	tak="$1"
 
 	# Create the file if it does not exist yet.
@@ -27,6 +26,6 @@ To disable it, define as the null character device."}"
 		. "$(printf '%s/%s%s' "$tasks" "$tak" "$lang")" "${@:-''}"
 		# Write task name to a list of done tasks.
 		[[ "$FORGO_TASKS" == *"$tak"* ]] ||
-			echo $tak >>"$tasks/made.txt"
+			echo $tak >>"$made"
 	fi
 }
