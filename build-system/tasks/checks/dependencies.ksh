@@ -46,43 +46,42 @@ if $USE_ARIA2C; then
 fi
 
 for ((g=0; g < $(n ${general_commands[@]}); g++)); do
-	printerr 'Searching for %s at PATH (%s)... ' \
+	log INFO 'Searching for %s at PATH (%s)... ' \
 		"${general_commands[$g]}" "$PATH"
-	if ! type -p "${general_commands[$g]}"; then
+	if ! type -p "${general_commands[$g]}" 2>&1 >/dev/null; then
 		case "${general_commands[$g]}" in
-		sha256sum)
-			# Use internal sha256sum implementation
-			function sha256sum {
-				"$build_kshdir/cmd/sha256sum.ksh" "$@"
-			}
-			typeset -xf sha256sum
-			;;
-		*)
-			printerr 'Not found.\n'
-			return 1
-			;;
+			sha256sum)
+				# Use internal sha256sum implementation
+				function sha256sum {
+					"$build_kshdir/cmd/sha256sum.ksh" "$@"
+				}
+				typeset -xf sha256sum
+				;;
+			*)
+				log ERROR '%s not found.' "${general_commands[$g]}"
+				;;
 		esac
 	fi
 done
 
 for ((h=0; h < $(n ${archivers[@]}); h++)); do
-	printerr 'Does %s work for what we want? ' "${archivers[$h]}"
+	log INFO 'Does %s work for what we want? ' "${archivers[$h]}"
 	if [ "${archivers[$h]}" == 'tar' ]; then # TAR-specific tests
 		tarpath="$(realpath $(type -p tar))"
 		if (strings "$tarpath" | grep '@(#)tar.*\(gritter\)' &&
 			getconf HEIRLOOM_TOOLCHEST_VERSION) 2>&1 >/dev/null; then
-			printerr '\nI'\''m almost certain that %s is from the Heirloom Toolchest...\n' \
+			log WARN 'I'\''m almost certain that %s is from the Heirloom Toolchest...' \
 				"$(type -p tar)"
-			printerr 'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.\n'
-			printerr \
-				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.\n'
+			log WARN 'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.'
+			log WARN \
+				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.'
 
 			printf '%s' "$PATH" |
 				nawk '{ gsub(":", "\n"); print $0; }' |
 				for ((;;)); do
 					if read -r d; then
 						tar_cmd="$d/tar"
-						if [[ ! -e "$tar_cmd" || "$d" == "${tarpath%/*}" ]]; then
+						if [[ ! -e $tar_cmd || $d == "${tarpath%/*}" ]]; then
 							continue
 						elif ($tar_cmd --help 2>&1 | egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
 							new_tarpath="$(realpath $d)"
@@ -106,8 +105,8 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 								}
 							}
 							}')"
-							printerr 'Info: Found suitable tar at %s\n' $new_tarpath
-							printerr 'Info: New PATH: %s\n' $PATH
+							log INFO 'Found suitable tar at %s\n' $new_tarpath
+							log INFO 'New PATH: %s\n' $PATH
 							export PATH
 							unset new_tarpath tmpPATH
 							break
@@ -120,14 +119,14 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 				done
 		fi
 
-		if [[ "$tarpath" =~ (star) ]] ||
+		if [[ $tarpath =~ (star) ]] ||
 			(tar -h 2>&1 | grep 'star' 2>&1 >/dev/null); then
-			printerr '\nI'\''m almost certain that %s is Schily tar...\n' \
+			log INFO 'I'\''m almost certain that %s is Schily tar...' \
 				"$(type -p tar)"
-			printerr \
-				'I'\''ll disable the secure symbolic links function, for avoiding problems later.\n'
-			printerr \
-				'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).\n'
+			log INFO \
+				'I'\''ll disable the secure symbolic links function, for avoiding problems later.'
+			log INFO \
+				'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).'
 			function tar {
 				"$(type -p tar)" "$@" \
 					--no-secure-links --artype=xustar
@@ -154,7 +153,7 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 		} && rm -rf "${archiver_sanity}_results"
 	else # Bzip2, Gzip or Xz tests
 		for ((l=1; l <= 9; l++)); do
-			printerr 'With compression level %s? ' $l
+			log INFO 'With compression level %s? ' $l
 
 			# Test the alphabet string can be compressed
 			# without being corrupted, then, do a more
@@ -166,38 +165,35 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 				{ cat "$progdir/$progname" | "${archivers[$h]}" -"$l" -cf |
 					"${archivers[$h]}" -dcf |
 					cmp - "$progdir/$progname"; }
-			printerr 'Ok...\n'
+			log INFO 'Ok...'
 		done
 	fi
-	printerr 'Sounds like a yes.\n'
+	log INFO 'Sounds like a yes.'
 done
 
 for ((i=0; i < $(n ${utils[@]}); i++)); do
-	printerr 'Is %s present on this system? ' "${utils[$i]}"
-	command -v ${utils[$i]} 2>&1 >/dev/null && printerr 'Sounds like a yes.\n' ||
-		{
-			printerr '%s not found.\n' ${utils[$i]}
-			return 1
-		}
+	log INFO 'Is %s present on this system? ' "${utils[$i]}"
+	command -v ${utils[$i]} 2>&1 >/dev/null &&
+		log INFO 'Sounds like a yes.' ||
+		log ERROR '%s not found.' ${utils[$i]}
 done
 
 for ((k=0; k < $(n ${internal_scripts[@]}); k++)); do
-	printerr 'Info: Searching for independent script %s at %s... ' \
+	log INFO 'Searching for independent script %s at %s... ' \
 		"${internal_scripts[$k]}" "$progdir"
 	if [ -e "$progdir/${internal_scripts[$k]}" ] &&
 		[ ! -z "$(cat "$progdir/${internal_scripts[$k]}")" ]; then
-		printerr 'Found!\n'
+		log INFO 'Found!'
 	else
-		printerr '%s not found...\n'
-		panic 'Error: It seems like your Copacabana repository clone is incomplete.\n'
-		return 1
+		log WARN '%s not found...' "${internal_scripts[$k]}"
+		panic 'It seems like your Copacabana repository clone is incomplete.'
 	fi
 done
 
 # Programming language interpreters/compilers sanity checks.
 
 run_shell="$(readlink -f /proc/$$/exe)"
-printerr 'Does the running shell (%s) work for what we need?\n' "$run_shell"
+log INFO 'Does the running shell (%s) work for what we need?' "$run_shell"
 
 # Not caching "$(readlink -f /proc/$$/exe)" via $run_shell on the sanity test,
 # since we expect it to run as a new process, so as a new P.ID. and as a new
@@ -224,9 +220,10 @@ Please, report this at https://github.com/Projeto-Pindorama/copacabana.\n' "$int
 return 1
 fi
 EO_KSHSANITY
+log PROGOUT "$ksh_sanity_test"
 "$run_shell" "$ksh_sanity_test"
 
-printerr 'Does the C/C++ compiler work for what we need?\n'
+log INFO 'Does the C/C++ compiler work for what we need?'
 
 cat >"$c_sanity_test" <<'EO_CSANITY'
 #include <stdio.h>
@@ -267,21 +264,22 @@ return RETURN;
 }
 EO_C++SANITY
 
-{
-	"$CC" -o"$trash/c_sanity" "$c_sanity_test"
-	"$trash/c_sanity" &&
-		"$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test" && "$trash/cxx_sanity"
-} ||
-	exit $?
+log PROGOUT "$CC" "$("$CC" -o"$trash/c_sanity" "$c_sanity_test")"
+log PROGOUT "$trash/c_sanity" "$($trash/c_sanity)"
+log PROGOUT "$CXX" "$("$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test")"
+log PROGOUT "$trash/cxx_sanity" "$($trash/cxx_sanity)"
+if ! ("$trash/c_sanity" || "$trash/cxx_sanity") 2>&1 >/dev/null; then
+	log ERROR 'Error at the C/C++ compiler sanity tests.'
+fi
 
-printerr 'Info: Generating our cross-compiling host based on this machine'\''s type...\n'
-printerr 'Does this system have GNU Broken-Again Shell for $MACHTYPE or we'\''ll be depending on %s? ' \
+log INFO 'Generating our cross-compiling host based on this machine'\''s type...'
+log DEBUG 'Does this system have GNU Broken-Again Shell for $MACHTYPE or we'\''ll be depending on %s?' \
 	"$CC"
 if ! type -p bash 2>&1 >/dev/null; then
-	printerr 'Nah, it'\''s clean.\n'
+	log DEBUG 'Nah, it'\''s clean.'
 	has_bash=false
 else
-	printerr 'It does, we'\''re going with it.\n'
+	log DEBUG 'It does, we'\''re going with it.'
 	has_bash=true
 fi
 
@@ -290,7 +288,7 @@ COPA_HOST="$( ( ($has_bash && bash -c 'echo $MACHTYPE') ||
 	nawk '{ split($0, host, "-"); sub(host[2], "crossCOPACABANA", $0); printf("%s\n", $0); }')"
 unset has_bash
 
-printerr 'Info: COPA_HOST will be "%s".\n' "$COPA_HOST"
+log INFO 'COPA_HOST will be "%s".' "$COPA_HOST"
 
 # Exporting our running Shell for using later in other tasks and also the
 # $COPA_HOST, that will be used when building the cross-compiler.

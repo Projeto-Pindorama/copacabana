@@ -6,6 +6,13 @@
 # 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 #
+# 'check_for_colour_support', 'isatty', 'isdigit' and sections
+# of 'map'/'record' and '__record' borrowed from Luiz Antônio's
+# herbiec. As per the copyright header on herbiec.ksh:
+# Copyright (c) 2023 Luiz Antônio Rangel
+#
+# SPDX-Licence-Identifier: ISC
+#
 # "'Liberdade, Igualdade, Fraternidade',
 # é o seguinte: se tem Liberdade, tem que
 # ter Igualdade, Amor e Fraternidade [...]"
@@ -165,14 +172,14 @@ function c {
 	# we just want the extension.
 	tarball_ext="${tarball_ext##*.}"
 	case "$tarball_ext" in
-	gz | tgz) { gzip "$@"; } ;;
-	xz | txz) { xz "$@"; } ;;
-	bz2 | tbz) { bzip2 "$@"; } ;;
-	tar) {
-		shift
-		cat "$@"
-	} ;;
-	*) printerr "$0: File format not recognized." ;;
+		gz | tgz) { gzip "$@"; } ;;
+		xz | txz) { xz "$@"; } ;;
+		bz2 | tbz) { bzip2 "$@"; } ;;
+		tar) {
+			shift
+			cat "$@"
+		} ;;
+		*) log PANE "%s: File format not recognized." $0 ;;
 	esac
 }
 
@@ -218,4 +225,69 @@ function check_elevate_method {
 # Converts a 'yes/no' variable to a boolean.
 function yes2bool {
 	(echo $1 | grep -i '^y' &>/dev/null) || false
+}
+
+# Just as the name says.
+function check_for_colour_support {
+	# Get the terminal program, if it
+	# is a terminal emulator, so we can
+	# check if it supports ANSI escape
+	# codes.
+	termppath="$(ps -p $PPID -o comm=)"
+	termprog="${termppath##*/}"
+
+	# Presumption of innocence about ANSI
+	# escape codes on the terminal.
+	itsANSIcap=true
+
+	# Colour table.
+	map colours red '\033[91m'
+	map colours green '\033[92m'
+	map colours azure '\033[34m'
+	map colours yellow '\033[93m'
+	map colours purple '\033[35m'
+	map colours close '\033[m'
+
+	# Is our terminal capable of processing
+	# ANSI escape codes? This list is just
+	# a sketch, you can expand it per sending
+	# a patch.
+	case "$termprog" in
+	# Found guilty!
+	9term) itsANSIcap=false ;;
+	*) break ;;
+	esac
+
+	if ! isatty 2 && ! $itsANSIcap && (($(tput colors) < 8)); then
+		unset colours
+	fi
+}
+
+# Checks if the informed f.d. is a valid teletype device.
+# Boilerplate for the shell built-in 'test' with the '-t'
+# option and basic error handling for erred usage.
+# Analogous to its homonymous in the C programming
+# language (isatty(3)).
+function isatty {
+	if ! isdigit $1; then
+		log ERRORF "%s: '%s' is not a valid tty." $0 $1
+		return 2
+	fi
+
+	{ test -t $1; } || return 1
+}
+
+# Checks if the informed character is a digit. It uses
+# printf(1) along with KornShell 93/GNU Bash built-in
+# regex for checking if it's actually a digit.
+# Just like the latter, it's analogous to its homonymous
+# in the C programming language (isdigit(3)).
+function isdigit {
+	digit=$1
+	shift
+	errstring="$@"
+
+	if [[ $(printf '%d' $digit) != $digit && $digit == +([0-9]) ]]; then
+		false
+	fi
 }

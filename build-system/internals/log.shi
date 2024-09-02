@@ -1,31 +1,76 @@
 # vim: set filetype=sh :
-# Error handling and logging in general. 
+# Error handling and logging in general.
 
 # Copyright (c) 2023-2024 Pindorama
-# 			  Luiz Antônio Rangel
+# Copyright (c) 2024 xplshn
+# 		     Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
-
-# Use this function both for errors and warnings
-function printerr {
-    printf "$@" 1>&2
-}
+#
+# Rewritten using xplshn's Andes /etc/profile.d/std.sh
+# as the base.
 
 # And use this for fatal errors, it will exit the script.
 function panic {
-	msgbuf="$(printf "$@")"
-	printerr 'panic: %s' "$msgbuf"
-
-	exit 255 
+	log PANE "$@"
 }
 
-# This function writes everything in a program output to a file passed as a
-# parameter, else it also writes it to the standard output using tee(1).
-# Sure thing you still need to pass 2>&1 before the pipe to 'logto [file]'.
-function logto {
-	file="$1"
-	# Do not be scared, just a boolean having a rendezvous with a
-	# more compact alternative to if-else statements.
-	c29waGlhZmljYWNvbWlnbwo=$I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR
-	{ $c29waGlhZmljYWNvbWlnbwo && tee "$file"; } \
-		|| { cat - >> "$file"; }
+# Function to log to stdout with optional color
+function log {
+	# Default format and function return (none, true).
+	fmt=""
+	_defer='return 0'
+
+	# Check if the first argument is a valid level of logging
+	# and, if it is, which it is.
+	# It will set the colour code from these.
+	level="$1"
+	# Shift past the level argument.
+	shift
+	case "$level" in
+		'PANE')
+			printf 'panic: %%s\\n\\n'
+			_defer='exit 255'
+			;;
+		'ERROR' | 'WARN' | 'INFO' | 'DEBUG')
+			case "$level" in
+				'ERROR')
+					colour=${colours[red]}
+					_defer='return 1'
+					;;
+				'WARN') colour=${colours[yellow]} ;;
+				'INFO') colour=${colours[green]} ;;
+				'DEBUG') colour=${colours[purple]} ;;
+			esac
+
+			fmt="$(printf '%b%s%b: %%s\\n' \
+				"$colour" $level "${colours[close]}")"
+
+			case $I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR in
+				'true') break ;;
+				*)
+					case $level in
+						'INFO' | 'DEBUG') fmt='' ;;
+					esac
+					;;
+			esac
+			;;
+		'PROGOUT')
+			colour="${colours[azure]}"
+			program="$1"
+			shift
+			fmt="$(printf '(program) %b%s%b: %%s\\n' \
+				"$colour" "$(realpath "$program")" "${colours[close]}")"
+			;;
+		# Work just as 'printf [...] 1>&2' --- maybe
+		# a little slower because of the switches
+		'STD') ;;
+		*) log ERROR 'Invalid level.' ;;
+	esac
+
+	# Print the message with or without color,
+	# pre-formatting the output before, of course
+	[[ -n $@ ]] && msgbuf="$(printf "$@")"
+	printf "$fmt" "$msgbuf" 1>&2
+
+	$_defer
 }

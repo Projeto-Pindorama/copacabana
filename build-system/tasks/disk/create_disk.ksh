@@ -1,9 +1,9 @@
-# STEP 1: "Pindorama presents: Fubá Cake" 
+# STEP 1: "Pindorama presents: Fubá Cake"
 # In this step, we will create and format a disk, virtual or physical.
 disk_block="$1"
 
 # Set first_time flag to indicate that it's the first time building the
-# system.	
+# system.
 first_time=true
 
 # Estabilish a default size of 20 GB for a virtual disk
@@ -19,50 +19,53 @@ disk_label=${DISK_LABEL:-'Copacabana'}
 # t = Use a type
 # 83 = Linux partition type
 # w = Write 'n quit
-fdisk_steps=( 'o' 'n' 'p' '1' ' ' ' ' 't' '83' 'w' )
+fdisk_steps=('o' 'n' 'p' '1' ' ' ' ' 't' '83' 'w')
 
-if (( ${#disk_label} > 16 )); then
-	printerr \
-	'Warning: This disk label ("%s") exceeds e2label'\''s VOLNAMSZ (%d) in %d characters.\n' \
-		"$disk_label" 16 $(( ${#disk_label} - 16 ))
-	printerr \
-	'Warning: Falling back to the default value so we does not get any warnings from e2label.\n'
-	unset disk_label; disk_label='Copacabana'
+if ((${#disk_label} > 16)); then
+	log WARN \
+		'This disk label ("%s") exceeds e2label'\''s VOLNAMSZ (%d) in %d characters.' \
+		"$disk_label" 16 $((${#disk_label} - 16))
+	log WARN \
+		'Falling back to the default value so we does not get any warnings from e2label.'
+	unset disk_label
+	disk_label='Copacabana'
 fi
 
-printerr 'Info: %s only creates a plain disk, without partitions for /boot, /usr, etc.\n' $0
-if [[ ! "$VIRTUAL_DISK" ]] && [[ -b "$disk_block" ]] \
-	|| ( [[ "$(uname -s)" == "Linux" ]] && (( KSH93_RELEASE <= 20211217 )) \
-		&& (grep "${disk_block##*/}" /proc/partitions 2>&1 > /dev/null \
-		&& [[ "$(file "$disk_block")" =~ (.*[\t ]block special.*) ]]) ); then
+log WARN '%s only creates a plain disk, without partitions for /boot, /usr, etc.' $0
+if [[ ! $VIRTUAL_DISK ]] && [[ -b $disk_block ]] ||
+	([[ "$(uname -s)" == "Linux" ]] && ((KSH93_RELEASE <= 20211217)) &&
+		(grep "${disk_block##*/}" /proc/partitions 2>&1 >/dev/null &&
+			[[ "$(file "$disk_block")" =~ (.*[\t ]block special.*) ]])); then
 	# Get the disk size from /proc/partitions, pretty
 	# self-explanatory.
-	disk_size="$(grep "${disk_block##*/}\$" /proc/partitions \
-		| nawk '{ printf "%0.1f\n", ($(NF -1) / 1024); }')"
+	disk_size="$(grep "${disk_block##*/}\$" /proc/partitions |
+		nawk '{ printf "%0.1f\n", ($(NF -1) / 1024); }')"
 
-	printerr 'Info: Using a physical disk, present at %s with size of %d MB.\n' \
+	log INFO 'Using a physical disk, present at %s with size of %d MB.' \
 		"$disk_block" "$disk_size"
 
-	if (( disk_size < (10 * 1024) )); then 
+	if ((disk_size < (10 * 1024))); then
 		panic \
-		'Disk %s is too small (%d MB). %d MB is the recommended capacity for building Copacabana.\n' \
-		"$disk_block" "$disk_size" $(( 10 * 1024 ))
+			'Disk %s is too small (%d MB). %d MB is the recommended capacity for building Copacabana.' \
+			"$disk_block" "$disk_size" $((10 * 1024))
 	# Do not accept disks/disk partitions larger than 50GB.
-	elif (( disk_size > (50 * 1024) )); then
+	elif ((disk_size > (50 * 1024))); then
 		panic \
-		'Disk %s is too large. Create a partition and/or use a virtual disk smaller than %d MB.\n' \
-		"$disk_block" $(( 50 * 1024 ))
+			'Disk %s is too large. Create a partition and/or use a virtual disk smaller than %d MB.' \
+			"$disk_block" $((50 * 1024))
 	fi
 
 	# Check if disk is already initialized.
 	if $(elevate fdisk -x "${disk_block%%[0-9]}" | grep "$disk_block" &>/dev/null); then
-		filesystem=$(eval $(blkid -o udev "$disk_block");
-				printf '%s\n' "$ID_FS_TYPE")
+		filesystem=$(
+			eval $(blkid -o udev "$disk_block")
+			printf '%s\n' "$ID_FS_TYPE"
+		)
 
 		if ! check_linuxfs $filesystem; then
 			panic \
-			'%s is not intended for containing a Linux system.\nDid you mean creating a virtual disk image inside %s?\n' \
-			$filesystem "$disk_block"
+				'%s is not intended for containing a Linux system.\nDid you mean creating a virtual disk image inside %s?' \
+				$filesystem "$disk_block"
 		fi
 
 		# If we have a compatible file system on the disk, we
@@ -73,14 +76,17 @@ elif [[ "$VIRTUAL_DISK" ]]; then
 	# This would be the equivalent of the old realpath() builtin
 	# at posix-alt.shi, it gets $disk_block's directory location
 	# and then contatenates it with its name.
-	virtuadisk_path="$(cd "${disk_block%/*}"; pwd -P)/${disk_block##*/}"
-	printerr 'Info: Using a virtual disk, located at %s, with a pre-determined size of %d MB.\n' \
-		"$virtuadisk_path" $(( virtuadisk_size * 1024 ))
+	virtuadisk_path="$(
+		cd "${disk_block%/*}"
+		pwd -P
+	)/${disk_block##*/}"
+	log WARN 'Using a virtual disk, located at %s, with a pre-determined size of %d MB.' \
+		"$virtuadisk_path" $((virtuadisk_size * 1024))
 
-	if [[ ! -e "$virtuadisk_path" ]]; then
-		printerr 'Info: Inexistent disk image, creating it...\n'
-	elif [[ -e "$virtuadisk_path" && ! -b "$virtuadisk_path" ]]; then
-		printerr 'Info: A disk image already exists at %s, do you wish to continue or clean it up and start over?\n' \
+	if [[ ! -e $virtuadisk_path ]]; then
+		log WARN 'Inexistent disk image, creating it...'
+	elif [[ -e $virtuadisk_path && ! -b $virtuadisk_path ]]; then
+		log WARN 'A disk image already exists at %s, do you wish to continue or clean it up and start over?' \
 			"$virtuadisk_path"
 		first_time=false
 	fi
@@ -94,35 +100,36 @@ if ! $first_time; then
 			# This will (L.E.)mount the disk and view if
 			# there is something that can be done.
 			yes) break ;;
-			no) start_over=true;
-				break ;;
-			quit|*) return 1 ;;
+			no)
+				start_over=true
+				break
+				;;
+			quit | *) return 1 ;;
 		esac
 	done
 fi
 
 if "$VIRTUAL_DISK"; then
-	if ( $first_time || $start_over ); then
-		printerr 'Info: Creating a virtual disk image at %s, with size of %d MB.\n' \
-			"$virtuadisk_path" $(( virtuadisk_size * 1024 ))
+	if ($first_time || $start_over); then
+		log WARN 'Creating a virtual disk image at %s, with size of %d MB.' \
+			"$virtuadisk_path" $((virtuadisk_size * 1024))
 
 		# 1 GB is equal to 2.097.152 blocks.
 		# In other words, use:
 		# X GB = X * [(1024^2) * 2] blocks
-		virtuadisk_blksize="$(( virtuadisk_size * ((1024 ** 2) * 2) ))"
+		virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
 		dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
 
 		# Does the size in blocks matches with what du(1)'s getting?
 		virtuadisk_reported_size=$(du -s "$virtuadisk_path" | nawk '{ printf("%d", $1); }')
-	
-		if (( virtuadisk_blksize == virtuadisk_reported_size )); then
-			printerr 'Info: %s is o.k. Proceeding.\n' "$virtuadisk_path"
+
+		if ((virtuadisk_blksize == virtuadisk_reported_size)); then
+			log INFO '%s is o.k. Proceeding.' "$virtuadisk_path"
 		else
-			printerr 'Error: dd failed to write %d blocks to %s.\n' \
+			log WARN 'dd failed to write %d blocks to %s.' \
 				$virtuadisk_blksize "$virtuadisk_path"
-			printerr 'Error: It possible reported an error and/or an interruption signal before this message.\n'
-			printerr 'Error: Please, check. Stopping the build process.\n'
-			return 1
+			log WARN 'It possible reported an error and/or an interruption signal before this message.'
+			log ERROR 'Please, check. Stopping the build process.'
 		fi
 
 		# For some reason, echo won't be working for this, so let be
@@ -134,10 +141,11 @@ if "$VIRTUAL_DISK"; then
 	loop_disk_block="$(elevate losetup --show -P -f "$virtuadisk_path")"
 
 	# That's why we hardcoded the partition to be the first.
-	unset disk_block; export disk_block="${loop_disk_block}p1"
+	unset disk_block
+	export disk_block="${loop_disk_block}p1"
 fi
-if ( $first_time || $start_over ); then
-	echo -n > "$made"
+if ($first_time || $start_over); then
+	echo -n >"$made"
 	# Formats the disk block as Ext4 and label it as our defined disk label.
 	elevate "$run_shell" -c "mkfs -V -t ext4 '$disk_block' && e2label '$disk_block' '$disk_label'"
 fi
@@ -152,4 +160,4 @@ printf '%s\n' "$disk_block" 1 | eval $(elevate lemount)
 # overwritten by a "non-build.ksh aware" script later.
 export readonly COPA="$ledisk"
 
-printerr 'Info: Copacabana disk %s mounted at %s.\n' "$disk_block" "$COPA"
+log INFO 'Copacabana disk %s mounted at %s.' "$disk_block" "$COPA"

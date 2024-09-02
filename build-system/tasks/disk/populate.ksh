@@ -11,7 +11,7 @@ blackbox="$COPA/build.log.$CPU"
 
 # Self-explanatory, just create the directories for the initial
 # toolchain and intermediary chroot toolchain.
-printerr 'Info: Making directories in %s for the building toolchains.\n' \
+log INFO 'Making directories in %s for the building toolchains.' \
 	"$COPA"
 elevate mkdir -p "$COPA/"{cgnu,llvm}tools "$OBJDIR" "$PKGDIR"
 (cd "$COPA"; ls -lah .)
@@ -22,7 +22,7 @@ elevate mkdir -p "$COPA/"{cgnu,llvm}tools "$OBJDIR" "$PKGDIR"
 # {"$COPA/",/}cgnutools expands to $COPA/cgnutools /cgnutools,
 # which is the input that we'd need to ln(1).
 if [[ -d "$COPA/cgnutools" && -d "$COPA/llvmtools" ]]; then
-	printerr 'Info: Symbolic linking %s to %s...\n' \
+	log INFO 'Symbolic linking %s to %s...' \
 		{"$COPA/",/}cgnutools {"$COPA/",/}llvmtools 
 
 	# If /cgnutools is already a symbolic link to
@@ -46,15 +46,15 @@ if [[ -d "$COPA/cgnutools" && -d "$COPA/llvmtools" ]]; then
 	(cd /; ls -l ./{cgnu,llvm}tools)
 fi
 
-printerr 'Info: Making directories in %s for populating the file system.\n' \
+log INFO 'Making directories in %s for populating the file system.' \
 	"$COPA"
 elevate $run_shell -c "COPA=$COPA BUILD_KSH=$BUILD_KSH $progdir/cmd/populate_fhs.sh; mkdir -p "$SRCDIR""
 
-printerr 'Info: Initializing blackbox file (%s) for the build.\n' \
+log INFO 'Initializing blackbox file (%s) for the build.' \
 	"$blackbox"
 ( cd "$COPA"; elevate sh -c "> $blackbox; chown $user $blackbox" )
 
-printerr 'Info: Making %s, %s, %s, %s and %s writable by the current user.\n' \
+log INFO 'Making %s, %s, %s, %s and %s writable by the current user.' \
 	$(realpaths /{cgnu,llvm}tools) "$SRCDIR" "$OBJDIR" "$PKGDIR"
 elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR" "$OBJDIR" "$PKGDIR"
 export blackbox SRCDIR
