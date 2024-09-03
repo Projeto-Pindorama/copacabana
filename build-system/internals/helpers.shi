@@ -233,7 +233,8 @@ function check_for_colour_support {
 	# is a terminal emulator, so we can
 	# check if it supports ANSI escape
 	# codes.
-	termppath="$(ps -p $PPID -o comm=)"
+	kshpid="$(ps -p $PPID -o ppid=)"
+	termppath="$(ps -p $kshpid -o comm=)"
 	termprog="${termppath##*/}"
 
 	# Presumption of innocence about ANSI
@@ -258,7 +259,7 @@ function check_for_colour_support {
 	*) break ;;
 	esac
 
-	if ! isatty 2 && ! $itsANSIcap && (($(tput colors) < 8)); then
+	if ! isatty 2 || ! $itsANSIcap || (($(tput colors) < 8)); then
 		unset colours
 	fi
 }

@@ -7,6 +7,7 @@
 
 _make() {
 	set -e
+	funcname=$0
 	lang='.ksh'
 	tasks="${tasks:?"task directory not defined"}"
 	made="${made:?"task history file not defined"}"
@@ -23,7 +24,11 @@ _make() {
 	# already being ran.
 	if ! grep "$tak" "$made" >/dev/null; then
 		shift # Remove '$1'
+		printf '%s: running task '\''%s'\''\n' \
+			$funcname "$tak" 1>&2
 		. "$(printf '%s/%s%s' "$tasks" "$tak" "$lang")" "${@:-''}"
+		printf '%s: task done\n' \
+			"$funcname" 1>&2
 		# Write task name to a list of done tasks.
 		[[ "$FORGO_TASKS" == *"$tak"* ]] ||
 			echo $tak >>"$made"
