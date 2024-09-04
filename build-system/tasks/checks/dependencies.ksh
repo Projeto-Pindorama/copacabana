@@ -105,7 +105,7 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 								}
 							}
 							}')"
-							log INFO 'Found suitable tar at %s\n' $new_tarpath
+							log WARN 'Found suitable tar at %s\n' $new_tarpath
 							log INFO 'New PATH: %s\n' $PATH
 							export PATH
 							unset new_tarpath tmpPATH
@@ -264,9 +264,9 @@ return RETURN;
 }
 EO_C++SANITY
 
-log PROGOUT "$CC" "$("$CC" -o"$trash/c_sanity" "$c_sanity_test")"
+log PROGOUT "$CC" "$("$CC" -o"$trash/c_sanity" "$c_sanity_test")\n"
 log PROGOUT "$trash/c_sanity" "$($trash/c_sanity)"
-log PROGOUT "$CXX" "$("$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test")"
+log PROGOUT "$CXX" "$("$CXX" -o"$trash/cxx_sanity" "$cxx_sanity_test")\n"
 log PROGOUT "$trash/cxx_sanity" "$($trash/cxx_sanity)"
 if ! ("$trash/c_sanity" || "$trash/cxx_sanity") 2>&1 >/dev/null; then
 	log ERROR 'Error at the C/C++ compiler sanity tests.'
