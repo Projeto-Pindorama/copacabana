@@ -60,7 +60,7 @@ function dotini {
 	# it's just a formality when the topic are ksh-ish languages such
 	# as GNU's Bash or even ksh93 itself.
 	if [[ ! -e "$file" ]]; then
-		panic '%s: file %s does not exist.\n' $0 "$file"
+		panic '%s: file %s does not exist.' $0 "$file"
 	fi
 
 	# Allocate an array for recording the file and declarate

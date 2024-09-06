@@ -113,7 +113,7 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 						fi
 						unset tar_cmd
 					else
-						panic 'Error: Couldn'\''t find a suitable tar implementation.\n'
+						panic 'Couldn'\''t find a suitable tar implementation.'
 						break # Une pure formalité.
 					fi
 				done

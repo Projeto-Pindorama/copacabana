@@ -67,6 +67,7 @@ function record {
 # is no problem for now since Bash doesn't support compound variables,
 # just associative arrays, so both "map" and "record" can be the same to Bash.
 __record() {
+	backend_name='record()/map() backend'
 	# "London calling to the faraway towns...
 	# But it wasn't my love...
 	# Is she still upset with me?"
@@ -83,14 +84,14 @@ __record() {
 		elif [[ $whos_calling == 'map' ]]; then
 			format='%s+=([%s]="%s")'
 		else
-			panic '%s: invalid caller '%s'.\n' \
-				'record()/map() backend' "$whos_calling"
+			panic '%s: invalid caller '\''%s'\''.' \
+				 "$backend_name" "$whos_calling"
 		fi
 	else # Broken-Again
 		if ! $bash_supports_compound; then
 			panic \
-				'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.\n' \
-				'record()/map() backend'
+			'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.' \
+			"$backend_name"
 			# Basic sanitizing in case of panic() does
 			# not quitting the program as intended.
 			unset bash_supports_compound
