@@ -17,9 +17,9 @@ made="$progdir/_made"
 # checks before doing anything else.
 _make 'checks/platform'
 
+. "$progdir/build-system/internals/log.shi"
 . "$progdir/build-system/internals/posix-alt.shi"
 . "$progdir/build-system/internals/helpers.shi"
-. "$progdir/build-system/internals/log.shi"
 . "$progdir/build-system/internals/rconfig.shi"
 . "$progdir/build-system/internals/disks.shi"
 
