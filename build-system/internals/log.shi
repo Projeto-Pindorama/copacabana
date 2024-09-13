@@ -61,10 +61,11 @@ function log {
 			fmt="$(printf '(program) %b%s%b: %%s\\n' \
 				"$colour" "$(realpath "$program")" "${colours[close]}")"
 			;;
-		# Work just as 'printf [...] 1>&2' --- maybe
-		# a little slower because of the switches
-		'STD') fmt='%s' ;;
-		*) log ERROR 'Invalid level '\''%s'\''' $level;;
+		'STD') # Works just as 'printf [...] 1>&2'.
+			fmt="$1"
+			shift
+			;;
+		*) log ERROR 'Invalid level '\''%s'\''' $level ;;
 	esac
 
 	# Print the message with or without color,
