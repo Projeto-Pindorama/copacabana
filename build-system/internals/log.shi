@@ -28,7 +28,7 @@ function log {
 	shift
 	case "$level" in
 		'PANE')
-			printf 'panic: %%s\\n\\n'
+			fmt='panic: %s\n'
 			_defer='exit 255'
 			;;
 		'ERROR' | 'WARN' | 'INFO' | 'DEBUG')
@@ -63,7 +63,7 @@ function log {
 			;;
 		# Work just as 'printf [...] 1>&2' --- maybe
 		# a little slower because of the switches
-		'STD') ;;
+		'STD') fmt='%s' ;;
 		*) log ERROR 'Invalid level '\''%s'\''' $level;;
 	esac
 
