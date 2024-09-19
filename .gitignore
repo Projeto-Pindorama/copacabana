@@ -3,3 +3,7 @@
 *~
 .*~
 .*.swp
+
+# Don't store build.ksh history
+build-system/tasks/made.txt
+_made
