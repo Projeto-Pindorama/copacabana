@@ -6,12 +6,14 @@
 # SPDX-Licence-Identifier: NCSA
 
 _make() {
-	set -e
 	funcname=$0
 	lang='.ksh'
 	tasks="${tasks:?"task directory not defined"}"
 	made="${made:?"task history file not defined"}"
 	tak="$1"
+
+	# This contains tasks that will be re-run even on start-over.
+	FORGO_TASKS="$(grep -rl '^: forgo$' "$tasks")"
 
 	# Create the file if it does not exist yet.
 	[[ ! -e $made ]] && echo -n >"$made"

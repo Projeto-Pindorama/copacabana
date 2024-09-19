@@ -1,3 +1,4 @@
+: forgo
 # STEP 1: "Pindorama presents: Fubá Cake"
 # In this step, we will create and format a disk, virtual or physical.
 disk_block="$1"

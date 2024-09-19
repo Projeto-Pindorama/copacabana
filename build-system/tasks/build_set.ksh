@@ -1,3 +1,4 @@
+: forgo
 # This task script is part of Copacabana's build system.
 #
 # Copyright (c) 2023-2024: Pindorama

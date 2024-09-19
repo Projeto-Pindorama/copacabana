@@ -1,3 +1,4 @@
+: forgo
 mount_point="$1"
 disk_block="$2"
 
