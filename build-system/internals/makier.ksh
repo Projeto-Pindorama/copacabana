@@ -45,11 +45,9 @@ _build_package() {
 	packinfo="$packagedir/$package/info.ini"
 	Destdir="${nonsetted:-"$OBJDIR/$package"}"
 
-	echo $OBJDIR
-
 	# Get package information:
 	rconfig "$packinfo"
-	cd "${nonsetted:-$SRCDIR}"
+	cd "${nonsetted:-"$SRCDIR/pkgs"}"
 	_make "$package/pkgbuild"
 	cd -
 
