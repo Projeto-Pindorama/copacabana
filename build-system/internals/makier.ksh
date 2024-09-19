@@ -14,7 +14,7 @@ _make() {
 	tak="$1"
 
 	# Create the file if it does not exist yet.
-	[[ ! -e "$made" ]] && echo -n >"$made"
+	[[ ! -e $made ]] && echo -n >"$made"
 
 	# Since having access to the date of the last
 	# change done to a file in the UNIX format is
@@ -30,7 +30,36 @@ _make() {
 		printf '%s: task done\n' \
 			"$funcname" 1>&2
 		# Write task name to a list of done tasks.
-		[[ "$FORGO_TASKS" == *"$tak"* ]] ||
+		[[ $FORGO_TASKS == *"$tak"* ]] ||
 			echo $tak >>"$made"
 	fi
+}
+
+_build_package() {
+	unset nonsetted
+	packagedir="$progdir/packages"
+	top_tasks="$tasks"
+	unset tasks
+	tasks="$packagedir"
+	package="$1"
+	packinfo="$packagedir/$package/info.ini"
+	Destdir="${nonsetted:-"$OBJDIR/$package"}"
+
+	echo $OBJDIR
+
+	# Get package information:
+	rconfig "$packinfo"
+	cd "${nonsetted:-$SRCDIR}"
+	_make "$package/pkgbuild"
+	cd -
+
+	cd "$Destdir"
+	find . -type f -print >pkgproto.txt
+	log WARN 'Copying %s contents to %s' "$package" "$COPA"
+	tar -cvf - . | tar -xvf - -C "$COPA"
+	cd -
+
+	# Restore global tasks directory location.
+	unset tasks
+	tasks="$top_tasks"
 }

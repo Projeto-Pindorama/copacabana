@@ -1,10 +1,6 @@
 # STEP 1.5: Populate the file system
 # This function will run the cmd/populate_fhs.sh script and create directories
 # for the toolchains that will be built. 
-set -x
-SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/tmp/src}"
-PKGDIR="${PKGDIR:-"$COPA/usr/tmp/plaza"}"
-OBJDIR="${OBJDIR:-"$COPA/usr/tmp/obj"}"
 
 # Also declare who will be our log file.
 blackbox="$COPA/build.log.$CPU"

@@ -22,9 +22,6 @@
 source_list="$(readlink -f "$1")"
 source_hash="$(readlink -f "$2")"
 
-# Ratify since it may not be defined on a second
-# run after disk/populate has been run.
-SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/tmp/src}"
 export USE_ARIA2C SHA256CHECK SRCDIR
 
 log INFO 'Downloading sources for building Copacabana using %s as the list.\n' \
