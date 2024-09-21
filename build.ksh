@@ -34,6 +34,7 @@ check_elevate_method
 
 _make 'checks/dependencies'
 _make 'disk/create_disk' "$DISK_BLOCK"
+_make set_dirs
 _make 'disk/populate'
 _make get_sources sources.txt sources.sha256
 _make build_set cross-tools
