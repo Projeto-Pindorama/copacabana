@@ -134,7 +134,6 @@ function rematch {
 # on purpose to the C preprocessor special operator defined(), meant for being
 # used in if conditions.
 function defined {
-	set -x
 	# First it will check if it's a function defined on the environment and/or in
 	# a sourced file, if it's not, then it will check if it is a variable.
 	{
