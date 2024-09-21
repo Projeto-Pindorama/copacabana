@@ -13,7 +13,9 @@ _make() {
 	tak="$1"
 
 	# This contains tasks that will be re-run even on start-over.
-	FORGO_TASKS="$(grep -rl '^: forgo$' "$tasks")"
+	# Use '|| true' in case of none of the tasks containing the
+	# ': forgo' line.
+	FORGO_TASKS="$(grep -rl '^: forgo$' "$tasks" || true)"
 
 	# Create the file if it does not exist yet.
 	[[ ! -e $made ]] && echo -n >"$made"
@@ -45,7 +47,7 @@ _build_package() {
 	tasks="$packagedir"
 	package="$1"
 	packinfo="$packagedir/$package/info.ini"
-	Destdir="${nonsetted:-"$OBJDIR/$package"}"
+	Destdir="${nonsetted:-"$PKGDIR/$package"}"
 
 	# Get package information:
 	rconfig "$packinfo"
@@ -53,6 +55,7 @@ _build_package() {
 	_make "$package/pkgbuild"
 	cd -
 
+	mkdir -p "$Destdir"
 	cd "$Destdir"
 	find . -type f -print >pkgproto.txt
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
