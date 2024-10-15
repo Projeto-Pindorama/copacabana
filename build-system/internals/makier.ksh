@@ -49,13 +49,15 @@ _build_package() {
 	packinfo="$packagedir/$package/info.ini"
 	Destdir="${nonsetted:-"$PKGDIR/$package"}"
 
+	# Create $Destdir before running task.
+	mkdir -p "$Destdir"
+
 	# Get package information:
 	rconfig "$packinfo"
 	cd "${nonsetted:-"$SRCDIR/pkgs"}"
 	_make "$package/pkgbuild"
 	cd -
 
-	mkdir -p "$Destdir"
 	cd "$Destdir"
 	find . -type f -print >pkgproto.txt
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
