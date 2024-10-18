@@ -104,7 +104,7 @@ function dotini {
 		# confline[2]=value
 		confline[0]="${line%%=*}"
 		# Bullet-proofing against subshells.
-		confline[1]="$(echo -n "${line#*=}" | sed 's/\$/\\\$/g; s/\`/\\`/g')"
+		confline[1]="$(echo -n "${line#*=}" | sed 's/\$/\\\$/g; s/`/\\`/g')"
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
