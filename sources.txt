@@ -51,7 +51,7 @@ https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
 https://master.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
 https://master.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
 https://zlib.net/pigz/pigz-2.8.tar.gz
-https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.tar.gz
+https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz
 https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 https://tukaani.org/xz/xz-5.4.2.tar.xz
 http://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
@@ -78,10 +78,11 @@ https://downloads.sourceforge.net/tcl/tcl8.6.10-html.tar.gz
 https://github.com/michaelforney/samurai/releases/download/1.2/samurai-1.2.tar.gz
 https://github.com/Kitware/CMake/releases/download/v3.28.0-rc1/cmake-3.28.0-rc1.tar.gz
 https://github.com/mesonbuild/meson/releases/download/0.55.0/meson-0.55.0.tar.gz
-https://invisible-island.net/datafiles/release/byacc.tar.gz
+https://invisible-island.net/archives/byacc/byacc-20240109.tgz
 https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 https://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
 https://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
+https://github.com/Projeto-Pindorama/libreatomic/archive/refs/tags/221212.tar.gz
 #< pkgs/dev
 
 #> pkgs/extra

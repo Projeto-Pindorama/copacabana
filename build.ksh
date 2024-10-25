@@ -4,7 +4,6 @@
 # SPDX-Licence-Identifier: NCSA
 
 set -e
-
 progname="${0##*/}"
 progdir="$(cd "$(dirname "$progname")"; pwd -P)"
 
