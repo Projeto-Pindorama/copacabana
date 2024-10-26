@@ -22,12 +22,12 @@ shift
 
 case $set in
 cross-tools)
-	_build_package cross/mussel
-
-	# Enter set directory	
-	cd "$OBJDIR/cross"
-	;;
-tools)
+	Destdir_suffix=cgnutools \
+	_build_packages cross/mussel cross/kernel-headers
+	Destdir_suffix=llvmtools \
+	_build_packages cross/LibC-musl cross/zlib cross/libatomic
+	Destdir_suffix=cgnutools \
+	_build_packages cross/libunwind cross/LLVM
 	;;
 base)
 	;;
@@ -51,7 +51,3 @@ close)
 	printerr 'Info: Build done at %s.\n' \
 		"${dtime[final]}" | tee "$blackbox" ;;
 esac
-
-for d in *; do
-	ls -1 "$d"
-done

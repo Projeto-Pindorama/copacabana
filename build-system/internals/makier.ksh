@@ -47,7 +47,8 @@ _build_package() {
 	tasks="$packagedir"
 	package="$1"
 	packinfo="$packagedir/$package/info.ini"
-	Destdir="${nonsetted:-"$PKGDIR/$package"}"
+	Destdir_suffix="${nonsetted:-"$Destdir_suffix"}"
+	Destdir="${nonsetted:-"$PKGDIR/$package/$Destdir_suffix"}"
 
 	# Create $Destdir before running task.
 	mkdir -p "$Destdir"
@@ -58,13 +59,22 @@ _build_package() {
 	_make "$package/pkgbuild"
 	cd -
 
-	cd "$Destdir"
+	set -x
+	echo $Destdir
+	echo	cd "${Destdir%/*}"
+	cd "${Destdir%/*}"
 	find . -type f -print >pkgproto.txt
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
-	tar -cvf - . | tar -xvf - -C "$COPA"
+	find . ! -name 'pkgproto.txt' -depth -print | elevate cpio -pdmu "$COPA"
 	cd -
 
 	# Restore global tasks directory location.
 	unset tasks
 	tasks="$top_tasks"
+}
+
+_build_packages() {
+	for pack do
+		_build_package "$pack"
+	done
 }

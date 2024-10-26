@@ -23,8 +23,8 @@ archiver_sanity="$trash/archiver_sanity"
 internal_scripts=('cmd/download_sources.ksh' 'cmd/populate_fhs.sh'
 	'cmd/sha256sum.ksh' 'cmd/snapshot_stage.ksh')
 
-# GNU auto*conf commands
-GNUAutoconf_commands=('aclocal' 'automake' 'autoconf' 'autoscan'
+# GNU auto*hell commands
+GNUAutohell_commands=('aclocal' 'automake' 'autoconf' 'autoscan'
 	'autoreconf' 'ifnames' 'autoheader' 'autom4te' 'autoupdate'
 	'libtool' 'libtoolize')
 
@@ -32,6 +32,8 @@ GNUAutoconf_commands=('aclocal' 'automake' 'autoconf' 'autoscan'
 GNUBinutils_commands=('addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit'
 	'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf'
 	'size' 'strings' 'strip')
+
+Devtools_commands=('cmake')
 
 # General commands
 general_commands=('cmp' 'curl' diff{,3} 'sdiff' 'ed' 'file'
