@@ -98,7 +98,7 @@ main() {
 				printf '%s\n\tout=%s\n' \
 					"${urls[$j]}" "${urls[$j]##*/}"
 			done) |
-			aria2c -j $(( $(nproc) * 2 )) -x $(nproc) -d "$category_dir" -i -
+			aria2c --continue=true -j $(( $(nproc) * 2 )) -x $(nproc) -d "$category_dir" -i -
 		fi
 	done
 	if $(echo $SHA256CHECK | grep -i '^y' &>/dev/null) &&
