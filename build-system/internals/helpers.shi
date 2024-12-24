@@ -207,15 +207,15 @@ function check_elevate_method {
 		function elevate { sudo -- "$@"; }
 		typeset -fx elevate
 	elif [[ $UID == 0 ]]; then
-		printerr 'Warning: running as root. This isn'\''t recommended.\n'
+		log WARN 'Warning: running as root. This isn'\''t recommended.\n'
 	elif $(groups $user | grep 'wheel' >/dev/null); then
-		printerr \
+		log WARN \
 			'Warning: %s can log directly as root, although using sudo/doas is preferable.\n' \
 			"$user"
 		function elevate { su -c "$@"; }
 		typeset -fx elevate
 	else
-		printerr 'Fatal: It appears your user doesn'\''t have superuser privileges.\n'
+		log ERROR 'Fatal: It appears your user doesn'\''t have superuser privileges.\n'
 		exit 10
 	fi
 
