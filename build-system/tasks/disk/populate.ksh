@@ -27,14 +27,14 @@ if [[ -d "$COPA/cgnutools" && -d "$COPA/llvmtools" ]]; then
 	# re-do it.
 	# The same applies to /llvmtools.
 	[[ $(realpath /cgnutools) != "$COPA/cgnutools" ]] \
-	&& elevate rm /cgnutools
+	&& test -e /cgnutools && elevate rm /cgnutools
 	( test -L /cgnutools \
 	&& [[ $(realpath /cgnutools) == "$COPA/cgnutools" ]] ) \
 	|| elevate ln -s {"$COPA/",/}cgnutools 
 
 	
 	[[ $(realpath /llvmtools) != "$COPA/llvmtools" ]] \
-	&& elevate rm /llvmtools
+	&& test -e /llvmtools && elevate rm /llvmtools
 	( test -L /llvmtools \
 	&& [[ $(realpath /llvmtools) == "$COPA/llvmtools" ]] ) \
 	|| elevate ln -s {"$COPA/",/}llvmtools
