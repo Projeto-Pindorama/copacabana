@@ -15,6 +15,10 @@
 function rconfig {
 	file="$1"
 
+	if [[ ! -e "$file" ]]; then
+		panic '%s: file %s does not exist.' $0 "$file"
+	fi
+
 	if [[ -z $BASH && -n $KSH_VERSION ]]; then
 		# Load the .ini configuration file as
 		# a compound variable to the memory.
