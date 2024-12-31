@@ -53,7 +53,8 @@ https://master.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
 https://zlib.net/pigz/pigz-2.8.tar.gz
 https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz
 https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
-https://tukaani.org/xz/xz-5.4.2.tar.xz
+https://tukaani.org/xz/xz-5.6.3.tar.gz
+https://github.com/libarchive/libarchive/releases/download/v3.7.7/libarchive-3.7.7.tar.xz
 http://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
 https://distfiles.dereferenced.org/pkgconf/pkgconf-1.9.2.tar.xz
 #< pkgs
