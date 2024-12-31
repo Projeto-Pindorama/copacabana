@@ -36,7 +36,7 @@ GNUBinutils_commands=('addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit'
 Devtools_commands=('cmake')
 
 # General commands
-general_commands=('cmp' 'curl' diff{,3} 'sdiff' 'ed' 'file'
+general_commands=('cmp' 'curl' diff{,3} 'du' 'sdiff' 'ed' 'file'
 	'patch' 'find' 'grep' 'lemount' 'm4' 'mitzune'
 	${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]})
 
@@ -53,7 +53,7 @@ for ((g=0; g < $(n ${general_commands[@]}); g++)); do
 		"${general_commands[$g]}" "$PATH"
 	if ! type -p "${general_commands[$g]}" 2>&1 >/dev/null; then
 		case "${general_commands[$g]}" in
-			sha256sum)
+			'sha256sum')
 				# Use internal sha256sum implementation
 				function sha256sum {
 					"$build_kshdir/cmd/sha256sum.ksh" "$@"
@@ -63,6 +63,18 @@ for ((g=0; g < $(n ${general_commands[@]}); g++)); do
 			*)
 				log ERROR '%s not found.' "${general_commands[$g]}"
 				;;
+		esac
+	else
+		case "${general_commands[$g]}" in
+			'du')
+				log INFO 'Is %s GNU? ' "$(type -p du)"
+				if (du --help 2>&1 \
+				| egrep 'POSIXLY_CORRECT|GNU' 2>&1 >/dev/null); then 
+					log INFO 'Certes, it is.\n'
+					POSIXLY_CORRECT=true
+					export POSIXLY_CORRECT
+				fi ;;
+			*) continue ;;
 		esac
 	fi
 done
