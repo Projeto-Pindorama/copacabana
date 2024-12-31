@@ -2,7 +2,7 @@
 # General helper library for the Copacabana build system.
 # Meant to be used with Korn Shell 93.
 #
-# Copyright (c) 2023-2024 Pindorama
+# Copyright (c) 2023-2025 Pindorama
 # 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 #
@@ -85,13 +85,13 @@ __record() {
 			format='%s+=([%s]="%s")'
 		else
 			panic '%s: invalid caller '\''%s'\''.' \
-				 "$backend_name" "$whos_calling"
+				"$backend_name" "$whos_calling"
 		fi
 	else # Broken-Again
 		if ! $bash_supports_compound; then
 			panic \
-			'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.' \
-			"$backend_name"
+				'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.' \
+				"$backend_name"
 			# Basic sanitizing in case of panic() does
 			# not quitting the program as intended.
 			unset bash_supports_compound
@@ -130,6 +130,36 @@ function rematch {
 	printf '%s' "$s" | sed "s/$re/\1/"
 }
 
+# Luiz' (not-so) stupid split.
+# It "returns" an array that shall be eval'ed into the script.
+function strsplit {
+	# Input string.
+	s="$1"
+	# Character to split.
+	ccut="$2"
+	# Number of substrings
+	nsubs=0
+
+	for ((c = 0; c < ${#s}; c++)); do
+		chr="${s:c:1}"
+		if [[ $chr == "$ccut" ]]; then
+			nsubs=$((nsubs + 1))
+			continue
+		fi
+		substrs[nsubs]+="$chr"
+	done
+
+	# Reformat it.
+	printf '%c' '('
+	for ((nsub = 0; nsub < ${#substrs[@]}; nsub++)); do
+		printf ''\''%s'\'' ' "${substrs[$nsub]}"
+	done
+	printf '%c' ')'
+
+	# Clean the memory.
+	unset substrs s c nsubs
+}
+
 # Checks if a function or a variable is defined via its identifier. Analogous
 # on purpose to the C preprocessor special operator defined(), meant for being
 # used in if conditions.
@@ -153,7 +183,7 @@ function defined {
 # Basically a boilerplate.
 function realpaths {
 	files=(${@})
-	for ((count=0; count < ${#files[@]}; count++)); do
+	for ((count = 0; count < ${#files[@]}; count++)); do
 		realpath "${files[$count]}"
 	done
 	unset count files
@@ -172,14 +202,14 @@ function c {
 	# we just want the extension.
 	tarball_ext="${tarball_ext##*.}"
 	case "$tarball_ext" in
-		gz | tgz) { gzip "$@"; } ;;
-		xz | txz) { xz "$@"; } ;;
-		bz2 | tbz) { bzip2 "$@"; } ;;
-		tar) {
-			shift
-			cat "$@"
-		} ;;
-		*) log PANE "%s: File format not recognized." $0 ;;
+	gz | tgz) { gzip "$@"; } ;;
+	xz | txz) { xz "$@"; } ;;
+	bz2 | tbz) { bzip2 "$@"; } ;;
+	tar) {
+		shift
+		cat "$@"
+	} ;;
+	*) log PANE "%s: File format not recognized." $0 ;;
 	esac
 }
 
