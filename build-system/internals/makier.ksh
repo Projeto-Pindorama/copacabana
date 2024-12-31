@@ -59,13 +59,12 @@ _build_package() {
 	_make "$package/pkgbuild"
 	cd -
 
-	set -x
 	echo $Destdir
 	echo	cd "${Destdir%/*}"
 	cd "${Destdir%/*}"
 	find . -type f -print >pkgproto.txt
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
-	find . ! -name 'pkgproto.txt' -depth -print | elevate cpio -pdmu "$COPA"
+	find . ! -name 'pkgproto.txt' -depth -print | elevate cpio -v -pdmu "$COPA"
 	cd -
 
 	# Restore global tasks directory location.
