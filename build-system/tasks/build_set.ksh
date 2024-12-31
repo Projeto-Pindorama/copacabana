@@ -21,13 +21,22 @@ set="$1"
 shift
 
 case $set in
-cross-tools)
+toolchain)
+	PATH="/cgnutools/bin:$OLD_PATH"
 	Destdir_suffix=cgnutools \
 	_build_packages cross/mussel cross/kernel-headers
 	Destdir_suffix=llvmtools \
 	_build_packages cross/LibC-musl cross/zlib cross/libatomic
 	Destdir_suffix=cgnutools \
-	_build_packages cross/libunwind cross/LLVM
+	_build_packages cross/libunwind cross/LLVM-st1
+	Destdir_suffix=llvmtools \
+	_build_packages cross/LLVM-st2
+	PATH="/llvmtools/bin:$OLD_PATH"
+	Destdir_suffix=llvmtools _build_packages cross/byacc cross/flex \
+	cross/GNUncurses cross/sh cross/bzip2 cross/pigz cross/xz-utils \
+	cross/gettext-tiny cross/heirloom cross/mico cross/GNUm4 \
+	cross/GNUmake cross/libarchive cross/star cross/GNUsed
+
 	;;
 base)
 	;;
