@@ -1,9 +1,16 @@
 # vim: set filetype=sh :
 # Boilerplate for running tasks.
 #
-# Copyright (c) 2023-2024 Pindorama
+# Copyright (c) 2023-2025 Pindorama
 # 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
+#
+# 'mpatch' borrowed and adapted from firasuke's mussel.
+# As per its copyright header:
+# Copyright (c) 2020-2025, Firas Khalil Khana
+#
+# SPDX-Licence-Identifier: ISC
+#
 
 _make() {
 	funcname=$0
@@ -50,6 +57,9 @@ _build_package() {
 	Destdir_suffix="${nonsetted:-"$Destdir_suffix"}"
 	Destdir="${nonsetted:-"$PKGDIR/$package/$Destdir_suffix"}"
 
+	# Backup $Destdir for pkgbuilds that may change it.
+	_Destdir="$Destdir"
+
 	# Create $Destdir before running task.
 	mkdir -p "$Destdir"
 
@@ -59,9 +69,7 @@ _build_package() {
 	_make "$package/pkgbuild"
 	cd -
 
-	echo $Destdir
-	echo	cd "${Destdir%/*}"
-	cd "${Destdir%/*}"
+	cd "${_Destdir%/*}"
 	find . -type f -print >pkgproto.txt
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
 	find . ! -name 'pkgproto.txt' -depth -print | elevate cpio -v -pdmu "$COPA"
@@ -76,4 +84,17 @@ _build_packages() {
 	for pack do
 		_build_package "$pack"
 	done
+}
+
+mpatch() {
+	level="$1"
+	patch_name="$2"
+	package_name="$(basename "$(pwd)")"
+	log INFO 'Applying patch '\''%s'\'' for %s...\n' \
+		$patch_name "$package_name"
+
+	# We're already inside the package directory, so
+	# no need for 'cd "$SRCDIR/$2/$2-$3"'.
+	patch -p"$level" -i "$PCHDIR/$package_name/${patch_name}.patch" 2>&1
+	log INFO "%s patched with %s!\n" "$package_name" "$patch_name"
 }
