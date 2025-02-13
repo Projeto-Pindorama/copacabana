@@ -7,3 +7,7 @@
 # Don't store build.ksh history
 build-system/tasks/made.txt
 _made
+
+# And, of course, neither the images that may be generated
+*.img
+*.IMG
