@@ -115,15 +115,17 @@ if "$VIRTUAL_DISK"; then
 		log WARN 'Creating a virtual disk image at %s, with size of %d MB.' \
 			"$virtuadisk_path" $((virtuadisk_size * 1024))
 
-		# 1 GB is equal to 2.097.152 blocks.
-		# In other words, use:
-		# X GB = X * [(1024^2) * 2] blocks
-		virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
-		dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
+		# Just remake the image if it is a new disk.
+		if ! $start_over; then
+			# 1 GB is equal to 2.097.152 blocks.
+			# In other words, use:
+			# X GB = X * [(1024^2) * 2] blocks
+			virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
+			dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
+		fi
 
 		# Does the size in blocks matches with what du(1)'s getting?
 		virtuadisk_reported_size=$(du -s "$virtuadisk_path" | nawk '{ printf("%d", $1); }')
-
 		if ((virtuadisk_blksize == virtuadisk_reported_size)); then
 			log INFO '%s is o.k. Proceeding.' "$virtuadisk_path"
 		else
