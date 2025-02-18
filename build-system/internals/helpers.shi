@@ -202,14 +202,14 @@ function c {
 	# we just want the extension.
 	tarball_ext="${tarball_ext##*.}"
 	case "$tarball_ext" in
-	gz | tgz) { gzip "$@"; } ;;
-	xz | txz) { xz "$@"; } ;;
-	bz2 | tbz) { bzip2 "$@"; } ;;
-	tar) {
-		shift
-		cat "$@"
-	} ;;
-	*) log PANE "%s: File format not recognized." $0 ;;
+		gz | tgz) { gzip "$@"; } ;;
+		xz | txz) { xz "$@"; } ;;
+		bz2 | tbz) { bzip2 "$@"; } ;;
+		tar) {
+			shift
+			cat "$@"
+		} ;;
+		*) log PANE "%s: File format not recognized." $0 ;;
 	esac
 }
 
@@ -284,9 +284,9 @@ function check_for_colour_support {
 	# a sketch, you can expand it per sending
 	# a patch.
 	case "$termprog" in
-	# Found guilty!
-	9term) itsANSIcap=false ;;
-	*) break ;;
+		# Found guilty!
+		9term) itsANSIcap=false ;;
+		*) break ;;
 	esac
 
 	if ! isatty 2 || ! $itsANSIcap || (($(tput colors) < 8)); then
@@ -321,4 +321,27 @@ function isdigit {
 	if [[ $(printf '%d' $digit) != $digit && $digit == +([0-9]) ]]; then
 		false
 	fi
+}
+
+# Get directory entries and return serialized it as
+# an array, similarly to dotini().
+function getdirentries {
+	typeset -a entries
+	dir="$1"
+	(
+		cd "$dir"
+		for f in *; do
+			echo "$f"
+		done
+	) | for (( ; ; )); do
+		if read -r ent; then
+			set -A entries "${entries[@]}" "$ent"
+		else
+			break
+		fi
+	done
+
+	# '%#B' is Korn Shell-specific, but one could use 'typeset -p'
+	# with some small hacks for removing the internal identifier.
+	printf '%#B' entries
 }
