@@ -34,8 +34,8 @@ fi
 
 log WARN '%s only creates a plain disk, without partitions for /boot, /usr, etc.' $0
 if [[ ! $VIRTUAL_DISK ]] && [[ -b $disk_block ]] ||
-	([[ "$(uname -s)" == "Linux" ]] && ((KSH93_RELEASE <= 20211217)) &&
-		(grep "${disk_block##*/}" /proc/partitions 2>&1 >/dev/null &&
+	( ([[ "$(uname -s)" == "Linux" ]] || ((KSH93_RELEASE <= 20211217))) &&
+		(grep "${disk_block##*/}" /proc/partitions 2>&1 >/dev/null ||
 			[[ "$(file "$disk_block")" =~ (.*[\t ]block special.*) ]])); then
 	# Get the disk size from /proc/partitions, pretty
 	# self-explanatory.
@@ -57,9 +57,9 @@ if [[ ! $VIRTUAL_DISK ]] && [[ -b $disk_block ]] ||
 	fi
 
 	# Check if disk is already initialized.
-	if $(elevate fdisk -x "${disk_block%%[0-9]}" | grep "$disk_block" &>/dev/null); then
+	if $(elevate fdisk -x "$(get_disk_per_partname $disk_block)" | grep "$disk_block" &>/dev/null); then
 		filesystem=$(
-			eval $(blkid -o udev "$disk_block")
+			eval $(elevate blkid -o udev "$disk_block")
 			printf '%s\n' "$ID_FS_TYPE"
 		)
 
@@ -109,18 +109,16 @@ if ! $first_time; then
 		esac
 	done
 fi
-
-if "$VIRTUAL_DISK"; then
-	if ($first_time || $start_over); then
-		log WARN 'Creating a virtual disk image at %s, with size of %d MB.' \
-			"$virtuadisk_path" $((virtuadisk_size * 1024))
-
+if ($first_time || $start_over); then
+	if "$VIRTUAL_DISK"; then
+		# 1 GB is equal to 2.097.152 blocks of 512 octets.
+		# In other words, use:
+		# X GB = X * [(1024^2) * 2] blocks
+		virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
 		# Just remake the image if it is a new disk.
-		if ! $start_over; then
-			# 1 GB is equal to 2.097.152 blocks.
-			# In other words, use:
-			# X GB = X * [(1024^2) * 2] blocks
-			virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
+		if ! $start_over || [[ ! -e $virtuadisk_path ]]; then
+			log WARN 'Creating a virtual disk image at %s, with size of %d MB.' \
+				"$virtuadisk_path" $((virtuadisk_size * 1024))
 			dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
 		fi
 
@@ -138,16 +136,14 @@ if "$VIRTUAL_DISK"; then
 		# For some reason, echo won't be working for this, so let be
 		# sticking with printf '%s\n'.
 		printf '%s\n' "${fdisk_steps[@]}" | elevate fdisk "$virtuadisk_path"
+
+		# Expose the virtual disk to the system.
+		loop_disk_block="$(elevate losetup --show -P -f "$virtuadisk_path")"
+
+		# That's why we hardcoded the partition to be the first.
+		unset disk_block
+		export disk_block="${loop_disk_block}p1"
 	fi
-
-	# Expose the virtual disk to the system.
-	loop_disk_block="$(elevate losetup --show -P -f "$virtuadisk_path")"
-
-	# That's why we hardcoded the partition to be the first.
-	unset disk_block
-	export disk_block="${loop_disk_block}p1"
-fi
-if ($first_time || $start_over); then
 	echo -n >"$made"
 	# Formats the disk block as Ext4 and label it as our defined disk label.
 	elevate "$run_shell" -c "mkfs -V -t ext4 '$disk_block' && e2label '$disk_block' '$disk_label'"
