@@ -33,7 +33,7 @@ https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.3.tar.gz
 https://github.com/gavinhoward/bc/releases/download/6.5.0/bc-6.5.0.tar.xz
 https://www.mktemp.org/dist/mktemp-1.7.tar.gz
 http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.12.tar.gz
-https://github.com/ksh93/ksh/archive/refs/tags/v1.0.4.tar.gz
+https://github.com/ksh93/ksh/archive/refs/tags/v1.0.10.tar.gz
 https://github.com/johnsonjh/OpenVi/archive/refs/tags/7.2.21.tar.gz
 https://github.com/vim/vim/archive/refs/tags/v9.0.0000.tar.gz
 https://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/man-pages-posix-2013-a.tar.xz
