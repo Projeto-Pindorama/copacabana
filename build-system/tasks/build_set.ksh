@@ -21,42 +21,43 @@ set="$1"
 shift
 
 case $set in
-toolchain)
-	PATH="/cgnutools/bin:$OLD_PATH"
-	Destdir_suffix=cgnutools \
-	_build_packages cross/mussel cross/kernel-headers
-	Destdir_suffix=llvmtools \
-	_build_packages cross/LibC-musl cross/zlib cross/libatomic
-	Destdir_suffix=cgnutools \
-	_build_packages cross/libunwind cross/LLVM-st1
-	Destdir_suffix=llvmtools \
-	_build_packages cross/LLVM-st2
-	PATH="/llvmtools/bin:$OLD_PATH"
-	Destdir_suffix=llvmtools _build_packages cross/byacc cross/flex \
-	cross/GNUncurses cross/sh cross/bzip2 cross/pigz cross/xz-utils \
-	cross/gettext-tiny cross/heirloom cross/mico cross/GNUm4 \
-	cross/GNUmake cross/libarchive cross/star cross/GNUsed
+	toolchain)
 
-	;;
-base)
-	;;
-close)
-	# STEP 4: Closing the build
-	# This function will just write the "/etc/copacabana-release"
-	# file on the final system, closing the build process.
-	version="$progdir/version"
-	release_file="$COPA/etc/copacabana-release"
-	if [[ ! -s $version ]]; then
-		printf '%.1f' 0.0 >"$version"
-	fi
-	map dtime final "$(date +'%Hh%Mmin on %B %d, %Y')"
+		PATH="$(add_to_PATH /cgnutools/bin)"
+		Destdir_suffix=cgnutools \
+			_build_packages cross/mussel cross/kernel-headers
+		Destdir_suffix=llvmtools \
+			_build_packages cross/LibC-musl cross/zlib cross/libatomic
+		Destdir_suffix=cgnutools \
+			_build_packages cross/libunwind cross/LLVM-st1
+		Destdir_suffix=llvmtools \
+			_build_packages cross/LLVM-st2
+		PATH="$(remove_from_PATH /cgnutools/bin)"
+		PATH="$(add_to_PATH /llvmtools/bin)"
+		Destdir_suffix=llvmtools _build_packages cross/byacc cross/flex \
+			cross/GNUncurses cross/sh cross/bzip2 cross/pigz cross/xz-utils \
+			cross/gettext-tiny cross/heirloom cross/mico cross/GNUm4 \
+			cross/GNUmake cross/libarchive cross/star cross/GNUsed
+		;;
+	base) ;;
+	close)
+		# STEP 4: Closing the build
+		# This function will just write the "/etc/copacabana-release"
+		# file on the final system, closing the build process.
+		version="$progdir/version"
+		release_file="$COPA/etc/copacabana-release"
+		if [[ ! -s $version ]]; then
+			printf '%.1f' 0.0 >"$version"
+		fi
+		map dtime final "$(date +'%Hh%Mmin on %B %d, %Y')"
 
-	printf >"$release_file" \
-		'Copacabana %.1f/%s\nCopyright (c) %d-%d Pindorama. All rights reserved.\n\nDesigned between %s and %s. Built from %s until %s (UTC %s).\n' \
-		"$(cat $version)" "$CPU" '2019' "$(date +"%Y")" \
-		'February 2021' "$(date +'%B %Y')" \
-		"${dtime[initial]}" "${dtime[final]}" "$(date +%Z)"
+		printf >"$release_file" \
+			'Copacabana %.1f/%s\nCopyright (c) %d-%d Pindorama. All rights reserved.\n\nDesigned between %s and %s. Built from %s until %s (UTC %s).\n' \
+			"$(cat $version)" "$CPU" '2019' "$(date +"%Y")" \
+			'February 2021' "$(date +'%B %Y')" \
+			"${dtime[initial]}" "${dtime[final]}" "$(date +%Z)"
 
-	printerr 'Info: Build done at %s.\n' \
-		"${dtime[final]}" | tee "$blackbox" ;;
+		log WARN 'Build done at %s.\n' \
+			"${dtime[final]}" | tee "$blackbox"
+		;;
 esac
