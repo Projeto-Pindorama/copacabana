@@ -48,7 +48,7 @@ if $USE_ARIA2C; then
 	general_commands[1]='aria2c'
 fi
 
-for ((g=0; g < $(n ${general_commands[@]}); g++)); do
+for ((g = 0; g < $(n ${general_commands[@]}); g++)); do
 	log INFO 'Searching for %s at PATH (%s)... ' \
 		"${general_commands[$g]}" "$PATH"
 	if ! type -p "${general_commands[$g]}" 2>&1 >/dev/null; then
@@ -68,62 +68,44 @@ for ((g=0; g < $(n ${general_commands[@]}); g++)); do
 		case "${general_commands[$g]}" in
 			'du')
 				log INFO 'Is %s GNU? ' "$(type -p du)"
-				if (du --help 2>&1 \
-				| egrep 'POSIXLY_CORRECT|GNU' 2>&1 >/dev/null); then 
+				if (du --help 2>&1 |
+					egrep 'POSIXLY_CORRECT|GNU' 2>&1 >/dev/null); then
 					log INFO 'Certes, it is.\n'
 					POSIXLY_CORRECT=true
 					export POSIXLY_CORRECT
-				fi ;;
+				fi
+				;;
 			*) continue ;;
 		esac
 	fi
 done
 
-for ((h=0; h < $(n ${archivers[@]}); h++)); do
+for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 	log INFO 'Does %s work for what we want? ' "${archivers[$h]}"
 	if [ "${archivers[$h]}" == 'tar' ]; then # TAR-specific tests
 		tarpath="$(realpath $(type -p tar))"
 		if (strings "$tarpath" | grep '@(#)tar.*\(gritter\)' &&
 			getconf HEIRLOOM_TOOLCHEST_VERSION) 2>&1 >/dev/null; then
 			log WARN 'I'\''m almost certain that %s is from the Heirloom Toolchest...' \
-				"$(type -p tar)"
+				"$tarpath"
 			log WARN 'Heirloom Toolchest'\''s tar is broken since at least 2007 for some reason.'
 			log WARN \
 				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.'
 
 			printf '%s' "$PATH" |
 				nawk '{ gsub(":", "\n"); print $0; }' |
-				for ((;;)); do
+				for (( ; ; )); do
 					if read -r d; then
 						tar_cmd="$d/tar"
 						if [[ ! -e $tar_cmd || $d == "${tarpath%/*}" ]]; then
 							continue
-						elif ($tar_cmd --help 2>&1 | egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
+						elif ("$tar_cmd" --help 2>&1 | egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
 							new_tarpath="$(realpath $d)"
-							tmpPATH="$new_tarpath:$PATH"
-							# This big chunk of code works as a 'uniq'
-							# for the PATH variable because, since
-							# $new_tarpath was already in PATH, it
-							# would be repeated in the new PATH.
-							PATH="$(printf '%s' "$tmpPATH" |
-								nawk '{ np=split($0, p, ":");
-							for (n = 1; n <= np; n++) {
-								if ((n + 1) >= np) {
-									separator=""
-								} else {
-									separator=":"
-								}
-								# If not already present
-								# on the s[] array, print it.
-								if (!s[p[n]]++) {
-									printf("%s%c", p[n], separator);
-								}
-							}
-							}')"
-							log WARN 'Found suitable tar at %s\n' $new_tarpath
-							log INFO 'New PATH: %s\n' $PATH
+							log WARN 'Found suitable tar at %s\n' "$new_tarpath"
+							PATH="$(add_to_PATH "$new_tarpath")"
+							log INFO 'New $PATH: %s\n' $PATH
 							export PATH
-							unset new_tarpath tmpPATH
+							unset tarpath tar_cmd new_tarpath
 							break
 						fi
 						unset tar_cmd
@@ -167,7 +149,7 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 			) | tar -xf - -C "${archiver_sanity}_results"
 		} && rm -rf "${archiver_sanity}_results"
 	else # Bzip2, Gzip or Xz tests
-		for ((l=1; l <= 9; l++)); do
+		for ((l = 1; l <= 9; l++)); do
 			log INFO 'With compression level %s? ' $l
 
 			# Test the alphabet string can be compressed
@@ -186,14 +168,14 @@ for ((h=0; h < $(n ${archivers[@]}); h++)); do
 	log INFO 'Sounds like a yes.'
 done
 
-for ((i=0; i < $(n ${utils[@]}); i++)); do
+for ((i = 0; i < $(n ${utils[@]}); i++)); do
 	log INFO 'Is %s present on this system? ' "${utils[$i]}"
 	command -v ${utils[$i]} 2>&1 >/dev/null &&
 		log INFO 'Sounds like a yes.' ||
 		log ERROR '%s not found.' ${utils[$i]}
 done
 
-for ((k=0; k < $(n ${internal_scripts[@]}); k++)); do
+for ((k = 0; k < $(n ${internal_scripts[@]}); k++)); do
 	log INFO 'Searching for independent script %s at %s... ' \
 		"${internal_scripts[$k]}" "$progdir"
 	if [ -e "$progdir/${internal_scripts[$k]}" ] &&
