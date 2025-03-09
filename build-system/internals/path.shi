@@ -1,0 +1,50 @@
+# vim: set filetype=sh :
+# General functions for modifying $PATH.
+# Meant to be used with Korn Shell 93.
+#
+# Copyright (c) 2025 Pindorama
+# 		     Luiz Antônio Rangel
+#
+# SPDX-Licence-Identifier: NCSA
+
+function remove_dir_or_dup_from_PATH {
+	nawk -v to_remove_dir="$1" '{
+	np=split($0, p, ":");
+	for (n = 1; n <= np; n++) {
+		if ((n + 1) >= np) {
+			separator=""
+		} else {
+			separator=":"
+		}
+		# If not already present
+		# on the s[] array, print it.
+		# And, if there is a directory
+		# to remove, also check for it.
+		if (to_remove_dir) {
+			if (p[n] == to_remove_dir)
+				continue
+		} else {
+			if (s[p[n]]++)
+				continue
+		}
+		printf("%s%c", p[n], separator);
+	}
+	}'
+}
+
+# Removes an directory from the PATH.
+function remove_from_PATH {
+	printf '%s' "$PATH" | remove_dir_or_dup_from_PATH "$1"
+}
+
+# Adds a directory to the PATH.
+function add_to_PATH {
+	dir="$1"
+	if [ ! -d "$dir" -o ! -d "$(readlink -f "$dir")" ]; then
+		return 1
+	fi
+
+	tmpPATH="$dir:$PATH"
+	printf '%s' "$tmpPATH" | remove_dir_or_dup_from_PATH
+	unset dir tmpPATH
+}
