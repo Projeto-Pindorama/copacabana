@@ -46,7 +46,7 @@ https://github.com/OpenRC/openrc/archive/refs/tags/0.46.tar.gz
 https://download.savannah.nongnu.org/releases/acl/acl-2.3.1.tar.xz
 https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
 https://master.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
-https://master.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
+https://github.com/Projeto-Pindorama/star/releases/download/1.7/star-1.7.tar.bz2
 https://zlib.net/pigz/pigz-2.8.tar.gz
 https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz
 https://gitlab.com/bzip2/bzip2/-/archive/bzip2-1.0.8/bzip2-bzip2-1.0.8.tar.gz
