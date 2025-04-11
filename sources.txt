@@ -17,6 +17,7 @@ https://github.com/void-linux/musl-fts/archive/refs/tags/v1.2.7.tar.gz
 https://github.com/void-linux/musl-obstack/archive/refs/tags/v1.2.3.tar.gz
 https://skarnet.org/software/nsss/nsss-0.2.0.3.tar.gz
 https://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
+https://sourceforge.net/code-snapshots/svn/e/el/elftoolchain/code/elftoolchain-code-r4191-trunk.zip
 https://libisl.sourceforge.io/isl-0.25.tar.xz
 https://skarnet.org/software/skalibs/skalibs-2.13.1.0.tar.gz
 https://skarnet.org/software/utmps/utmps-0.1.2.1.tar.gz
