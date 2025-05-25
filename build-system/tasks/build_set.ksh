@@ -7,9 +7,9 @@
 # STEP 3: Build
 # "Around 3 a.m., the colonel pushed a bunch of papers that were on his front at
 # his table. He strected his arms and leaned his head on the cold glass tabletop.
-# - 'I need to cool down my head. It looks like it's on fire.'
-# Soon after, the red telephone rang. The head of the Agency was calling and he
-# wanted to know how the operation was going.
+# - 'I need to cool down my head. I have the sensation that it is on fire.'
+# Soon after, the red telephone rang. The head of the Agency was calling, and he
+# wanted to know how the operation was proceeding.
 # - 'Yellow Cake already got started, General. So far, so good', Ary responded."
 #	-- Alexandre Von Baumgarten's "Yellow Cake"
 #
@@ -22,7 +22,6 @@ shift
 
 case $set in
 	toolchain)
-
 		PATH="$(add_to_PATH /cgnutools/bin)"
 		Destdir_suffix=cgnutools \
 			_build_packages cross/mussel cross/kernel-headers
@@ -35,9 +34,10 @@ case $set in
 		PATH="$(remove_from_PATH /cgnutools/bin)"
 		PATH="$(add_to_PATH /llvmtools/bin)"
 		Destdir_suffix=llvmtools _build_packages cross/byacc cross/flex \
-			cross/GNUncurses cross/sh cross/bzip2 cross/pigz cross/xz-utils \
-			cross/gettext-tiny cross/heirloom cross/mico cross/GNUm4 \
-			cross/GNUmake cross/libarchive cross/star cross/GNUsed
+			cross/NBSDcurses cross/ksh-93 cross/bzip2 cross/pigz \
+			cross/xz-utils cross/GNUgettext cross/userspace-progs \
+			cross/GNUm4 cross/GNUmake cross/patch cross/libarchive \
+			cross/s-tar cross/GNUsed
 		;;
 	base) ;;
 	close)
