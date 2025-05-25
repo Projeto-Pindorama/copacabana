@@ -21,6 +21,7 @@ _make 'checks/platform'
 . "$progdir/build-system/internals/helpers.shi"
 . "$progdir/build-system/internals/rconfig.shi"
 . "$progdir/build-system/internals/disks.shi"
+. "$progdir/build-system/internals/path.shi"
 
 rconfig "$progdir/build-system/machine.ini"
 rconfig "$progdir/build-system/work.ini"
