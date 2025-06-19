@@ -1,9 +1,10 @@
 #> pkgs
-https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.15.103.tar.xz
-https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-30.tar.xz
-https://www.kernel.org/pub/linux/utils/kbd/kbd-2.5.1.tar.xz
-https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.65.tar.xz
-https://www.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-2.38.tar.xz
+https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.185.tar.xz
+https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20250613.tar.xz
+https://cdn.kernel.org/pub/linux/utils/kernel/kmod/kmod-34.tar.xz
+https://cdn.kernel.org/pub/linux/utils/kbd/kbd-2.8.0.tar.xz
+https://cdn.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.76.tar.xz
+https://cdn.kernel.org/pub/linux/utils/util-linux/v2.41/util-linux-2.41.tar.xz
 https://github.com/eudev-project/eudev/releases/download/v3.2.11/eudev-3.2.11.tar.gz
 https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.46.5/e2fsprogs-1.46.5.tar.gz
 https://github.com/troglobit/sysklogd/releases/download/v2.4.4/sysklogd-2.4.4.tar.gz
@@ -25,7 +26,7 @@ https://skarnet.org/software/utmps/utmps-0.1.2.1.tar.gz
 https://github.com/Mic92/iana-etc/releases/download/20230202/iana-etc-20230202.tar.gz
 https://data.iana.org/time-zones/releases/tzcode2023a.tar.gz
 https://data.iana.org/time-zones/releases/tzdata2023a.tar.gz
-https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.17.0.tar.xz
+https://cdn.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.15.0.tar.xz
 https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.4/dhcpcd-10.0.4.tar.xz
 https://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-0.3.2.tar.xz
 https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.7.2.tar.gz
@@ -111,4 +112,5 @@ https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
 https://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.xz
 https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
 https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
+%%https://github.com/midipix-project/slibtool/tags
 #< pkgs/gnu/autohell
