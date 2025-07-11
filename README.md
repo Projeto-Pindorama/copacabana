@@ -1,6 +1,6 @@
 # The Copacabana Linux(R) distribution
 
-![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama%20Copacabana%20Banner.png)
+![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/refs/heads/master/Pindorama%20Copacabana%20Banner/banner%20degrad%C3%AA.png)
 
 ### *Now built with LLVM!*
 
@@ -24,11 +24,11 @@ If it succeeds and presents a nice performance, this branch will be merged into
 the main branch.
 
 For more information about porting, translation, documentation etc, read
-the website: http://copacabana.pindorama.dob.jp  
+the website: http://copacabana.pindorama.net.br
 
 For more technical information about the distribution itself, read the
 Copacabana tabula at the Silicon Tabula:
-http://silicon.pindorama.dob.jp/copacabana
+http://tabula.pindorama.net.br/copacabana (not up yet)
 
 ## Chip in!
 
@@ -37,12 +37,12 @@ documentation is open at our git repository, inside the ``docs/`` directory:
 http://github.com/Projeto-Pindorama/Silicon-Tabula
 
 Any other contributions are entirely accepted, for more information read the
-"Chip in!" session at [Copacabana's website](http://copacabana.pindorama.dob.jp).
+"Chip in!" session at [Copacabana's website](http://copacabana.pindorama.net.br).
 
 ### Other Pindorama projects intrinsically related to the distribution that you may want to chip in
 
 - [Alambiko (Copacabana package repository)](https://github.com/Projeto-Pindorama/alambiko);
-- [Heirloom New Generation](http://heirloom-ng.pindorama.dob.jp);
+- [Heirloom New Generation](http://heirloom-ng.pindorama.net.br);
 - [The Pacote Package Manager](https://github.com/Projeto-Pindorama/pacote) (**W.I.P**);
 - [Mitzune](https://github.com/Projeto-Pindorama/mitzune);
 - [L.E.`mount`](https://github.com/Projeto-Pindorama/lemount);
