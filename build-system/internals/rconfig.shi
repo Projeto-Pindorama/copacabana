@@ -111,6 +111,9 @@ function dotini {
 		# Bullet-proofing against subshells.
 		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
 			| sed 's/\$/\\\$/g; s/`/\\`/g')"
+		# Check if the latter is empty; in this case,
+		# declare it explicitly as a blank.
+		confline[1]=${confline[1]:-'""'}
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
