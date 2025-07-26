@@ -32,7 +32,6 @@ if [[ -d "$COPA/cgnutools" && -d "$COPA/llvmtools" ]]; then
 	&& [[ $(realpath /cgnutools) == "$COPA/cgnutools" ]] ) \
 	|| elevate ln -s {"$COPA/",/}cgnutools 
 
-	
 	[[ $(realpath /llvmtools) != "$COPA/llvmtools" ]] \
 	&& test -e /llvmtools && elevate rm /llvmtools
 	( test -L /llvmtools \
@@ -53,4 +52,7 @@ log INFO 'Initializing blackbox file (%s) for the build.' \
 log INFO 'Making %s, %s, %s, %s and %s writable by the current user.' \
 	$(realpaths /{cgnu,llvm}tools) "$SRCDIR" "$OBJDIR" "$PKGDIR"
 elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR" "$OBJDIR" "$PKGDIR"
+# Because of the way we implemented add_to_PATH().
+log INFO 'Creating '\''bin'\'' directories for %s and %s.' /{cgnu,llvm}tools
+mkdir /{cgnu,llvm}tools/bin
 export blackbox SRCDIR
