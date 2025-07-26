@@ -110,7 +110,10 @@ function dotini {
 		confline[0]="${line/@(| )=*/}"
 		# Bullet-proofing against subshells.
 		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
-			| sed 's/\$/\\\$/g; s/`/\\`/g')"
+			| sed -e '/^'\''.*'\''$/!s/\$/\\\$/g' \
+				-e '/^'\''.*'\''$/!s/`/\\`/g' \
+				-e '/^["'\''].*["'\'']$/!s/ /\\ /g' \
+				-e '/^["'\''].*["'\'']$/!s/(\(.*\))/\\(\1\\)/g;')"
 		# Check if the latter is empty; in this case,
 		# declare it explicitly as a blank.
 		confline[1]=${confline[1]:-'""'}
