@@ -3,7 +3,7 @@
 # files in the Copacabana build system.
 # Meant to be used with Korn Shell 93.
 #
-# Copyright (c) 2023-2024 Pindorama
+# Copyright (c) 2023-2025 Pindorama
 # 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
@@ -34,7 +34,8 @@ function rconfig {
 						continue
 					else
 						keyval="$(printf '%s' "$line" |
-							sed 's/^\(.*\)[#;].*/\1/;')"
+							sed -e 's/^\(.*\)[#;].*/\1/' \
+							-e 's/\(.*\)[ ]=[ ]\(.*\)/\1=\2/')"
 						identifier="${keyval%%=*}"
 						value="${keyval##*=}"
 						[[ "$keyval" =~ ^$ ]] && continue
@@ -106,23 +107,14 @@ function dotini {
 		# identifier=value
 		# confline[1]=identifier
 		# confline[2]=value
-		confline[0]="${line%%=*}"
+		confline[0]="${line/@(| )=*/}"
 		# Bullet-proofing against subshells.
-		confline[1]="$(echo -n "${line#*=}" | sed 's/\$/\\\$/g; s/`/\\`/g')"
+		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
+			| sed 's/\$/\\\$/g; s/`/\\`/g')"
 
 		# If there is not a section, it will only declare the INI
 		# variable and its value on the compound variable.
 		if [[ ! -n $formatted_section ]]; then
-			# Using a apostrophe instead of quotations marks
-			# because, apart from the fact that it works as a
-			# micro-optimization --- since the shell will be
-			# treating its contents as vulgar strings instead of
-			# trying to interpret what is inside them ---, also
-			# prevents globbing of strings.
-			# The only thing that it doesn't prevents,
-			# unfortunately, is the abuse of subshells or malicious
-			# substitutions, but I do not think this can be a
-			# problem here.
 			printf '[%s]=%s ' \
 				"${confline[0]}" "${confline[1]}"
 
