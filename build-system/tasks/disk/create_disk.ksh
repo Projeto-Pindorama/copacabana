@@ -49,11 +49,14 @@ if [[ ! $VIRTUAL_DISK ]] && [[ -b $disk_block ]] ||
 		panic \
 			'Disk %s is too small (%d MB). %d MB is the recommended capacity for building Copacabana.' \
 			"$disk_block" "$disk_size" $((10 * 1024))
-	# Do not accept disks/disk partitions larger than 50GB.
+	# Do not accept disks/disk partitions larger than 50GB
+	# without having a good reason.
 	elif ((disk_size > (50 * 1024))); then
-		panic \
-			'Disk %s is too large. Create a partition and/or use a virtual disk smaller than %d MB.' \
-			"$disk_block" $((50 * 1024))
+		if ! ${LARGE_BUILD_DISK:-false}; then
+			panic \
+				'Disk %s is too large. Create a partition and/or use a virtual disk smaller than %d MB.' \
+				"$disk_block" $((50 * 1024))
+		fi
 	fi
 
 	# Check if disk is already initialized.
