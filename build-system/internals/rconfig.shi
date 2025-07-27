@@ -109,6 +109,22 @@ function dotini {
 		# confline[2]=value
 		confline[0]="${line/@(| )=*/}"
 		# Bullet-proofing against subshells.
+		# The sed commands described:
+		# - '/^'\''.*'\''$/': Check if the string starts and ends with
+		# simple quotes;
+		# - '!s/\$/\\\$/g': If the previous condition to it does not
+		# occur, replace every '$' with '\$';
+		# - '!s/`/\\`/g': Similar to the command above, but it replaces
+		# every '`' with '\`';
+		# - ''/^["'\''].*["'\'']$/': Checks if the string starts and
+		# ends with simple OR double quotes;
+		# - '!s/ /\\ /g': If the previous condition to it does not
+		# occur, place an escape character ("\") before every space on
+		# the line;
+		# - '!s/(\(.*\))/\\(\1\\)/g': Similarly to the above, if the
+		# previous to it condition does not occur, take everything in
+		# the middle of parenthesis and place it inside "escaped" ones.
+		# Hope this goes into formal documentation in the future.
 		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
 			| sed -e '/^'\''.*'\''$/!s/\$/\\\$/g' \
 				-e '/^'\''.*'\''$/!s/`/\\`/g' \
