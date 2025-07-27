@@ -109,6 +109,11 @@ function dotini {
 		# confline[2]=value
 		confline[0]="${line/@(| )=*/}"
 		# Bullet-proofing against subshells.
+		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
+			| sed -e '/^'\''.*'\''$/!s/\$/\\\$/g' \
+				-e '/^'\''.*'\''$/!s/`/\\`/g' \
+				-e '/^["'\''].*["'\'']$/!s/ /\\ /g' \
+				-e '/^["'\''].*["'\'']$/!s/(\(.*\))/\\(\1\\)/g;')"
 		# The sed commands described:
 		# - '/^'\''.*'\''$/': Check if the string starts and ends with
 		# simple quotes;
@@ -125,11 +130,7 @@ function dotini {
 		# previous to it condition does not occur, take everything in
 		# the middle of parenthesis and place it inside "escaped" ones.
 		# Hope this goes into formal documentation in the future.
-		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
-			| sed -e '/^'\''.*'\''$/!s/\$/\\\$/g' \
-				-e '/^'\''.*'\''$/!s/`/\\`/g' \
-				-e '/^["'\''].*["'\'']$/!s/ /\\ /g' \
-				-e '/^["'\''].*["'\'']$/!s/(\(.*\))/\\(\1\\)/g;')"
+
 		# Check if the latter is empty; in this case,
 		# declare it explicitly as a blank.
 		confline[1]=${confline[1]:-'""'}
@@ -148,7 +149,7 @@ function dotini {
 		# already parsed, return it as a associative array declaration.
 		printf '[%s]+=([%s]=%s) ' \
 			$formatted_section "${confline[0]}" "${confline[1]}"
-		
+
 		# Clean confline[] array.
 		unset confline[0] confline[1]
 	done
