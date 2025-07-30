@@ -195,6 +195,12 @@ function chdir { cd "$1"; }
 # Just a wrapper to a decompressor such as gzip, xz, bzip2 etc.
 # Derived from copy2prefix() at https://git.io/mitzune
 function c {
+	set -x
+
+	# Fail if there's less than two arguments.
+	if [[ $# -lt 2 ]]; then
+		return 1
+	fi
 	tarball="$2"
 	# First, cut the absolute path off
 	tarball_ext="${tarball##*/}"
@@ -202,7 +208,7 @@ function c {
 	# we just want the extension.
 	tarball_ext="${tarball_ext##*.}"
 	case "$tarball_ext" in
-		gz | tgz) { gzip "$@"; } ;;
+		gz | tgz) { gunzip "$@"; } ;;
 		xz | txz) { xz "$@"; } ;;
 		bz2 | tbz) { bzip2 "$@"; } ;;
 		tar) {
