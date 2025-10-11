@@ -48,38 +48,6 @@ if $USE_ARIA2C; then
 	general_commands[1]='aria2c'
 fi
 
-for ((g = 0; g < $(n ${general_commands[@]}); g++)); do
-	log INFO 'Searching for %s at PATH (%s)... ' \
-		"${general_commands[$g]}" "$PATH"
-	if ! type -p "${general_commands[$g]}" 2>&1 >/dev/null; then
-		case "${general_commands[$g]}" in
-			'sha256sum')
-				# Use internal sha256sum implementation
-				function sha256sum {
-					"$build_kshdir/cmd/sha256sum.ksh" "$@"
-				}
-				typeset -xf sha256sum
-				;;
-			*)
-				log ERROR '%s not found.' "${general_commands[$g]}"
-				;;
-		esac
-	else
-		case "${general_commands[$g]}" in
-			'du')
-				log INFO 'Is %s GNU? ' "$(type -p du)"
-				if (du --help 2>&1 |
-					egrep 'POSIXLY_CORRECT|GNU' 2>&1 >/dev/null); then
-					log INFO 'Certes, it is.\n'
-					POSIXLY_CORRECT=true
-					export POSIXLY_CORRECT
-				fi
-				;;
-			*) continue ;;
-		esac
-	fi
-done
-
 for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 	log INFO 'Does %s work for what we want? ' "${archivers[$h]}"
 	if [ "${archivers[$h]}" == 'tar' ]; then # TAR-specific tests
@@ -122,11 +90,9 @@ for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 				"$(type -p tar)"
 			log INFO \
 				'I'\''ll disable the secure symbolic links function, for avoiding problems later.'
-			log INFO \
-				'Also setting archive type as "xustar" for unlimited file size (grander than 8192 MiB).'
 			function tar {
 				"$(type -p tar)" "$@" \
-					--no-secure-links --artype=xustar
+					--no-secure-links
 			}
 			typeset -xf tar
 		fi
@@ -168,18 +134,44 @@ for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 	log INFO 'Sounds like a yes.'
 done
 
-for ((i = 0; i < $(n ${utils[@]}); i++)); do
-	log INFO 'Is %s present on this system? ' "${utils[$i]}"
-	command -v ${utils[$i]} 2>&1 >/dev/null &&
-		log INFO 'Sounds like a yes.' ||
-		log ERROR '%s not found.' ${utils[$i]}
+# Considering that the code above messes with the PATH variable,
+# we should do the test for the GNU dd after it.
+for ((g = 0; g < $(n ${general_commands[@]}); g++)); do
+	log INFO 'Searching for %s at PATH (%s)... ' \
+		"${general_commands[$g]}" "$PATH"
+	if ! type -p "${general_commands[$g]}" 2>&1 >/dev/null; then
+		case "${general_commands[$g]}" in
+			'sha256sum')
+				# Use internal sha256sum implementation
+				function sha256sum {
+					"$build_kshdir/cmd/sha256sum.ksh" "$@"
+				}
+				typeset -xf sha256sum
+				;;
+			*)
+				log ERROR '%s not found.' "${general_commands[$g]}"
+				;;
+		esac
+	else
+		case "${general_commands[$g]}" in
+			'du')
+				log INFO 'Is %s GNU? ' "$(type -p du)"
+				if (du --help 2>&1 |
+					egrep 'POSIXLY_CORRECT|GNU' 2>&1 >/dev/null); then
+					log INFO 'Right, it is.\n'
+					POSIXLY_CORRECT=true
+					export POSIXLY_CORRECT
+				fi
+				;;
+			*) continue ;;
+		esac
+	fi
 done
 
 for ((k = 0; k < $(n ${internal_scripts[@]}); k++)); do
 	log INFO 'Searching for independent script %s at %s... ' \
 		"${internal_scripts[$k]}" "$progdir"
-	if [ -e "$progdir/${internal_scripts[$k]}" ] &&
-		[ ! -z "$(cat "$progdir/${internal_scripts[$k]}")" ]; then
+	if [ -x "$progdir/${internal_scripts[$k]}" ]; then
 		log INFO 'Found!'
 	else
 		log WARN '%s not found...' "${internal_scripts[$k]}"
@@ -188,14 +180,12 @@ for ((k = 0; k < $(n ${internal_scripts[@]}); k++)); do
 done
 
 # Programming language interpreters/compilers sanity checks.
-
 run_shell="$(readlink -f /proc/$$/exe)"
 log INFO 'Does the running shell (%s) work for what we need?' "$run_shell"
 
 # Not caching "$(readlink -f /proc/$$/exe)" via $run_shell on the sanity test,
 # since we expect it to run as a new process, so as a new P.ID. and as a new
 # "folder" at /proc, explaining in a extremely simplistic way.
-
 cat >"$ksh_sanity_test" <<'EO_KSHSANITY'
 #!/usr/bin/env ksh
 interpreter="$(readlink -f /proc/$$/exe)" 	
