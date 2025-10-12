@@ -139,16 +139,21 @@ if ($first_time || $start_over); then
 		# For some reason, echo won't be working for this, so let be
 		# sticking with printf '%s\n'.
 		printf '%s\n' "${fdisk_steps[@]}" | elevate fdisk "$virtuadisk_path"
-
-		# Expose the virtual disk to the system.
-		loop_disk_block="$(elevate losetup --show -P -f "$virtuadisk_path")"
-
-		# That's why we hardcoded the partition to be the first.
-		unset disk_block
-		export disk_block="${loop_disk_block}p1"
 	fi
 	echo -n >"$made"
-	# Formats the disk block as Ext4 and label it as our defined disk label.
+fi
+
+# Expose the virtual disk to the system.
+if "$VIRTUAL_DISK"; then
+	loop_disk_block="$(elevate losetup --show -P -f "$virtuadisk_path")"
+
+	# That's why we hardcoded the partition to be the first.
+	unset disk_block
+	export disk_block="${loop_disk_block}p1"
+fi
+
+# Formats the disk block as Ext4 and label it as our defined disk label.
+if ($first_time || $start_over); then
 	elevate "$run_shell" -c "mkfs -V -t ext4 '$disk_block' && e2label '$disk_block' '$disk_label'"
 fi
 
