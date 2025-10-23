@@ -96,21 +96,21 @@ https://github.com/hfiref0x/LightFTP/archive/refs/tags/v2.3.tar.gz
 #< pkgs/extra
 
 #> pkgs/gnu
-https://ftp.gnu.org/gnu/bash/bash-3.2.57.tar.gz
-https://ftp.gnu.org/gnu/sed/sed-4.1.5.tar.gz
-https://ftp.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
-https://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
-https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz
-https://ftp.gnu.org/gnu/make/make-3.81.tar.gz
-https://ftp.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
-https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
-https://ftp.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
+https://ftpmirror.gnu.org/gnu/bash/bash-3.2.57.tar.gz
+https://ftpmirror.gnu.org/gnu/sed/sed-4.1.5.tar.gz
+https://ftpmirror.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
+https://ftpmirror.gnu.org/gnu/gettext/gettext-0.21.tar.xz
+https://ftpmirror.gnu.org/gnu/bison/bison-3.8.2.tar.xz
+https://ftpmirror.gnu.org/gnu/make/make-3.81.tar.gz
+https://ftpmirror.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
+https://ftpmirror.gnu.org/gnu/gperf/gperf-3.1.tar.gz
+https://ftpmirror.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
 #< pkgs/gnu
 
 #> pkgs/gnu/autohell
-https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
-https://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.xz
-https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
-https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
+https://ftpmirror.gnu.org/gnu/m4/m4-1.4.19.tar.xz
+https://ftpmirror.gnu.org/gnu/automake/automake-1.16.4.tar.xz
+https://ftpmirror.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
+https://ftpmirror.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
 %%https://github.com/midipix-project/slibtool/tags
 #< pkgs/gnu/autohell
