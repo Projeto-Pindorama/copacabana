@@ -28,7 +28,7 @@ https://data.iana.org/time-zones/releases/tzcode2023a.tar.gz
 https://data.iana.org/time-zones/releases/tzdata2023a.tar.gz
 https://cdn.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.15.0.tar.xz
 https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.4/dhcpcd-10.0.4.tar.xz
-https://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-0.3.2.tar.xz
+http://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-0.3.2.tar.xz
 https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.2.0.tar.gz
 https://sf.net/projects/heirloom-ng/files/250220/heirloom-250220.tar.bz2
 https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.3.tar.gz
