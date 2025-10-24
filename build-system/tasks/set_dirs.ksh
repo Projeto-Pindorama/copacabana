@@ -1,7 +1,7 @@
 : forgo
 # Set directories for the next tasks.
 
-SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/tmp/src}"
+SRCDIR="$COPA/${SRCDIR_SUFFIX:-/usr/src}"
 PKGDIR="${PKGDIR:-"$COPA/usr/tmp/plaza"}"
 OBJDIR="${OBJDIR:-"$COPA/usr/tmp/obj"}"
 
