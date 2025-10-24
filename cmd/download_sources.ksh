@@ -21,6 +21,16 @@ COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
 umask 0022
 
+# This contains some domains for websites that
+# are known to be problematic with aria2.
+# Domains here are added heuristically; in
+# other words, they're added as they appear to
+# be problematic.
+problematic_sites=(
+	'sourceforge.net'
+	'sf.net'
+)
+
 # If we're running from the Copacabana build system, use
 # internal sha256sum(1) implementation.
 if $BUILD_KSH; then
@@ -30,6 +40,7 @@ if $BUILD_KSH; then
 	)"
 	sha256sum() { "$build_kshdir/cmd/sha256sum.ksh" "$@"; }
 fi
+
 
 # Workaround to the # macro in arrays
 # which doesn't work properly in bash 4.3 for some reason.
@@ -95,8 +106,24 @@ main() {
 		else
 			# Hell yeah, speed.
 			(for ((j=0; j < n_urls; j++)); do
+				_basedomain="${urls[$j]#*//}"
+				basedomain="${_basedomain%%/*}"
 				printf '%s\n\tout=%s\n' \
 					"${urls[$j]}" "${urls[$j]##*/}"
+
+				# See 'problematic_sites' above.
+				if [[ "${problematic_sites[@]}" =~ (.*"$basedomain".*) ]]; then
+					# Let's tell the truth for
+					# SourceForge.net (and possibly other
+					# sites) per lying a little: we're
+					# actually obtaining the file per the
+					# command line, but not using curl. :^)
+					# Also, don't be speedy, just use one
+					# connection.
+					printf '\tuser-agent=%s\n\tmax-connection-per-server=%d\n' \
+						'curl/7.88.1' 1
+				fi
+				unset _basedomain basedomain
 			done) |
 			aria2c --continue=true -j $(( $(nproc) * 2 )) -x $(nproc) -d "$category_dir" -i -
 		fi
