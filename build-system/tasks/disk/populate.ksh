@@ -55,4 +55,5 @@ elevate chown -RH "$user" /{cgnu,llvm}tools "$SRCDIR" "$OBJDIR" "$PKGDIR"
 # Because of the way we implemented add_to_PATH().
 log INFO 'Creating '\''bin'\'' directories for %s and %s.' /{cgnu,llvm}tools
 mkdir /{cgnu,llvm}tools/bin
+apply 'cd %1/; ln -s . ./usr' /{cgnu,llvm}tools
 export blackbox SRCDIR
