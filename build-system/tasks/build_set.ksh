@@ -24,7 +24,7 @@ case $set in
 	toolchain)
 		PATH="$(add_to_PATH /cgnutools/bin)"
 		Destdir_suffix=cgnutools \
-			_build_packages cross/mussel cross/kernel-headers
+			_build_packages cross/mussel cross/kernel-headers-st1
 		Destdir_suffix=llvmtools \
 			_build_packages cross/LibC-musl cross/zlib cross/libatomic
 		Destdir_suffix=cgnutools \
@@ -33,12 +33,11 @@ case $set in
 			_build_packages cross/LLVM-st2
 		PATH="$(remove_from_PATH /cgnutools/bin)"
 		PATH="$(add_to_PATH /llvmtools/bin)"
-		Destdir_suffix=llvmtools _build_packages cross/byacc cross/flex \
-			cross/NBSDcurses cross/ksh-93 cross/bzip2 cross/pigz \
-			cross/xz-utils cross/GNUgettext cross/heirloom-toolchest \
-			cross/GNUm4 cross/GNUmake cross/patch cross/libarchive \
-			cross/s-tar cross/GNUsed
-
+		Destdir_suffix=llvmtools _build_packages cross/kernel-headers-st2 \
+			cross/byacc cross/flex cross/NBSDcurses cross/ksh-93 \
+			cross/bzip2 cross/pigz cross/xz-utils cross/GNUgettext \
+			cross/heirloom-toolchest cross/GNUm4 cross/GNUmake \
+			cross/patch cross/libarchive cross/s-tar cross/GNUsed
 		;;
 	base) ;;
 	close)
