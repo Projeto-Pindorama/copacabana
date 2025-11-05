@@ -75,11 +75,11 @@ _build_package() {
 	# Create directory structure before running cpio.
 	find . -type d -exec \
 		sh -c 'set -x; for f; do \
-			if [ ! -L "$COPA/$f" ] \
-			&& [ ! -d "$COPA/$f" ] \
-			&& [ ! -d "`readlink -f $COPA/$f`" ]; then \
-				mkdir -p "$COPA/$f" \
-			fi \
+			if [ ! -L "$COPA/$f" ] &&
+			[ ! -d "$COPA/$f" ] &&
+			[ ! -d "`readlink -f $COPA/$f`" ]; then
+				mkdir -p "$COPA/$f"
+			fi
 			done' _ {} +
 	find . ! -type d ! -name 'pkgproto.txt' -depth -print \
 		| elevate cpio -vpmu "$COPA"
