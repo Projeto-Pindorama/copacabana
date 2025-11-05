@@ -74,7 +74,7 @@ _build_package() {
 	log WARN 'Copying %s contents to %s' "$package" "$COPA"
 	# Create directory structure before running cpio.
 	find . -type d -exec \
-		sh -c 'set -x; for f; do \
+		sh -c 'for f; do \
 			if [ ! -L "$COPA/$f" ] &&
 			[ ! -d "$COPA/$f" ] &&
 			[ ! -d "`readlink -f $COPA/$f`" ]; then
