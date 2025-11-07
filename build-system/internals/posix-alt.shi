@@ -5,7 +5,7 @@
 # functions already have variables defined in local scopes.
 
 # Copyright (c) 2020-2021 Caio Novais and Luiz Antônio Rangel
-# Copyright (c) 2020-2024 Luiz Antônio Rangel
+# Copyright (c) 2020-2025 Luiz Antônio Rangel
 # SPDX-Licence-Identifier: Caldera
 
 # Include dirs(), pushd() and popd()
@@ -21,7 +21,7 @@ basename(){
 
 # realpath
 realpath(){
-	if ! command -v readlink 1>&2 2>/dev/null; then
+	if ! command -v readlink 1>/dev/null 2>&1; then
 		# ./sources.txt -> sources.txt
 		file_basename="`basename "$1"`"
 		# ./sources.txt -> .
@@ -61,11 +61,14 @@ nproc(){
 	case "`uname -s`" in
 		Darwin) getconf '_NPROCESSORS_ONLN'
 			break ;;
-		Linux) if [ `getconf HEIRLOOM_TOOLCHEST_VERSION` -lt 230305 ]; then
+		Linux) heirloom_ver="`getconf HEIRLOOM_TOOLCHEST_VERSION 2>/dev/null`"
+			if [ `printf '%d' "$heirloom_ver"` \
+				-lt 230305 ]; then
 				grep -c 'processor' /proc/cpuinfo
 			else
 				getconf '_NPROCESSORS_ONLN'
 			fi
+			unset heirloom_ver
 			break ;;
 		FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN'
 			break ;;
