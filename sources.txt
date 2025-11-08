@@ -101,7 +101,7 @@ https://ftpmirror.gnu.org/gnu/sed/sed-4.1.5.tar.gz
 https://ftpmirror.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
 https://ftpmirror.gnu.org/gnu/gettext/gettext-0.21.tar.xz
 https://ftpmirror.gnu.org/gnu/bison/bison-3.8.2.tar.xz
-https://ftpmirror.gnu.org/gnu/make/make-3.81.tar.gz
+https://ftpmirror.gnu.org/gnu/make/make-4.4.1.tar.gz
 https://ftpmirror.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
 https://ftpmirror.gnu.org/gnu/gperf/gperf-3.1.tar.gz
 https://ftpmirror.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
