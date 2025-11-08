@@ -136,9 +136,15 @@ if ($first_time || $start_over); then
 			log ERROR 'Please, check. Stopping the build process.'
 		fi
 
-		# For some reason, echo won't be working for this, so let be
-		# sticking with printf '%s\n'.
-		printf '%s\n' "${fdisk_steps[@]}" | elevate fdisk "$virtuadisk_path"
+		# Only erase the partition table if
+		# we're going for the first time.
+		if $first_time; then
+			# For some reason, echo won't be working
+			# for this, so let's be sticking with
+			# printf '%s\n'.
+			printf '%s\n' "${fdisk_steps[@]}" | \
+				elevate fdisk "$virtuadisk_path"
+		fi
 	fi
 	echo -n >"$made"
 fi
