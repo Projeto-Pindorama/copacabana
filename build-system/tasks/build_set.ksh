@@ -37,7 +37,8 @@ case $set in
 			cross/byacc cross/flex cross/NBSDcurses cross/ksh-93 \
 			cross/bzip2 cross/pigz cross/xz-utils cross/GNUgettext \
 			cross/heirloom-toolchest cross/GNUm4 cross/GNUmake \
-			cross/patch cross/libarchive cross/s-tar cross/GNUsed
+			cross/LibC-compat cross/patch cross/libarchive \
+			cross/s-tar cross/GNUsed
 		;;
 	base) ;;
 	close)
