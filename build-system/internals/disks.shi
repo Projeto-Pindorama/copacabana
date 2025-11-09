@@ -28,6 +28,25 @@ function get_disk_per_partname {
 	printf '%s' "$diskpath"
 }
 
+# This function gets the physical
+# block size for using on dd(1).
+function get_optimal_block_size {
+	f="$1"
+
+	# If file doesn't exist yet (ex.: generated
+	# by dd without existing before), try to
+	# get information on the parent directory.
+	if [ ! -e "$f" ]; then
+		f=$(dirname "$f")
+	fi
+
+	dev="$(df -h "$f" | awk 'NR==2 {print $1}')"
+	basedev="$(get_disk_per_partname "$dev")"
+	devname="$(basename "$basedev")"
+	cat "/sys/block/$devname/queue/physical_block_size" 2>/dev/null \
+		|| printf '%d' 512 # Fallthrough
+}
+
 # May use this function later, no use for it for now.
 function get_size_blocks {
 	typeset -a disk_size[2]

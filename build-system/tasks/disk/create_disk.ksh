@@ -119,10 +119,12 @@ if ($first_time || $start_over); then
 		# X GB = X * [(1024^2) * 2] blocks
 		virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
 		# Just remake the image if it is a new disk.
-		if ! $start_over || [[ ! -e $virtuadisk_path ]]; then
+		if ! $start_over || [[ ! -e "$virtuadisk_path" ]]; then
+			# Get the optimal block size for the target disk.
+			bs="$(get_optimal_block_size "$virtuadisk_path")"
 			log WARN 'Creating a virtual disk image at %s, with size of %d MB.' \
 				"$virtuadisk_path" $((virtuadisk_size * 1024))
-			dd if=/dev/zero of="$virtuadisk_path" bs=512 count=$virtuadisk_blksize
+			dd if=/dev/zero of="$virtuadisk_path" bs=$bs count=$virtuadisk_blksize
 		fi
 
 		# Does the size in blocks matches with what du(1)'s getting?
