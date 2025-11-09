@@ -63,7 +63,7 @@ nproc(){
 			break ;;
 		Linux) heirloom_ver="`getconf HEIRLOOM_TOOLCHEST_VERSION 2>/dev/null`"
 			if [ `printf '%d' "$heirloom_ver"` \
-				-lt 230305 ]; then
+				-lt 20230305 ]; then
 				grep -c 'processor' /proc/cpuinfo
 			else
 				getconf '_NPROCESSORS_ONLN'
