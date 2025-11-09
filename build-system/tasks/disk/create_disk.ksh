@@ -118,6 +118,32 @@ if ($first_time || $start_over); then
 		# In other words, use:
 		# X GB = X * [(1024^2) * 2] blocks
 		virtuadisk_blksize="$((virtuadisk_size * ((1024 ** 2) * 2)))"
+
+		# Check if a failed build hadn't left anything behind.
+		if [[ -e "$virtuadisk_path" ]]; then
+			# If there's already something at the virtual
+			# disk path, check if it's on the expected
+			# size or not.
+			virtuadisk_reported_size=$(du -s "$virtuadisk_path" \
+				| nawk '{ printf("%d", $1); }')
+			if ((virtuadisk_blksize != virtuadisk_reported_size)); then
+				log WARN \
+				'Found a virtual disk at %s, but with a divergence in size of %d blocks' \
+				"$virtuadisk_path" $((virtuadisk_blksize - virtuadisk_reported_size))
+				log WARN 'Deleting %s...' \
+					"$virtuadisk_path"
+				rm -f "$virtuadisk_path"
+				# Now it's just like the first time.
+				# This needs to be set because we will
+				# need to regenerate the partition table
+				# with fdisk(8) and it's only possible
+				# if $first_time is true (read below).
+				start_over=false
+				first_time=true
+			fi
+			unset virtuadisk_reported_size
+		fi
+
 		# Just remake the image if it is a new disk.
 		if ! $start_over || [[ ! -e "$virtuadisk_path" ]]; then
 			# Get the optimal block size for the target disk.
@@ -139,7 +165,9 @@ if ($first_time || $start_over); then
 		fi
 
 		# Only erase the partition table if
-		# we're going for the first time.
+		# we're going for the first time,
+		# otherwise it can be really
+		# dangerous.
 		if $first_time; then
 			# For some reason, echo won't be working
 			# for this, so let's be sticking with
