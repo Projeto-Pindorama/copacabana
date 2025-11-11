@@ -33,19 +33,20 @@ GNUBinutils_commands=('addr2line' 'ar' 'as' 'c++filt' 'dwp' 'elfedit'
 	'gprof' ld{,.bfd} 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf'
 	'size' 'strings' 'strip')
 
-Devtools_commands=('cmake')
+Devtools_commands=('cmake' 'ninja')
 
 # General commands
-general_commands=('cmp' 'curl' diff{,3} 'du' 'sdiff' 'ed' 'file'
-	'patch' 'find' 'grep' 'lemount' 'm4' 'mitzune'
-	${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]})
+general_commands=('apply' 'cmp' 'curl' diff{,3} 'du' 'sdiff' 'ed' \
+	'file' 'patch' 'find' 'grep' 'lemount' 'm4' 'mitzune'
+	${GNUAutoconf_commands[@]} ${GNUBinutils_commands[@]} \
+		${Devtools_commands[@]})
 
 # General compressing tools
 archivers=('tar' 'bzip2' 'gzip' 'xz')
 
 # Check for aria2c
 if $USE_ARIA2C; then
-	general_commands[1]='aria2c'
+	general_commands[3]='aria2c'
 fi
 
 for ((h = 0; h < $(n ${archivers[@]}); h++)); do
