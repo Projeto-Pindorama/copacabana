@@ -68,7 +68,8 @@ for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 						tar_cmd="$d/tar"
 						if [[ ! -e $tar_cmd || $d == "${tarpath%/*}" ]]; then
 							continue
-						elif ("$tar_cmd" --help 2>&1 | egrep 'star|bsdtar|GNU' 2>&1 >/dev/null); then
+						elif ("$tar_cmd" --help 2>&1 | \
+							egrep 'star|bsdtar|GNU|Toybox|BusyBox' 2>&1 >/dev/null); then
 							new_tarpath="$(realpath $d)"
 							log WARN 'Found suitable tar at %s\n' "$new_tarpath"
 							PATH="$(add_to_PATH "$new_tarpath")"
