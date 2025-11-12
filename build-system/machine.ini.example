@@ -1,0 +1,26 @@
+[Machine]
+COPA_TARGET="x86_64-pindoramaCOPACABANA-linux-musl"
+TARGET_TUPLE="x86_64-crossCOPACABANA-linux-musl"
+
+[Build]
+BINARY_CACHE="false"
+I_ENJOY_THAT_THINGS_ARE_REALLY_CLEAR="false"
+
+[Disk managenment]
+VIRTUAL_DISK="true"
+DISK_BLOCK="/dsk/0/NewCopacabanaBuild.img"
+VIRTUADISK_SIZE=40
+; DISK_LABEL=""
+UMOUNT_ON_EXIT="true"
+
+[Download sources]
+; SRCDIR_SUFFIX=""
+SHA256CHECK="YES" 
+USE_ARIA2C="true"
+; SSL_CMD=""
+
+[Programs]
+CC="gcc"
+CXX="g++"
+LD="ld"
+AS="as"
