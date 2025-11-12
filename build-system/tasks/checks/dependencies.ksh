@@ -46,7 +46,7 @@ archivers=('tar' 'bzip2' 'gzip' 'xz')
 
 # Check for aria2c
 if $USE_ARIA2C; then
-	general_commands[3]='aria2c'
+	general_commands[2]='aria2c'
 fi
 
 for ((h = 0; h < $(n ${archivers[@]}); h++)); do
