@@ -240,7 +240,7 @@ function check_elevate_method {
 		function elevate { doas -- "$@"; }
 		typeset -fx elevate
 	elif $(sudo -v 2>/dev/null); then
-		function elevate { sudo -- "$@"; }
+		function elevate { sudo -E -- "$@"; }
 		typeset -fx elevate
 	elif [[ $UID == 0 ]]; then
 		log WARN 'Warning: running as root. This isn'\''t recommended.\n'
