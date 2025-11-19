@@ -1,16 +1,34 @@
 # The Copacabana Linux(R) distribution
-![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/master/Pindorama%20Copacabana%20Banner/Pindorama%20Copacabana%20Banner.png)   
+
+![Pindorama Copacabana Linux](https://raw.githubusercontent.com/Projeto-Pindorama/artworks/refs/heads/master/Pindorama%20Copacabana%20Banner/banner%20degrad%C3%AA.png)
+
+### *Now built with LLVM!*
+
+Hell yeah.  
+
+|![Hell yeah](https://licensing.imageconscious.com/wp-content/uploads/sites/2/2021/01/H1753D-1.jpg) |
+|:--:|
+| Hell yeah |
+
+## What is this repository about?
 
 This repository contains most of the resources that you would need to build
 Copacabana, in case a build consolidation made of small scripts that
 automate the process.  
+This time, we're trying a build using LLVM and following a considerable part of
+dslm4515's [Clang Musl Linux from Scratch](https://github.com/dslm4515/CMLFS.git)
+guide for building the toolchain. We aim to both get Copacabana fully built wit
+LLVM and to cooperate with CMLFS, sending patches when help needed and/or flaws
+discovered in the process.  
+If it succeeds and presents a nice performance, this branch will be merged into
+the main branch.
 
 For more information about porting, translation, documentation etc, read
-the website: http://copacabana.pindorama.dob.jp  
+the website: http://copacabana.pindorama.net.br
 
 For more technical information about the distribution itself, read the
 Copacabana tabula at the Silicon Tabula:
-http://silicon.pindorama.dob.jp/copacabana
+http://tabula.pindorama.net.br/copacabana (not up yet)
 
 ## Chip in!
 
@@ -19,13 +37,13 @@ documentation is open at our git repository, inside the ``docs/`` directory:
 http://github.com/Projeto-Pindorama/Silicon-Tabula
 
 Any other contributions are entirely accepted, for more information read the
-"Chip in!" session at [Copacabana's website](http://copacabana.pindorama.dob.jp).
+"Chip in!" session at [Copacabana's website](http://copacabana.pindorama.net.br).
 
 ### Other Pindorama projects intrinsically related to the distribution that you may want to chip in
 
 - [Alambiko (Copacabana package repository)](https://github.com/Projeto-Pindorama/alambiko);
-- [Heirloom New Generation](http://heirloom-ng.pindorama.dob.jp);
-- [The Motoko Package Manager](https://github.com/Projeto-Pindorama/motoko) (**W.I.P**);
+- [Heirloom New Generation](http://heirloom-ng.pindorama.net.br);
+- [The Pacote Package Manager](https://github.com/Projeto-Pindorama/pacote) (**W.I.P**);
 - [Mitzune](https://github.com/Projeto-Pindorama/mitzune);
 - [L.E.`mount`](https://github.com/Projeto-Pindorama/lemount);
 - [`isainfo`](https://github.com/Projeto-Pindorama/isainfo);

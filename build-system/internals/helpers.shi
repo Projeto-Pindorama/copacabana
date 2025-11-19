@@ -1,0 +1,353 @@
+# vim: set filetype=sh :
+# General helper library for the Copacabana build system.
+# Meant to be used with Korn Shell 93.
+#
+# Copyright (c) 2023-2025 Pindorama
+# 			  Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
+#
+# 'check_for_colour_support', 'isatty', 'isdigit' and sections
+# of 'map'/'record' and '__record' borrowed from Luiz Antônio's
+# herbiec. As per the copyright header on herbiec.ksh:
+# Copyright (c) 2023 Luiz Antônio Rangel
+#
+# SPDX-Licence-Identifier: ISC
+#
+# "'Liberdade, Igualdade, Fraternidade',
+# é o seguinte: se tem Liberdade, tem que
+# ter Igualdade, Amor e Fraternidade [...]"
+
+# Make everyone aware we're running from BUILD_KSH.
+readonly BUILD_KSH=true
+readonly KSH93_RELEASE=$(printf '%s' "${KSH_VERSION:-0}" |
+	nawk '{ gsub("-", ""); print $NF; }')
+export BUILD_KSH KSH93_RELEASE
+
+# map() and record() functions below.
+# For the "back-end" implementation, see __record(),
+# with the old Bourne/POSIX shell function prototype.
+#
+# map(): Creates an associative array with identifier,
+# variable name and value as its parameters.
+# It's really similar to the code found on herbiec in
+# this sense, but it was originally used as a "pointeroid"
+# for accessing an A.S.T.
+function map {
+	identifier="$1"
+	variable="$2"
+	value="$3"
+
+	eval $(__record "$identifier" "$variable" "$value")
+}
+
+# record(): And this creates a compound variable, which
+# approachs more a Pascal record than the "old" record()
+# --- that was renamed to "map" (as-in Google Go's maps,
+# but weakly typed).
+function record {
+	identifier="$1"
+	variable="$2"
+	value="$3"
+
+	# Shouting to __record() that, since we are on Bash,
+	# record() shall not be supported as is, because
+	# compound variables are not supported on Bash.
+	if [[ -n $BASH ]]; then
+		bash_supports_compound=false
+		export bash_supports_compound
+	fi
+
+	eval $(__record "$identifier" "$variable" "$value")
+}
+
+# Using the good old Bourne function prototype because it permits that the
+# function caller name "escapes" into it.
+# This is broken in GNU's Broken-Again Shell --- well, maybe I'm repeating
+# this joke too many times, but Bash lives up to its nickname --- but this
+# is no problem for now since Bash doesn't support compound variables,
+# just associative arrays, so both "map" and "record" can be the same to Bash.
+__record() {
+	backend_name='record()/map() backend'
+	# "London calling to the faraway towns...
+	# But it wasn't my love...
+	# Is she still upset with me?"
+	whos_calling="$0"
+	identifier="$1"
+	variable="$2"
+	value="$3"
+
+	if [[ -z $BASH ]]; then # This is for KornShell 93
+		# The only thing that changes between record() and map() is the printf
+		# format before evaluating it into the script.
+		if [[ $whos_calling == 'record' ]]; then
+			format='%s+=(%s="%s")'
+		elif [[ $whos_calling == 'map' ]]; then
+			format='%s+=([%s]="%s")'
+		else
+			panic '%s: invalid caller '\''%s'\''.' \
+				"$backend_name" "$whos_calling"
+		fi
+	else # Broken-Again
+		if ! $bash_supports_compound; then
+			panic \
+				'%s: GNU Broken-Again Shell does not support compound variables, a.k.a. '\''record()'\''.' \
+				"$backend_name"
+			# Basic sanitizing in case of panic() does
+			# not quitting the program as intended.
+			unset bash_supports_compound
+		fi
+		format='%s['%s']="%s"'
+	fi
+
+	if [[ -n $BASH ]]; then
+		# Declare a global, associative array.
+		printf 'declare -gA %s\n' "$identifier"
+	fi
+
+	# Hope this works.
+	printf "$format" "$identifier" "$variable" "$value"
+}
+
+# Luiz' stupid (re)match.
+# It's my attempt on mimicking BASH_REMATCH functionality
+# on pretty much any shell. Made it for using on dotini(),
+# but pretty much anyone can adapt this.
+function rematch {
+	# Input string.
+	s="$1"
+
+	# Regular expression "rule", as a filter.
+	re="$2"
+
+	# If $re is empty, just exit without questions.
+	[[ -z $re ]] && return 0
+
+	# This gets rid of the capture group syntax that we will be using again
+	# on sed. egrep(1) could also be used, but I opted for shell built-ins
+	# since we're already on Korn Shell.
+	[[ $s =~ $(printf '%s' "$re" | sed 's/\\(//; s/\\)//') ]] || return 1
+
+	printf '%s' "$s" | sed "s/$re/\1/"
+}
+
+# Luiz' (not-so) stupid split.
+# It "returns" an array that shall be eval'ed into the script.
+function strsplit {
+	# Input string.
+	s="$1"
+	# Character to split.
+	ccut="$2"
+	# Number of substrings
+	nsubs=0
+
+	for ((c = 0; c < ${#s}; c++)); do
+		chr="${s:c:1}"
+		if [[ $chr == "$ccut" ]]; then
+			nsubs=$((nsubs + 1))
+			continue
+		fi
+		substrs[nsubs]+="$chr"
+	done
+
+	# Reformat it.
+	printf '%c' '('
+	for ((nsub = 0; nsub < ${#substrs[@]}; nsub++)); do
+		printf ''\''%s'\'' ' "${substrs[$nsub]}"
+	done
+	printf '%c' ')'
+
+	# Clean the memory.
+	unset substrs s c nsubs
+}
+
+# Checks if a function or a variable is defined via its identifier. Analogous
+# on purpose to the C preprocessor special operator defined(), meant for being
+# used in if conditions.
+function defined {
+	# First it will check if it's a function defined on the environment and/or in
+	# a sourced file, if it's not, then it will check if it is a variable.
+	{
+		# 'type -t' first appeared in KornShell 93 1.0.0. release
+		# as a reimplementation of the GNU Broken-Again extension,
+		# earlier versions do not have it present.
+		{ (test $KSH93_RELEASE -ge 20220801 || test -n "$BASH") &&
+			type -t "$1" ||
+			type -v "$1"; } |
+			grep 'function' 2>&1 >/dev/null ||
+			test ! -z "$(eval "echo \$$1")"
+	} ||
+		return 1
+}
+
+# Multiple file input support for realpath(1)
+# Basically a boilerplate.
+function realpaths {
+	files=(${@})
+	for ((count = 0; count < ${#files[@]}; count++)); do
+		realpath "${files[$count]}"
+	done
+	unset count files
+}
+
+# Boilerplate to "cd"
+function chdir { cd "$1"; }
+
+# Just a wrapper to a decompressor such as gzip, xz, bzip2 etc.
+# Derived from copy2prefix() at https://git.io/mitzune
+function c {
+	set -x
+
+	# Fail if there's less than two arguments.
+	if [[ $# -lt 2 ]]; then
+		return 1
+	fi
+	tarball="$2"
+	# First, cut the absolute path off
+	tarball_ext="${tarball##*/}"
+	# Then, the filename itself,
+	# we just want the extension.
+	tarball_ext="${tarball_ext##*.}"
+	case "$tarball_ext" in
+		gz | tgz) { gunzip "$@"; } ;;
+		xz | txz) { xz "$@"; } ;;
+		bz2 | tbz) { bzip2 "$@"; } ;;
+		tar) {
+			shift
+			cat "$@"
+		} ;;
+		*) log PANE "%s: File format not recognized." $0 ;;
+	esac
+}
+
+# This "generates" wrappers for elevating permissions when needed.
+# Be careful.
+# Derived from check_doas() at https://git.io/mitzune
+function check_elevate_method {
+	# Clever way to get UID without having to use id(1) or $UID itself.
+	# Check if UID is defined; small fix for using GNU Broken-Again Shell
+	# instead of Korn Shell 93, since $UID is read-only on GNU's Shell.
+	# We'll be making it public because many scripts will use it later.
+	# Using export directly on variable declaration since it would require to
+	# use another comparison for knowing if UID is available if we export just
+	# at the end.
+	[[ -z $UID ]] && export UID="$(grep $(whoami) /etc/passwd | cut -d: -f3)"
+
+	# Cache the user name from whoami(1) and, unlike $USER, made it read-only
+	# to prevent manipulation from overwriting.
+	readonly user="$(whoami)"
+
+	if $(grep "$user" /etc/doas.conf &>/dev/null); then
+		function elevate { doas -- "$@"; }
+		typeset -fx elevate
+	elif $(sudo -v 2>/dev/null); then
+		function elevate { sudo -E -- "$@"; }
+		typeset -fx elevate
+	elif [[ $UID == 0 ]]; then
+		log WARN 'Warning: running as root. This isn'\''t recommended.\n'
+	elif $(groups $user | grep 'wheel' >/dev/null); then
+		log WARN \
+			'Warning: %s can log directly as root, although using sudo/doas is preferable.\n' \
+			"$user"
+		function elevate { su -c "$@"; }
+		typeset -fx elevate
+	else
+		log ERROR 'Fatal: It appears your user doesn'\''t have superuser privileges.\n'
+		exit 10
+	fi
+
+	export user
+}
+
+# Converts a 'yes/no' variable to a boolean.
+function yes2bool {
+	(echo $1 | grep -i '^y' &>/dev/null) || false
+}
+
+# Just as the name says.
+function check_for_colour_support {
+	# Get the terminal program, if it
+	# is a terminal emulator, so we can
+	# check if it supports ANSI escape
+	# codes.
+	kshpid="$(ps -p $PPID -o ppid=)"
+	termppath="$(ps -p $kshpid -o comm=)"
+	termprog="${termppath##*/}"
+
+	# Presumption of innocence about ANSI
+	# escape codes on the terminal.
+	itsANSIcap=true
+
+	# Colour table.
+	map colours red '\033[91m'
+	map colours green '\033[92m'
+	map colours azure '\033[34m'
+	map colours yellow '\033[93m'
+	map colours purple '\033[35m'
+	map colours close '\033[m'
+
+	# Is our terminal capable of processing
+	# ANSI escape codes? This list is just
+	# a sketch, you can expand it per sending
+	# a patch.
+	case "$termprog" in
+		# Found guilty!
+		9term) itsANSIcap=false ;;
+		*) break ;;
+	esac
+
+	if ! isatty 2 || ! $itsANSIcap || (($(tput colors) < 8)); then
+		unset colours
+	fi
+}
+
+# Checks if the informed f.d. is a valid teletype device.
+# Boilerplate for the shell built-in 'test' with the '-t'
+# option and basic error handling for erred usage.
+# Analogous to its homonymous in the C programming
+# language (isatty(3)).
+function isatty {
+	if ! isdigit $1; then
+		log ERRORF "%s: '%s' is not a valid tty." $0 $1
+		return 2
+	fi
+
+	{ test -t $1; } || return 1
+}
+
+# Checks if the informed character is a digit. It uses
+# printf(1) along with KornShell 93/GNU Bash built-in
+# regex for checking if it's actually a digit.
+# Just like the latter, it's analogous to its homonymous
+# in the C programming language (isdigit(3)).
+function isdigit {
+	digit=$1
+	shift
+	errstring="$@"
+
+	if [[ $(printf '%d' $digit) != $digit && $digit == +([0-9]) ]]; then
+		false
+	fi
+}
+
+# Get directory entries and return serialized it as
+# an array, similarly to dotini().
+function getdirentries {
+	typeset -a entries
+	dir="$1"
+	(
+		cd "$dir"
+		for f in *; do
+			echo "$f"
+		done
+	) | for (( ; ; )); do
+		if read -r ent; then
+			set -A entries "${entries[@]}" "$ent"
+		else
+			break
+		fi
+	done
+
+	# '%#B' is Korn Shell-specific, but one could use 'typeset -p'
+	# with some small hacks for removing the internal identifier.
+	printf '%#B' entries
+}

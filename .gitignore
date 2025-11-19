@@ -3,3 +3,14 @@
 *~
 .*~
 .*.swp
+
+# Don't store build.ksh history
+build-system/tasks/made.txt
+_made
+
+# machine.ini will also depend from build to build
+build-system/machine.ini
+
+# And, of course, neither the images that may be generated
+*.img
+*.IMG

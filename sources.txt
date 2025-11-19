@@ -1,42 +1,41 @@
 #> pkgs
-https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.15.103.tar.xz
-https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-30.tar.xz
-https://www.kernel.org/pub/linux/utils/kbd/kbd-2.5.1.tar.xz
-https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.65.tar.xz
-https://www.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-2.38.tar.xz
+https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.185.tar.xz
+https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20250613.tar.xz
+https://cdn.kernel.org/pub/linux/utils/kernel/kmod/kmod-34.tar.xz
+https://cdn.kernel.org/pub/linux/utils/kbd/kbd-2.8.0.tar.xz
+https://cdn.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.76.tar.xz
+https://cdn.kernel.org/pub/linux/utils/util-linux/v2.41/util-linux-2.41.tar.xz
 https://github.com/eudev-project/eudev/releases/download/v3.2.11/eudev-3.2.11.tar.gz
 https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.46.5/e2fsprogs-1.46.5.tar.gz
 https://github.com/troglobit/sysklogd/releases/download/v2.4.4/sysklogd-2.4.4.tar.gz
 https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.5.tar.xz
 https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.2.tar.xz
 https://github.com/shadow-maint/shadow/releases/download/4.12.3/shadow-4.12.3.tar.xz
-https://www.musl-libc.org/releases/musl-1.2.3.tar.gz
+https://www.musl-libc.org/releases/musl-1.2.5.tar.gz
 https://github.com/Projeto-Pindorama/musl-compat/archive/refs/tags/20230601.tar.gz
 https://github.com/Projeto-Pindorama/musl-extra/archive/refs/tags/20230531.tar.gz
 https://github.com/void-linux/musl-fts/archive/refs/tags/v1.2.7.tar.gz
 https://github.com/void-linux/musl-obstack/archive/refs/tags/v1.2.3.tar.gz
 https://skarnet.org/software/nsss/nsss-0.2.0.3.tar.gz
 https://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
-ftp://sourceware.org/pub/elfutils/0.188/elfutils-0.188.tar.bz2
+https://github.com/arachsys/libelf/archive/refs/tags/v0.192.1.tar.gz
+https://sourceforge.net/code-snapshots/svn/e/el/elftoolchain/code/elftoolchain-code-r4191-trunk.zip
 https://libisl.sourceforge.io/isl-0.25.tar.xz
 https://skarnet.org/software/skalibs/skalibs-2.13.1.0.tar.gz
 https://skarnet.org/software/utmps/utmps-0.1.2.1.tar.gz
 https://github.com/Mic92/iana-etc/releases/download/20230202/iana-etc-20230202.tar.gz
 https://data.iana.org/time-zones/releases/tzcode2023a.tar.gz
 https://data.iana.org/time-zones/releases/tzdata2023a.tar.gz
-https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.17.0.tar.xz
-https://roy.marples.name/downloads/dhcpcd/dhcpcd-9.4.1.tar.xz
-https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.7.2.tar.gz
-%% Real men test in production
-%% FIXME: Talking serious now, we shall move to the next stable
-%% release of Heirloom NG as soon its out, but there's changes
-%% on the current branch that we can't forgo.
-https://github.com/Projeto-Pindorama/heirloom-ng/archive/refs/heads/master.tar.gz
+https://cdn.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.15.0.tar.xz
+https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.4/dhcpcd-10.0.4.tar.xz
+http://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-0.3.2.tar.xz
+https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.2.0.tar.gz
+https://sf.net/projects/heirloom-ng/files/250220/heirloom-250220.tar.bz2
 https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.3.tar.gz
 https://github.com/gavinhoward/bc/releases/download/6.5.0/bc-6.5.0.tar.xz
 https://www.mktemp.org/dist/mktemp-1.7.tar.gz
 http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.12.tar.gz
-https://github.com/ksh93/ksh/archive/refs/tags/v1.0.4.tar.gz
+https://github.com/ksh93/ksh/archive/refs/tags/v1.0.10.tar.gz
 https://github.com/johnsonjh/OpenVi/archive/refs/tags/7.2.21.tar.gz
 https://github.com/vim/vim/archive/refs/tags/v9.0.0000.tar.gz
 https://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/man-pages-posix-2013-a.tar.xz
@@ -49,18 +48,24 @@ https://github.com/OpenRC/openrc/archive/refs/tags/0.46.tar.gz
 https://download.savannah.nongnu.org/releases/acl/acl-2.3.1.tar.xz
 https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
 https://master.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
-https://master.dl.sourceforge.net/project/s-tar/star-1.6.tar.bz2
-https://zlib.net/pigz/pigz-2.7.tar.gz
-https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.tar.gz
-https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
-https://tukaani.org/xz/xz-5.4.2.tar.xz
+https://github.com/Projeto-Pindorama/star/releases/download/1.7/star-1.7.tar.bz2
+https://zlib.net/pigz/pigz-2.8.tar.gz
+https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz
+https://gitlab.com/bzip2/bzip2/-/archive/bzip2-1.0.8/bzip2-bzip2-1.0.8.tar.gz
+https://tukaani.org/xz/xz-5.6.3.tar.gz
+https://github.com/libarchive/libarchive/releases/download/v3.7.7/libarchive-3.7.7.tar.xz
 http://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
 https://distfiles.dereferenced.org/pkgconf/pkgconf-1.9.2.tar.xz
 #< pkgs
 
 #> pkgs/dev
+https://github.com/firasuke/mussel/archive/b577120a748bf46d905e528bef0b0f2375d5a22b.tar.gz
+https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/llvm-project-17.0.5.src.tar.xz
+https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0.tar.bz2
 https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.36.6.tar.xz
 https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.36.6.tar.xz
+https://dl.google.com/go/go1.4-bootstrap-20171003.tar.gz
+https://dl.google.com/go/go1.21.3.src.tar.gz
 https://www.cpan.org/src/5.0/perl-5.32.0.tar.xz
 https://sources.buildroot.net/perl/perl-cross-1.3.5.tar.gz
 https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
@@ -68,14 +73,17 @@ https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tar.xz
 https://www.python.org/ftp/python/doc/3.11.4/python-3.11.4-docs-text.tar.bz2
 https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz
 https://www.python.org/ftp/python/doc/2.7.18/python-2.7.18-docs-text.tar.bz2
-http://downloads.sourceforge.net/tcl/tcl8.6.10-src.tar.gz
-http://downloads.sourceforge.net/tcl/tcl8.6.10-html.tar.gz
-http://github.com/michaelforney/samurai/releases/download/1.2/samurai-1.2.tar.gz
-http://github.com/mesonbuild/meson/releases/download/0.55.0/meson-0.55.0.tar.gz
-http://invisible-island.net/datafiles/release/byacc.tar.gz
-http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
-http://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
-http://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
+https://downloads.sourceforge.net/tcl/tcl8.6.10-src.tar.gz
+https://downloads.sourceforge.net/tcl/tcl8.6.10-html.tar.gz
+https://github.com/michaelforney/samurai/releases/download/1.2/samurai-1.2.tar.gz
+https://github.com/Kitware/CMake/releases/download/v3.28.0-rc1/cmake-3.28.0-rc1.tar.gz
+https://github.com/mesonbuild/meson/releases/download/0.55.0/meson-0.55.0.tar.gz
+https://invisible-island.net/archives/byacc/byacc-20240109.tgz
+https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+https://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
+https://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
+https://github.com/Projeto-Pindorama/libreatomic/archive/refs/tags/221212.tar.gz
+https://github.com/Projeto-Pindorama/opatch/releases/download/7.6/opatch-7.6.tar.xz
 #< pkgs/dev
 
 #> pkgs/extra
@@ -88,26 +96,21 @@ https://github.com/hfiref0x/LightFTP/archive/refs/tags/v2.3.tar.gz
 #< pkgs/extra
 
 #> pkgs/gnu
-https://ftp.gnu.org/gnu/bash/bash-3.2.57.tar.gz
-https://ftp.gnu.org/gnu/sed/sed-4.4.tar.gz
-https://ftp.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
-https://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
-https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
-https://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
-https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
-https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz
-https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz
-https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz
-https://ftp.gnu.org/gnu/make/make-3.81.tar.gz
-https://ftp.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
-https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
-https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
-https://ftp.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
+https://ftpmirror.gnu.org/gnu/bash/bash-3.2.57.tar.gz
+https://ftpmirror.gnu.org/gnu/sed/sed-4.1.5.tar.gz
+https://ftpmirror.gnu.org/gnu/gawk/gawk-3.1.5.tar.gz
+https://ftpmirror.gnu.org/gnu/gettext/gettext-0.21.tar.xz
+https://ftpmirror.gnu.org/gnu/bison/bison-3.8.2.tar.xz
+https://ftpmirror.gnu.org/gnu/make/make-4.4.1.tar.gz
+https://ftpmirror.gnu.org/pub/gnu/gdbm/gdbm-1.8.3.tar.gz
+https://ftpmirror.gnu.org/gnu/gperf/gperf-3.1.tar.gz
+https://ftpmirror.gnu.org/gnu/texinfo/texinfo-4.8a.tar.gz
 #< pkgs/gnu
 
 #> pkgs/gnu/autohell
-https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
-https://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.xz
-https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
-https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
+https://ftpmirror.gnu.org/gnu/m4/m4-1.4.19.tar.xz
+https://ftpmirror.gnu.org/gnu/automake/automake-1.16.4.tar.xz
+https://ftpmirror.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
+https://ftpmirror.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
+%%https://github.com/midipix-project/slibtool/tags
 #< pkgs/gnu/autohell

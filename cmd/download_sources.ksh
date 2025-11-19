@@ -1,7 +1,7 @@
-#!/usr/bin/env ksh93 
+#!/usr/bin/env ksh93
 # Simple shell hack to download and SHA256 check source tarballs.
 #
-# Copyright 2021 - 2023 Luiz Antônio Rangel (takusuman).
+# Copyright 2021 - 2024 Luiz Antônio Rangel (takusuman).
 # n() function by Caio Novais (caionova).
 # This script is licensed under UUIC/NCSA (as Copacabana work itself).
 # Forked from CMLFS, which was originally dual-licensed between
@@ -16,65 +16,124 @@
 # download_sources.ksh if running from build.ksh
 
 SHA256CHECK=${SHA256CHECK:-YES}
+USE_ARIA2C=${USE_ARIA2C:-false}
 COPA=${COPA:-/dsk/0v}
 SRCDIR=${SRCDIR:-$COPA/usr/src}
 umask 0022
 
+# This contains some domains for websites that
+# are known to be problematic with aria2.
+# Domains here are added heuristically; in
+# other words, they're added as they appear to
+# be problematic.
+problematic_sites=(
+	'sourceforge.net'
+	'sf.net'
+)
+
 # If we're running from the Copacabana build system, use
 # internal sha256sum(1) implementation.
 if $BUILD_KSH; then
-  build_kshdir="$(cd "$(dirname "${0##*/}")"; pwd -P)"
-  sha256sum() { "$build_kshdir/cmd/sha256sum.ksh" "$@"; }
+	build_kshdir="$(
+		cd "$(dirname "${0##*/}")"
+		pwd -P
+	)"
+	sha256sum() { "$build_kshdir/cmd/sha256sum.ksh" "$@"; }
 fi
+
 
 # Workaround to the # macro in arrays
 # which doesn't work properly in bash 4.3 for some reason.
 n() {
-  # ambiguous redirect? pipe it.
-  echo "${@}" | wc -w
+	# ambiguous redirect? pipe it.
+	echo "${@}" | wc -w
 }
 
-realpath(){
-  file_basename=`basename $1`
-  file_dirname=`dirname $1`
+realpath() {
+	file_basename=$(basename "$1")
+	file_dirname=$(dirname "$1")
 	# get the absolute directory name
 	# example: ./sources.txt -> /usr/src/copacabana-repo/sources.txt
-  echo "`cd "${file_dirname}"; pwd`/${file_basename}"
+	echo "$(
+		cd "$file_dirname"
+		pwd
+	)/$file_basename"
+}
+
+# Drop-in replacement to GNU nproc.
+nproc() {
+	case "$(uname -s)" in
+		Darwin | Linux) getconf '_NPROCESSORS_ONLN' ;;
+		FreeBSD | OpenBSD | NetBSD) getconf 'NPROCESSORS_ONLN' ;;
+		SunOS) echo "$(ksh93 -c 'getconf NPROCESSORS_ONLN')" ;;
+		*) echo 1 ;;
+	esac
 }
 
 main() {
-  sources_file="`realpath ${1}`"
-  sources_directory="`realpath ${SRCDIR}`"
-  test -n "${2}" && hashsum_file="`realpath ${2}`"
-  mkdir -p "$sources_directory"
-  categories=(`grep '#>' ${sources_file} | tr -d '#> '`)
-  n_categories="`n ${categories[*]}`"
+	sources_file="$(realpath "$1")"
+	sources_directory="$(realpath "$SRCDIR")"
+	test -n "$2" && hashsum_file="$(realpath "$2")"
+	mkdir -p "$sources_directory"
+	categories=($(nawk '/#>/{$1=""; sub(/^ /,"", $0); print $0 }' \
+			"$sources_file"))
+	n_categories="$(n ${categories[*]})"
 
-  for ((i = 0; i < n_categories; i++)) {
+	for ((i=0; i < n_categories; i++)); do
+		# foo/var => foo\/var
+		category_id="$(echo ${categories[${i}]} | sed 's~\/~\\/~g')"
+		printf '==> %s\n' "${categories[${i}]}"
+		# AWK: Matches #> $category_id |
+		# 	counts until the next and last match |
+		# 	matches #< $category_id |
+		#	then removes comments (lines starting with %%)
+		urls=($(nawk "/^#> $category_id$/{ flag=1; next }
+			/^#< $category_id$/{ flag=0 } flag && !/^%%/" \
+			"$sources_file"))
+		n_urls="$(n ${urls[*]})"
 
-    # foo/var => foo\/var
-    category_id="`echo ${categories[${i}]} | sed 's~\/~\\\/~g'`"
-    printf '==> %s\n' "${categories[${i}]}"
-    # sed: Remove comments (lines starting with %%)
-    # AWK: Matches #> $category_id | counts until the next and last match | matches #< $category_id | it ends here
-    urls=(`sed '/%%/d' ${sources_file} | awk "/^#> $category_id$/{flag=1;next}/^#< $category_id$/{flag=0}flag"`)
-    n_urls="`n ${urls[*]}`"
+		category_dir="$sources_directory/${categories[${i}]}"
+		mkdir -p "$category_dir"
 
-    category_dir="$sources_directory/${categories[${i}]}"
-    mkdir -p "${category_dir}"
-    cd "${category_dir}" || exit 2
+		# cURL is slower, but it's present on more systems per default than aria2c,
+		# so we're going with it.
+		if ! $USE_ARIA2C; then
+			cd "$category_dir" || exit 2
+			for ((j=0; j < n_urls; j++)); do
+				printf 'Downloading %s\n' "${urls[$j]##*/}"
+				curl -LO "${urls[${j}]}"
+			done
+		else
+			# Hell yeah, speed.
+			(for ((j=0; j < n_urls; j++)); do
+				_basedomain="${urls[$j]#*//}"
+				basedomain="${_basedomain%%/*}"
+				printf '%s\n\tout=%s\n' \
+					"${urls[$j]}" "${urls[$j]##*/}"
 
-    for ((j = 0; j < n_urls; j++)) {
-      printf 'Downloading %s\n' "`basename ${urls[${j}]}`"
-      curl -LO "${urls[${j}]}"
-    }
-  }
-  if `echo ${SHA256CHECK} | grep -i '^y' &>/dev/null` \
-	  && `test -n "${hashsum_file}"`; then
-      cd "${sources_directory}"
-      sha256sum -c "${hashsum_file}" \
-	      && cd "${OLDPWD}"
-  fi
+				# See 'problematic_sites' above.
+				if [[ "${problematic_sites[@]}" =~ (.*"$basedomain".*) ]]; then
+					# Let's tell the truth for
+					# SourceForge.net (and possibly other
+					# sites) per lying a little: we're
+					# actually obtaining the file per the
+					# command line, but not using curl. :^)
+					# Also, don't be speedy, just use one
+					# connection.
+					printf '\tuser-agent=%s\n\tmax-connection-per-server=%d\n' \
+						'curl/7.88.1' 1
+				fi
+				unset _basedomain basedomain
+			done) |
+			aria2c --continue=true -j $(( $(nproc) * 2 )) -x $(nproc) -d "$category_dir" -i -
+		fi
+	done
+	if $(echo $SHA256CHECK | grep -i '^y' &>/dev/null) &&
+		$(test -n "$hashsum_file"); then
+		cd "$sources_directory"
+		sha256sum -c "$hashsum_file" &&
+			cd "$OLDPWD"
+	fi
 }
 
 main "$@"

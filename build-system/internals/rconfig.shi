@@ -1,0 +1,199 @@
+# vim: set filetype=sh :
+# Internal library for reading INI/key-value configuration
+# files in the Copacabana build system.
+# Meant to be used with Korn Shell 93.
+#
+# Copyright (c) 2023-2025 Pindorama
+# 			  Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
+
+# Reads INI configuration files, now a boilerplate function
+# to dotini/inicompat ---  and, in case of using
+# GNU's Broken-Again Shell, it does a coarse conversion of
+# the INI file to a simple Shell-based configuration file
+# format.
+function rconfig {
+	file="$1"
+
+	if [[ ! -e "$file" ]]; then
+		panic '%s: file %s does not exist.' $0 "$file"
+	fi
+
+	if [[ -z $BASH && -n $KSH_VERSION ]]; then
+		# Load the .ini configuration file as
+		# a compound variable to the memory.
+		# Simple as that.
+		eval conf=$(dotini "$file")
+		inicompat conf
+	elif [[ -n $BASH ]]; then # BASH
+		cat "$1" |
+			for ((;;)); do
+				if read line; then
+					if [[ "$line" =~ \[.*\] ]] || [[ "$line" =~ ^$ ]] ||
+						[[ "$line" =~ '^[#;].*$' ]]; then
+						continue
+					else
+						keyval="$(printf '%s' "$line" |
+							sed -e 's/^\(.*\)[#;].*/\1/' \
+							-e 's/\(.*\)[ ]=[ ]\(.*\)/\1=\2/')"
+						identifier="${keyval%%=*}"
+						value="${keyval##*=}"
+						[[ "$keyval" =~ ^$ ]] && continue
+						eval $(printf '%s='\''%s'\''' $identifier "$value")
+					fi
+				else
+					break
+				fi
+			done
+	fi
+}
+
+# This function parses .INI files into a compound variable that can be used
+# inside the script via eval.
+# For example:
+#
+# eval private_config=$(dotini conf.ini)
+# Then you could just access like so:
+# printf '%s\n' "${private_config[SectName][KeyName]}"
+# It does not outsource record() or map(), so there's more independence
+# and flexibility on choosing identifiers for your INI file configuration.
+function dotini {
+	file="$1"
+
+	# The function shall fail before "allocating" anything in memory.
+	# This may sound like a worry that a C programmer might have, but
+	# it's just a formality when the topic are ksh-ish languages such
+	# as GNU's Bash or even ksh93 itself.
+	if [[ ! -e "$file" ]]; then
+		panic '%s: file %s does not exist.' $0 "$file"
+	fi
+
+	# Allocate an array for recording the file and declarate
+	# a integer that represents the number of the line.
+	typeset -a inibuf confline[2]
+	integer nl l s
+
+	# First of all, we shall remove comments.
+	# I know this could be done manually using a for-loop,
+	# but I think sed can be more reliable.
+	(sed 's/^\(.*\)[#;].*/\1/; /^[#;].*$/d; /^$/d' "$file") |
+		for ((nl=0;; nl++)); do
+			if read line; then
+				inibuf[$nl]="$line"
+			else
+				break
+			fi
+		done
+
+	# Open compound variable syntax.
+	printf '%c' '('
+
+	# Parse each line.
+	for ((l=0; l < ${#inibuf[@]}; l++)); do
+		line="${inibuf[l]}"
+
+		# This gets the INI section.
+		if section_title="$(rematch "$line" '\[\(.*\)\]')"; then
+			# The formatted section title.
+			formatted_section="$(printf '%s' "$section_title" |
+				nawk '{ gsub(" ", "_"); print(tolower($0)) }')"
+			# We can procceed to the next line.
+			continue
+		fi
+
+		# A value declaration in INI follows the format:
+		# identifier = "value"
+		# Or
+		# identifier=value
+		# confline[1]=identifier
+		# confline[2]=value
+		confline[0]="${line/@(| )=*/}"
+		# Bullet-proofing against subshells.
+		confline[1]="$(printf '%s' "${line/*=@(| )/}" \
+			| sed -e '/^'\''.*'\''$/!s/\$/\\\$/g' \
+				-e '/^'\''.*'\''$/!s/`/\\`/g' \
+				-e '/^["'\''].*["'\'']$/!s/ /\\ /g' \
+				-e '/^["'\''].*["'\'']$/!s/(\(.*\))/\\(\1\\)/g;')"
+		# The sed commands described:
+		# - '/^'\''.*'\''$/': Check if the string starts and ends with
+		# simple quotes;
+		# - '!s/\$/\\\$/g': If the previous condition to it does not
+		# occur, replace every '$' with '\$';
+		# - '!s/`/\\`/g': Similar to the command above, but it replaces
+		# every '`' with '\`';
+		# - ''/^["'\''].*["'\'']$/': Checks if the string starts and
+		# ends with simple OR double quotes;
+		# - '!s/ /\\ /g': If the previous condition to it does not
+		# occur, place an escape character ("\") before every space on
+		# the line;
+		# - '!s/(\(.*\))/\\(\1\\)/g': Similarly to the above, if the
+		# previous to it condition does not occur, take everything in
+		# the middle of parenthesis and place it inside "escaped" ones.
+		# Hope this goes into formal documentation in the future.
+
+		# Check if the latter is empty; in this case,
+		# declare it explicitly as a blank.
+		confline[1]=${confline[1]:-'""'}
+
+		# If there is not a section, it will only declare the INI
+		# variable and its value on the compound variable.
+		if [[ ! -n $formatted_section ]]; then
+			printf '[%s]=%s ' \
+				"${confline[0]}" "${confline[1]}"
+
+			# Continue to the next line.
+			continue
+		fi
+
+		# If it there's a section and the value declaration was
+		# already parsed, return it as a associative array declaration.
+		printf '[%s]+=([%s]=%s) ' \
+			$formatted_section "${confline[0]}" "${confline[1]}"
+
+		# Clean confline[] array.
+		unset confline[0] confline[1]
+	done
+
+	# Close compound variable.
+	printf '%c' ')'
+
+	# Remove the section name from the memory,
+	# since it can cause fuss later.
+	unset formatted_section
+}
+
+# This function "converts" a compound variable generated from a .ini file via
+# dotini() to the format "IDENTIFIER=VALUE".
+# It can be useful if the program had just implemented .ini files as a way of
+# configuration and developers doesn't want to mess with the entire source code.
+# It takes the compound variable identifier as a input, for example:
+#
+# inicompat conf
+function inicompat {
+	nameref inirecord=$1
+	integer s k
+	typeset -a sections
+	fmt='%s=%q'
+	sections=(${!inirecord[@]})
+	for ((s=0; s < ${#sections[@]}; s++)); do
+		typeset -a confkeys
+
+		section=${sections[s]}
+		confkeys=( ${!inirecord[$section][@]} )
+
+		case "${confkeys[0]}" in
+		0) # If dealing with section-less file.
+			eval $(printf "$fmt" \
+				$section "${inirecord[$section]}") ;;
+		*) # Default... Or dealing with sections.
+			for ((k=0; k < ${#confkeys[@]}; k++)); do
+				confkey=${confkeys[$k]}
+				confval="${inirecord[$section][$confkey]}"
+				eval $(printf "$fmt" \
+					$confkey "$confval")
+				unset confkey confval
+			done ;;
+		esac
+		unset section confkeys confkey confval
+	done
+}

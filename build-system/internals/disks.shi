@@ -1,0 +1,95 @@
+# vim: set filetype=sh :
+# Functions to deal with disks and filesystems.
+
+# Copyright (c) 2023-2025 Pindorama
+# 			  Luiz Antônio Rangel
+# SPDX-Licence-Identifier: NCSA
+
+# Auto-explanatory. It gets the "root" disk path for a partition name.
+# Ex.: "get_disk_per_partname /dev/loop0p1" -> /dev/loop0
+# It makes use of Linux's /sys/block directory, walking through it
+# in hope that it will encounter the disk path for that partition.
+# Inspired per libcmon.
+function get_disk_per_partname {
+	devpath='/dev'
+	partition_name="${1##*/}"
+	eval disks=$(getdirentries /sys/block)
+	for ((i = 0; i < ${#disks[@]}; i++)); do
+		disk="${disks[$i]}"
+		eval sys_block_contents=$(getdirentries "/sys/block/$disk")
+		for ((j = 0; j < ${#sys_block_contents[@]}; j++)); do
+			if [[ $partition_name == "${sys_block_contents[$j]}" ]]; then
+				diskpath="$devpath/$disk"
+				break 2
+			fi
+		done
+		unset disk sys_block_contents
+	done
+	printf '%s' "$diskpath"
+}
+
+# This function gets the physical
+# block size for using on dd(1).
+function get_optimal_block_size {
+	f="$1"
+
+	# If file doesn't exist yet (ex.: generated
+	# by dd without existing before), try to
+	# get information on the parent directory.
+	if [ ! -e "$f" ]; then
+		f=$(dirname "$f")
+	fi
+
+	dev="$(df -h "$f" | awk 'NR==2 {print $1}')"
+	basedev="$(get_disk_per_partname "$dev")"
+	devname="$(basename "$basedev")"
+	cat "/sys/block/$devname/queue/physical_block_size" 2>/dev/null \
+		|| printf '%d' 512 # Fallthrough
+}
+
+# May use this function later, no use for it for now.
+function get_size_blocks {
+	typeset -a disk_size[2]
+	disk_block="$1"
+
+	# The minimum size for a block is 512KiB, not less.
+	# This identifier may sound a little bit erred.
+	readonly blocks_per_kib=512
+
+	disk_size=($(elevate fdisk -x "$disk_block" |
+		sed '1 s/Disk .*: \(.*\),.*,.*/\1/; 1q'))
+
+	size=${disk_size[0]}
+	sizeunit=${disk_size[1]}
+	unset disk_size
+
+	case $sizeunit in
+		'TiB') ((blocks = size * (blocks_per_kib * 4194304))) ;;
+		'GiB') ((blocks = size * (blocks_per_kib * 4096))) ;;
+		'MiB') ((blocks = size * (blocks_per_kib * 4))) ;;
+		'KiB') ((blocks = size / blocks_per_kib)) ;;
+	esac
+	unset size sizeunit
+
+	printf '%d' $blocks
+
+	return 0
+}
+
+# This checks for valid file systems on
+# which Copacabana builds are made and
+# tested.
+function check_linuxfs {
+	fs=$1
+	err=0
+
+	case $fs in
+		btrfs | ext4) break ;;
+		default)
+			err=1
+			break
+			;;
+	esac
+
+	return $err
+}

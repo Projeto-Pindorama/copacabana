@@ -1,9 +1,9 @@
 #!/usr/bin/env ksh93
-# sha256sum.ksh - Generate SHA256 hashes for a file using Open/LibreSSL.  
+# sha256sum.ksh - Generate SHA256 hashes for a file using Open/LibreSSL.
 # Can be extended to more digest formats later, the code is pretty maleable.
 #
-# Copyright (c) 2023 Pindorama
-# 		Luiz Antônio Rangel
+# Copyright (c) 2023-2024 Pindorama
+# 			  Luiz Antônio Rangel
 # SPDX-Licence-Identifier: NCSA
 
 progname=${0##*/}
@@ -18,13 +18,13 @@ CLASSIC=false
 function main {
 	while getopts ":oC:c:h:" options; do
 		case "$options" in
-			C|c) check "$OPTARG" ;;
-			h) hashfile="$OPTARG" ;;
-			o) CLASSIC=true ;;
-			\?|*) print_help ;;
+		C | c) check "$OPTARG" ;;
+		h) hashfile="$OPTARG" ;;
+		o) CLASSIC=true ;;
+		\? | *) print_help ;;
 		esac
 	done
-	shift $(( OPTIND - 1 ))
+	shift $((OPTIND - 1))
 
 	# As done later, for the sake of readability.
 	# Nobody knows exactly what "$1" means without having to read the entire
@@ -38,6 +38,8 @@ function main {
 	output_hashfile="${hashfile:-/dev/null}"
 
 	get_checksum "$file" | tee -a "${output_hashfile}"
+
+	exit $err
 }
 
 function get_checksum {
@@ -46,17 +48,18 @@ function get_checksum {
 	# $CLASSIC is a boolean-type value (true or false), and determines if
 	# you're getting the old/classic OpenSSL shell API output or you're
 	# getting a more cksum(1)-style output.
-       
-	sslcmd dgst -sha256 "$1" | \
-	if ! $CLASSIC; then
-		nawk_ssl_to_cksum
-	else
-		cat
-	fi
+
+	sslcmd dgst -sha256 "$1" |
+		if ! $CLASSIC; then
+			nawk_ssl_to_cksum
+		else
+			cat
+		fi
 }
 
-# This checks if the checksum inside a file matches with the file in the disk. 
+# This checks if the checksum inside a file matches with the file in the disk.
 function check {
+	err=0
 	# Just for the sake of readability, as in main.
 	hashfile="$1"
 
@@ -76,10 +79,10 @@ function check {
 		fi
 		file_to_check="${cksum_line#* }"
 		file_alleged_hash="${cksum_line%% *}"
-		
+
 		# Setting $CLASSIC as "false", since we're going to only use
 		# cksum-like syntax.
-		export CLASSIC="false"
+		export CLASSIC=false
 
 		# Same thing from before, but now with the newly generated digest.
 		actual_file_cksum="$(get_checksum "${file_to_check}")"
@@ -92,17 +95,19 @@ function check {
 			printmsg "(SHA256) %s: FAILED\n" "$actual_file_name"
 			printmsg "%s: WARNING: %s computed checksum did NOT match\n" \
 				"$progname" "$actual_file_name"
+			err=1
 		fi
-		
+
 		# Clean variables from the memory
 		unset cksum_line actual_file_cksum file_to_check \
-		file_alleged_hash actual_file_name actual_file_hash
-	done < "$hashfile"
-	exit 0
+			file_alleged_hash actual_file_name actual_file_hash
+	done <"$hashfile"
+
+	export err
 }
 
 # Boilerplate to OpenSSL-compatible shell API.
-function sslcmd { 
+function sslcmd {
 	"$(type -p $SSL_CMD)" "$@"
 }
 
@@ -122,8 +127,8 @@ function printmsg {
 
 function print_help {
 	printmsg \
-	'usage: %s: [-o] [-C hashfile to read] [-h hashfile to record] [file to hash]\n' \
-	"$progname"
+		'usage: %s: [-o] [-C hashfile to read] [-h hashfile to record] [file to hash]\n' \
+		"$progname"
 	exit 1
 }
 
