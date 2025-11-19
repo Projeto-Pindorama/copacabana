@@ -18,26 +18,33 @@ CLASSIC=false
 function main {
 	while getopts ":oC:c:h:" options; do
 		case "$options" in
-		C | c) check "$OPTARG" ;;
-		h) hashfile="$OPTARG" ;;
-		o) CLASSIC=true ;;
-		\? | *) print_help ;;
+			C | c) tocheck="$OPTARG" ;;
+			h) hashfile="$OPTARG" ;;
+			o) CLASSIC=true ;;
+			\? | *) print_help ;;
 		esac
 	done
 	shift $((OPTIND - 1))
 
 	# As done later, for the sake of readability.
-	# Nobody knows exactly what "$1" means without having to read the entire
-	# function before.
+	# Nobody knows exactly what "$1" means without
+	# having to read the entire function before.
 	file="$1"
 
-	# If "$hashfile" isn't specificed, we will just default tee(1) output to
-	# the null device, so we will not have our screen being bombed by its error
-	# messages "tee: cannot open". It still printing to the standard output.
-	# Business as usual.
-	output_hashfile="${hashfile:-/dev/null}"
-
-	get_checksum "$file" | tee -a "${output_hashfile}"
+	# -C|-c flag?
+	case "x$tocheck" in
+		'x')
+			# If "$hashfile" isn't specificed, we will just
+			# default tee(1) output to the null device, so
+			# we will not have our screen being bombed by
+			# its error messages "tee: cannot open". It's
+			# still printing to the standard output.
+			# Business as usual.
+			output_hashfile="${hashfile:-/dev/null}"
+			get_checksum "$file" | tee -a "${output_hashfile}"
+			;;
+		*) check "$tocheck" ;;
+	esac
 
 	exit $err
 }
@@ -77,8 +84,9 @@ function check {
 			# Functional fellas gonna hate it.
 			cksum_line="$(printf '%s' "$cksum_line" | nawk_ssl_to_cksum)"
 		fi
-		file_to_check="${cksum_line#* }"
 		file_alleged_hash="${cksum_line%% *}"
+		file_to_check="${cksum_line#$file_alleged_hash}"
+		file_to_check="${file_to_check#"${file_to_check%%[![:space:]]*}"}"
 
 		# Setting $CLASSIC as "false", since we're going to only use
 		# cksum-like syntax.
@@ -86,8 +94,9 @@ function check {
 
 		# Same thing from before, but now with the newly generated digest.
 		actual_file_cksum="$(get_checksum "${file_to_check}")"
-		actual_file_name="${actual_file_cksum#* }"
 		actual_file_hash="${actual_file_cksum%% *}"
+		actual_file_name="${actual_file_cksum#$actual_file_hash}"
+		actual_file_name="${actual_file_name#"${actual_file_name%%[![:space:]]*}"}"
 
 		if [[ "$file_alleged_hash" == "$actual_file_hash" ]]; then
 			printmsg "(SHA256) %s: OK\n" "$actual_file_name"
