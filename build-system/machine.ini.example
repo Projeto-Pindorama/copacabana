@@ -1,6 +1,8 @@
 [Machine]
 COPA_TARGET="x86_64-pindoramaCOPACABANA-linux-musl"
 TARGET_TUPLE="x86_64-crossCOPACABANA-linux-musl"
+CFLAGS="-O2 -march=core2 -mcpu=generic -pipe"
+CXXFLAGS="-O2 -march=core2 -mcpu=generic -pipe"
 
 [Build]
 BINARY_CACHE="false"
@@ -15,7 +17,7 @@ UMOUNT_ON_EXIT="true"
 
 [Download sources]
 ; SRCDIR_SUFFIX=""
-SHA256CHECK="YES" 
+SHA256CHECK="YES"
 USE_ARIA2C="true"
 ; SSL_CMD=""
 
