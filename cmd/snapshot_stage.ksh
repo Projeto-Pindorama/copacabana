@@ -26,7 +26,7 @@ function main {
 		viassh=true
 	fi
 
-	filename="${stage}_$(date +%Y-%m-%d_%H-%M-%S)"
+	filename="${stage}_$(date +%Y%m%d-%Hh%Mmin%Ss)"
 	# This is meant to be used with our Copacabana stages
 	# In other words, we will always be looking for stages
 	# on $COPA, not elsewhere.
