@@ -28,5 +28,3 @@ log INFO 'Downloading sources for building Copacabana using %s as the list.\n' \
 	"$source_list"
 
 "$progdir/cmd/download_sources.ksh" "$source_list" "$source_hash"
-
-unset SHA256CHECK USE_ARIA2C
