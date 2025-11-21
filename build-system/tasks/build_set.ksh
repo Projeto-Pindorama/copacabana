@@ -23,7 +23,15 @@ shift
 case $set in
 	toolchain)
 		if $BINARY_CACHE; then
-
+			# This is an initial implementation,
+			# there's room for improvement.
+			log INFO 'Using binary cache for the toolchains.'
+			# Save toolchain tarballs to PKGDIR since it's
+			# already compiled and not source code.
+			SRCDIR="$PKGDIR" \
+			"$progdir/cmd/download_sources.ksh" cache_sources.txt cache_sources.sha256
+			find "$PKGDIR/tools" \( -name 'cgnutools*' -o -name 'llvmtools*' \) -print \
+				| xargs apply "xz -cd '%1' | tar -xvf - -C $COPA"
 		else
 			PATH="$(add_to_PATH /cgnutools/bin)"
 			Destdir_suffix=cgnutools \
