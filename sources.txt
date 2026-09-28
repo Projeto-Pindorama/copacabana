@@ -30,7 +30,7 @@ https://cdn.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.15.0.tar.xz
 https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.4/dhcpcd-10.0.4.tar.xz
 http://ftp.barfooze.de/pub/sabotage/tarballs/netbsd-curses-0.3.2.tar.xz
 https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.2.0.tar.gz
-https://sf.net/projects/heirloom-ng/files/250220/heirloom-250220.tar.bz2
+https://sf.net/projects/heirloom-ng/files/260903/heirloom-260903.tar.bz2
 https://github.com/Projeto-Pindorama/lemount/archive/refs/tags/0.3.tar.gz
 https://github.com/gavinhoward/bc/releases/download/6.5.0/bc-6.5.0.tar.xz
 https://www.mktemp.org/dist/mktemp-1.7.tar.gz
@@ -47,7 +47,6 @@ ftp://sourceware.org/pub/libffi/libffi-3.4.3.tar.gz
 https://github.com/OpenRC/openrc/archive/refs/tags/0.46.tar.gz
 https://download.savannah.nongnu.org/releases/acl/acl-2.3.1.tar.xz
 https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
-https://master.dl.sourceforge.net/project/openpam/openpam/Tabebuia/openpam-20190224.tar.gz
 https://github.com/Projeto-Pindorama/star/releases/download/1.7/star-1.7.tar.bz2
 https://zlib.net/pigz/pigz-2.8.tar.gz
 https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz
@@ -83,17 +82,20 @@ https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 https://downloads.sourceforge.net/project/expat/expat/2.5.0/expat-2.5.0.tar.xz
 https://downloads.sourceforge.net/project/expect/Expect/5.45.4/expect5.45.4.tar.gz
 https://github.com/Projeto-Pindorama/libreatomic/archive/refs/tags/221212.tar.gz
-https://github.com/Projeto-Pindorama/opatch/releases/download/7.6/opatch-7.6.tar.xz
+https://github.com/Projeto-Pindorama/opatch/releases/download/7.6f%C2%B2/opatch-7.6f-.tar.xz
 #< pkgs/dev
 
 #> pkgs/extra
 https://github.com/Duncaen/OpenDoas/releases/download/v6.8.2/opendoas-6.8.2.tar.xz
-https://github.com/Projeto-Pindorama/stripped-lobase/archive/refs/tags/20180406-original.tar.gz
 https://curl.se/download/curl-8.0.1.tar.xz
 https://invisible-island.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.bz2
 ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/tnftp-20210827.tar.gz
 https://github.com/hfiref0x/LightFTP/archive/refs/tags/v2.3.tar.gz
 #< pkgs/extra
+
+#> pkgs/extra/desktop
+https://sourceforge.net/projects/openpam/files/openpam/Zingiber/openpam-20250531.tar.gz/download
+#< pkgs/extra/desktop
 
 #> pkgs/gnu
 https://ftpmirror.gnu.org/gnu/bash/bash-3.2.57.tar.gz
