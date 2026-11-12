@@ -61,32 +61,31 @@ for ((h = 0; h < $(n ${archivers[@]}); h++)); do
 			log WARN \
 				'Until this is hopefully fixed, I'\''ll be searching for another tar at PATH.'
 
-			printf '%s' "$PATH" |
-				nawk '{ gsub(":", "\n"); print $0; }' |
-				for (( ; ; )); do
-					if read -r d; then
-						tar_cmd="$d/tar"
-						if [[ ! -e $tar_cmd || $d == "${tarpath%/*}" ]]; then
-							continue
-						elif ("$tar_cmd" --help 2>&1 | \
-							egrep 'star|bsdtar|GNU|Toybox|BusyBox' 2>&1 >/dev/null); then
-							new_tarpath="$(realpath $d)"
-							log WARN 'Found suitable tar at %s\n' "$new_tarpath"
-							PATH="$(add_to_PATH "$new_tarpath")"
-							log INFO 'New $PATH: %s\n' $PATH
-							export PATH
-							unset tarpath tar_cmd new_tarpath
-							break
-						fi
-						unset tar_cmd
-					else
-						panic 'Couldn'\''t find a suitable tar implementation.'
-						break # Une pure formalité.
-					fi
-				done
+			IFS=':' read -r -A paths <<<"$PATH"
+			for ((d=0; d < ${#paths[@]}; d++)); do
+				tar_cmd="${paths[$d]}/tar"
+				if [[ ! -e "$tar_cmd" || "${paths[$d]}" == "${tarpath%/*}" ]]; then
+					continue
+				elif ("$tar_cmd" --help 2>&1 | \
+					egrep 'star|bsdtar|GNU|Toybox|BusyBox' 2>&1 >/dev/null); then
+					new_tarpath="$(realpath "${paths[$d]}")"
+					log WARN 'Found suitable tar at %s\n' "$new_tarpath"
+					PATH="$(add_to_PATH "$new_tarpath")"
+					log INFO 'New $PATH: %s\n' "$PATH"
+					export PATH
+					tarpath="$new_tarpath"
+					unset new_tarpath tar_cmd new_tarpath
+					break
+				fi
+			done
+			# This variable should've been cleaned-off from the
+			# memory if we've found a suitable implementation.
+			if [ -n "$tar_cmd" ]; then
+				panic 'Couldn'\''t find a suitable tar implementation.'
+			fi
 		fi
 
-		if [[ $tarpath =~ (star) ]] ||
+		if [[ "$tarpath" =~ (star) ]] ||
 			(tar -h 2>&1 | grep 'star' 2>&1 >/dev/null); then
 			log INFO 'I'\''m almost certain that %s is Schily tar...' \
 				"$(type -p tar)"
