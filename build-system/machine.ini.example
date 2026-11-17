@@ -1,8 +1,8 @@
 [Machine]
 COPA_TARGET="x86_64-pindoramaCOPACABANA-linux-musl"
 TARGET_TUPLE="x86_64-crossCOPACABANA-linux-musl"
-CFLAGS="-O2 -march=core2 -mcpu=generic -pipe"
-CXXFLAGS="-O2 -march=core2 -mcpu=generic -pipe"
+CFLAGS="-O2 -march=x86-64-v2 -mtune=znver2 -pipe"
+CXXFLAGS="-O2 -march=x86-64-v2 -mtune=znver2 -pipe"
 
 [Build]
 BINARY_CACHE="false"
