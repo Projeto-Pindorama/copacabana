@@ -124,8 +124,12 @@ if ($first_time || $start_over); then
 			# If there's already something at the virtual
 			# disk path, check if it's on the expected
 			# size or not.
-			virtuadisk_reported_size=$(du -s "$virtuadisk_path" \
-				| nawk '{ printf("%d", $1); }')
+			# I've replaced dd with ls because of a funny bug that
+			# happened when running this on an ext4 disk, since
+			# there are damned 8 bytes of information added,
+			# creating a discrepancy and breaking the check.
+			virtuadisk_reported_size=$(( $(ls -ln "$virtuadisk_path" \
+				| nawk '{ printf("%d", $5); }') / 512 ))
 			if ((virtuadisk_blksize != virtuadisk_reported_size)); then
 				log WARN \
 				'Found a virtual disk at %s, but with a divergence in size of %d blocks' \
@@ -154,7 +158,8 @@ if ($first_time || $start_over); then
 		fi
 
 		# Does the size in blocks matches with what du(1)'s getting?
-		virtuadisk_reported_size=$(du -s "$virtuadisk_path" | nawk '{ printf("%d", $1); }')
+		virtuadisk_reported_size=$(( $(ls -ln "$virtuadisk_path" \
+			| nawk '{ printf("%d", $5); }') / 512 ))
 		if ((virtuadisk_blksize == virtuadisk_reported_size)); then
 			log INFO '%s is o.k. Proceeding.' "$virtuadisk_path"
 		else
